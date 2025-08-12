@@ -19,6 +19,13 @@ function capitalize(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+function orderDict(dict: {[key: string]: number}, way: string ): { [key: string ]: number } {
+  const sorted = Object.fromEntries(
+    Object.entries(dict).sort(([,a],[,b]) => way == "d" ? b - a : a - b)
+  );
+  return sorted;
+}
+
 function mostIndecisive(polls: PollsData): string[] {
   const indecisivePeople: string[] = [];
   const people = polls.people;  
@@ -100,10 +107,84 @@ function countPolls(polls: PollsData, person: string): number {
   return pollCount;
 }
 
+function bestFriend(polls: PollsData, person: string): { [key: string]: number } {
+  const ppl = polls.people;
+  const agree_count: { [key: string]: number } = {}
+
+  ppl.forEach(person => {
+    agree_count[person] = 0;
+  })
+
+  const pollEntries = Object.entries(polls.polls);
+  pollEntries.forEach(([pollName, pollDetails ]) => {
+    Object.entries(pollDetails).forEach(([option, details]) => {
+      if (details.voters.includes(person)) {
+        for (let voter of details.voters) {
+          agree_count[voter]++;
+        }
+      }
+    })
+  })
+
+  const ordered = orderDict(agree_count, "d");
+
+  return ordered;
+}
+
+function archNemesis(polls: PollsData, person: string): { [key: string]: number } {
+  const ppl = polls.people;
+  const disagree_count: { [key: string]: number } = {};
+
+  ppl.forEach(p => {
+    disagree_count[p] = 0;
+  });
+
+  const pollEntries = Object.entries(polls.polls);
+  pollEntries.forEach(([pollName, pollDetails]) => {
+    // Check if the person voted in this poll
+    let personVotedInThisPoll = false;
+    const current_poll_count: { [key: string]: number } = {};
+    
+    // Initialize counts for this poll
+    ppl.forEach(p => {
+      current_poll_count[p] = 0;
+    });
+
+    // Count votes for each person in this poll
+    Object.entries(pollDetails).forEach(([option, details]) => {
+      if (details.voters.includes(person)) {
+        personVotedInThisPoll = true;
+      }
+      
+      // Count votes for other people in options where our person didn't vote
+      if (!details.voters.includes(person)) {
+        details.voters.forEach(voter => {
+          current_poll_count[voter]++;
+        });
+      }
+    });
+
+    console.log("[ARCH NEMESIS] Poll:", pollName, "Person voted:", personVotedInThisPoll);
+    console.log("[ARCH NEMESIS] Current poll disagreements:", current_poll_count);
+
+    // Only count disagreements if the person voted in this poll
+    if (personVotedInThisPoll) {
+      ppl.forEach(p => {
+        disagree_count[p] += current_poll_count[p];
+      });
+    }
+  });
+
+  console.log("[ARCH NEMESIS] Final disagree count:", disagree_count);
+
+  return orderDict(disagree_count, "d");
+}
+
 type SlideContent = {
   title: string;
   subtitle?: string;
   content: React.ReactNode;
+  extra?: string;
   showProgressBar?: boolean;
 };
 
@@ -113,10 +194,10 @@ export default function Home() {
   const [activityRanking, setActivityRanking] = useState<{ [key: string]: number }>({});
   const [totalPolls, setTotalPolls] = useState<number>(0);
   const [totalVotes, setTotalVotes] = useState<number>(0);
-  const [mostPopularPerson, setMostPopularPerson] = useState<string>("");
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const [userName, setUserName] = useState<string>("");
   const [nameNotFound, setNameNotFound] = useState<boolean>(false);
+  const [honorarySis, setHonorarySis] = useState<boolean>(false);
 
   // Calculate proper percentile
   const allScores = Object.values(activityRanking).sort((a, b) => b - a);
@@ -124,12 +205,26 @@ export default function Home() {
   const userRank = allScores.indexOf(userScore) + 1;
   const percentile = Math.round((userRank / allScores.length) * 100);
 
+  // Random stuff
+  const agreement = bestFriend(pollData as PollsData, userName);
+  const bff = Object.keys(agreement)[1]; // Cuz 0th person will always be yourself
+  const disagreement = archNemesis(pollData as PollsData, userName);
+  const enemy = Object.keys(disagreement)[0];
+
  const slides: SlideContent[] = [
     // Slide 1: Welcome
     {
-      title: `Welcome ${userName}!`,
-      subtitle: "Your 2025 STEMM Sisters Poll WRAPPED",
-      content: <p>Let's see how your group stacked up this year</p>,
+      title: honorarySis ? `WE MISS YOU ${userName.toUpperCase()}!` : `Welcome ${userName}!`,
+      subtitle: honorarySis
+      ? "Even though you're not on comm, you'll always be a part of it in my (Nour's) eyes :)"
+      : "Your 2025 STEMM Sisters Poll WRAPPED",
+      content: (
+      <p>
+        {honorarySis
+        ? "If you wanna continue, you can see the new comms wrapped"
+        : "Let's see how your group stacked up this year"}
+      </p>
+      ),
       showProgressBar: true
     },
     // Slide 2: Most Indecisive
@@ -186,7 +281,7 @@ export default function Home() {
       ),
       showProgressBar: true
     },
-
+    // Slide 5: Most Evenly Split
     {
       title: "🤝 Most Evenly Split Poll",
       content: (
@@ -199,7 +294,20 @@ export default function Home() {
       ),
       showProgressBar: true
     },
-
+    // Slide 6: Avatar
+    {
+      title: "NO ONE WANTS TO BE THE AVATAR",
+      subtitle: "Credit: Aiza and her ATLA poll",
+      content: (
+        <div>
+          <ul>
+            <p>We have a comm of scaredy cats. Or are we just "a humble lot" as Salma said?</p>
+          </ul>
+        </div>
+      ),
+      showProgressBar: true
+    },
+    // Slide 7: About you
     {
       title: "🔎 Now about you!",
       content: (
@@ -209,7 +317,7 @@ export default function Home() {
       ),
       showProgressBar: true
     },
-
+    // Slide 8: You Voted...
     {
       title: "🗳️ You Voted...",
       content: (
@@ -222,7 +330,7 @@ export default function Home() {
       ),
       showProgressBar: true
     },
-
+    // Slide 9: You Voted In...
     {
       title: "📋 You Voted In...",
       content: (
@@ -235,16 +343,52 @@ export default function Home() {
       ),
       showProgressBar: true
     },
-
-    // Next slides: Best friend (person you agreed with the most)
-    // Arch nemesis (person you disagreed with the most)
-
+    // Slide 10: Best friend
+    {
+      title: "👯‍♀️ Best Friend",
+      content: (
+        <div>
+          <p>Your best friend is the person you agreed with the most:</p>
+          <ul>
+            <p>{bff}</p>
+          </ul>
+        </div>
+      ),
+      extra: `You two agreed ${agreement[bff]} times!`,
+      showProgressBar: true
+    },
+    // Slide 11: Arch Nemesis
+    {
+      title: "⚔️ Your Arch Nemesis",
+      content: (
+        <div>
+          <p>Your arch nemesis is the person you disagreed with the most:</p>
+          <ul>
+            <p>{enemy}</p>
+          </ul>
+        </div>
+      ),
+      extra: `You two disagreed ${disagreement[enemy]} times!`,
+      showProgressBar: true
+    },
+    // Slide 12: Thank You
     {
       title: "💕 Thank You!",
       content: (
         <div>
-          <p>Thanks for participating in the Sisters Poll!</p>
-          <p>Hope you enjoyed your wrapped experience! 🎉</p>
+          {!honorarySis && (
+            <>
+              <p>Thank you {userName} for participating in the Sisters Poll! We really couldn&apos;t have done this without you.</p>
+              <p>We hope you enjoyed your wrapped experience! 🎉</p>
+              {(userName !== "Madiha" && userName !== "Samiya" && userName !== "Suweda") && <p>If you did, make sure to thank Madiha Suweda and Samiya!</p>}
+            </>
+          )}
+          {honorarySis && (
+            <>
+              <p>Thanks for always being amazing!</p>
+              <p>And thank you for letting me be a part of this society :{')'}</p>
+            </>
+          )}
         </div>
       ),
       showProgressBar: true // Use old progress bar for final slide
@@ -316,41 +460,52 @@ export default function Home() {
 
     return (
       <div className={`${styles.slide} ${slideIndex === 1 ? styles.welcomeSlide : ''}`} onClick={handleSlideClick}>
-        {/* Progress Bar */}
-        {slide.showProgressBar ? (
-          <div className={styles.progressBar}>
-            {Array.from({length: maxSlides}, (_, index) => (
-              <div key={index + 1} className={styles.progressSegment}>
-                <div 
-                  className={styles.progressSegmentFill}
-                  style={{
-                    width: index + 1 < currentSlide ? '100%' : 
-                           index + 1 === currentSlide ? '100%' : '0%'
-                  }}
-                ></div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className={styles.progressBar}>
-            <div 
-              className={styles.progressFill} 
-              style={{width: `${(currentSlide / maxSlides) * 100}%`}}
-            ></div>
-          </div>
-        )}
+        <div className={styles["slide-top"]}>
+          {/* Exit button */}
+          <button 
+            className={styles.exitButton}
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent slide navigation
+              setCurrentSlide(0); // Go back to home screen
+            }}
+          >
+            ✕
+          </button>
+
+          {/* Progress Bar */}
+          {slide.showProgressBar ? (
+            <div className={styles.progressBar}>
+              {Array.from({length: maxSlides}, (_, index) => (
+                <div key={index + 1} className={styles.progressSegment}>
+                  <div 
+                    className={styles.progressSegmentFill}
+                    style={{
+                      width: index + 1 < currentSlide ? '100%' : 
+                            index + 1 === currentSlide ? '100%' : '0%'
+                    }}
+                  ></div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className={styles.progressBar}>
+              <div 
+                className={styles.progressFill} 
+                style={{width: `${(currentSlide / maxSlides) * 100}%`}}
+              ></div>
+            </div>
+          )}
+        </div>
 
         <h1>{slide.title}</h1>
         {slide.subtitle && <h2 className={styles["subtitle"]}>{slide.subtitle}</h2>}
         {slide.content}
+        {slide.extra && <p>{slide.extra}</p>}
         
-        {/* Navigation indicators */}
+        {/* Navigation indicators at bottom */}
         <div className={styles.slideNavigation}>
           <div className={styles.navLeft}>
             {currentSlide > 1 && <span>← Previous</span>}
-          </div>
-          <div className={styles.slideCounter}>
-            {currentSlide} / {maxSlides}
           </div>
           <div className={styles.navRight}>
             {currentSlide < maxSlides && <span>Next →</span>}
@@ -378,15 +533,23 @@ export default function Home() {
             if (input && input.value.trim()) {
               const enteredName = input.value.trim();
               // Check if name exists in poll data (case-insensitive)
-              const nameExists = pollData.people.some(person => 
+              let nameExists = pollData.people.some(person => 
                 person.toLowerCase() === enteredName.toLowerCase()
               );
+              if (!nameExists) {
+                nameExists = pollData.honorary.some(person => 
+                  person.toLowerCase() === enteredName.toLowerCase()
+                );
+                if (nameExists) {
+                  setHonorarySis(true);
+                }
+              }
               
               if (nameExists) {
                 // Find the correctly capitalized name from the data
                 const correctName = pollData.people.find(person => 
                   person.toLowerCase() === enteredName.toLowerCase()
-                ) || enteredName;
+                ) || capitalize(enteredName);
                 
                 setUserName(correctName);
                 setCurrentSlide(1);

@@ -15,6 +15,12 @@
         "Zainab"
     ],
 
+    "honorary": [
+        "Muhaimin",
+        "Zaynah",
+        "Tabiya"
+    ],
+
     "polls": {
         "TSITP POLL": {
             "Team Belly Stay Away": {
@@ -349,6 +355,69 @@
                     "Safaa",
                     "Zainab",
                     "Aiza"
+                ]
+            }
+        },
+
+        "Favourite type of jewellery": {
+            "Earrings": {
+                "voters": [
+                    "Samiya",
+                    "Salma",
+                    "Aiza",
+                    "Safaa"
+                ]
+            },
+            "Necklace": {
+                "voters": [
+                    "Suweda",
+                    "Madiha"
+                ]
+            },
+            "Jhumkas": {
+                "voters": [
+                    "Anica",
+                    "Aiza",
+                    "Safaa",
+                    "Madiha"
+                ]
+            },
+            "Nose ring or stub thingy": {
+                "voters": []
+            },
+            "Tiara": {
+                "voters": []
+            },
+            "Those dangly things that you wear on your hand": {
+                "voters": []
+            },
+            "Bracelet": {
+                "voters": [
+                    "Suweda",
+                    "Anica"
+                ]
+            },
+            "Ankle Bracelet": {
+                "voters": [
+                    "Madiha"
+                ]
+            },
+            "Dangly things from head": {
+                "voters": [
+                    "Madiha"
+                ]
+            },
+            "Dangly things from ear to nose": {
+                "voters": [
+                    "Madiha"
+                ]
+            },
+            "Some weird freaky thing": {
+                "voters": []
+            },
+            "None (sensory issues)": {
+                "voters": [
+                    "Nour"
                 ]
             }
         }
