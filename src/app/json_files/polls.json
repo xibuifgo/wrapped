@@ -1,0 +1,356 @@
+{
+    "people": [
+        "Anica",
+        "Aiza",
+        "Aliyah",
+        "Bilgesu",
+        "Khadijah",
+        "Madiha",
+        "Nour",
+        "Rameen",
+        "Safaa",
+        "Salma",
+        "Samiya",
+        "Suweda",
+        "Zainab"
+    ],
+
+    "polls": {
+        "TSITP POLL": {
+            "Team Belly Stay Away": {
+                "voters": [
+                    "Anica",
+                    "Aliyah",
+                    "Samiya",
+                    "Suweda",
+                    "Khadijah",
+                    "Madiha",
+                    "Aiza"
+                ]
+            },
+            "Team Conrad": {
+                "voters": [
+                    "Salma",
+                    "Samiya",
+                    "Khadijah",
+                    "Madiha",
+                    "Zainab"
+                ]
+            },
+            "Team Jeremiah": {
+                "voters": [
+                    "Nour"
+                ]
+            }
+        },
+
+        "Best Comfort Movie": {
+            "Princess Diareis": {
+                "voters": [
+                    "Anica",
+                    "Madiha",
+                    "Safaa",
+                    "Suweda",
+                    "Zainab",
+                    "Aiza"
+                ]
+            },
+            "Shrek": {
+                "voters": [
+                    "Nour",
+                    "Samiya",
+                    "Suweda",
+                    "Rameen"
+                ]
+            },
+            "My neighbor Totoro": {
+                "voters": [
+                    "Khadijah",
+                    "Suweda"
+                ]
+            },
+            "Confessions of a Shopaholic": {
+                "voters": [
+                    "Madiha",
+                    "Salma",
+                    "Suweda"
+                ]
+            }
+        },
+
+        "ATLA: What bender would you be?": {
+            "Waterbender": {
+                "voters": [
+                    "Anica",
+                    "Aiza",
+                    "Samiya",
+                    "Aliyah"
+                ]
+            },
+            "Earthbender": {
+                "voters": [
+                    "Nour",
+                    "Suweda"
+                ]
+            },
+            "Firebender": {
+                "voters": [
+                    "Salma",
+                    "Rameen",
+                    "Madiha"
+                ]
+            },
+            "Airbender": {
+                "voters": [
+                    "Safaa"
+                ]
+            },
+            "Metalbender": {
+                "voters": []
+            },
+            "Avatar": {
+                "voters": []
+            }
+        },
+
+        "What is your way to consume a potato": {
+            "Mashed": {
+                "voters": [
+                    "Zainab",
+                    "Aliyah",
+                    "Safaa",
+                    "Salma",
+                    "Nour"
+                ]
+            },
+            "Crisps": {
+                "voters": [
+                    "Salma",
+                    "Nour"
+                ]
+            },
+            "Wedges": {
+                "voters": [
+                    "Nour",
+                    "Samiya",
+                    "Rameen",
+                    "Madiha",
+                    "Suweda",
+                    "Safaa",
+                    "Anica"
+                ]
+            },
+            "Chips": {
+                "voters": [
+                    "Nour",
+                    "Suweda",
+                    "Salma"
+                ]
+            },
+            "Hash Brown": {
+                "voters": [
+                    "Safaa"
+                ]
+            },
+            "Don't like potatoes": {
+                "voters": []
+            }
+        },
+
+        "Best Spiderman": {
+            "Tobey Maguire": {
+                "voters": [
+                    "Nour"
+                ]
+            },
+            "Andrew Garfield": {
+                "voters": [
+                    "Nour",
+                    "Aliyah",
+                    "Safaa",
+                    "Samiya",
+                    "Madiha"
+                ]
+            },
+            "Tom Holland": {
+                "voters": [
+                    "Nour",
+                    "Anica",
+                    "Aiza",
+                    "Salma"
+                ]
+            },
+            "Shameik Moore": {
+                "voters": [
+                    "Aiza",
+                    "Suweda",
+                    "Aliyah",
+                    "Samiya"
+                ]
+            }
+        },
+
+        "Best short-form content": {
+            "TikTok": {
+                "voters": [
+                    "Samiya",
+                    "Zainab",
+                    "Safaa"
+                ]
+            },
+            "Instagram Reels": {
+                "voters": [
+                    "Salma",
+                    "Anica",
+                    "Aiza",
+                    "Suweda",
+                    "Madiha",
+                    "Aliyah"
+                ]
+            },
+            "YouTube Shorts": {
+                "voters": [
+                    "Nour",
+                    "Madiha",
+                    "Aliyah"
+                ]
+            },
+            "Snapchat Spotlight": {
+                "voters": []
+            }
+        },
+
+        "Matcha": {
+            "Tastes like grass": {
+                "voters": [
+                    "Bilgesu",
+                    "Khadijah",
+                    "Suweda",
+                    "Aiza",
+                    "Zainab",
+                    "Safaa"
+                ]
+            },
+            "Can't live without it": {
+                "voters": [
+                    "Nour",
+                    "Aliyah",
+                    "Madiha",
+                    "Rameen",
+                    "Salma",
+                    "Samiya"
+                ]
+            },
+            "Never tried it": {
+                "voters": []
+            }
+        },
+
+        "Where would you rather be rn": {
+            "Beach": {
+                "voters": [
+                    "Anica",
+                    "Salma",
+                    "Zainab",
+                    "Madiha"
+                ]
+            },
+            "Hiking": {
+                "voters": [
+                    "Nour",
+                    "Anica",
+                    "Bilgesu",
+                    "Madiha",
+                    "Suweda"
+                ]
+            },
+            "Theme Park": {
+                "voters": [
+                    "Nour",
+                    "Samiya",
+                    "Aliyah",
+                    "Suweda",
+                    "Safaa"
+                ]
+            },
+            "Camping": {
+                "voters": [
+                    "Nour",
+                    "Anica",
+                    "Suweda",
+                    "Aiza"
+                ]
+            }
+        },
+
+        "What is your favorite rainforest layer?": {
+            "Emergent Layer": {
+                "voters": [
+                    "Safaa"
+                ]
+            },
+            "Canopy Layer": {
+                "voters": [
+                    "Anica",
+                    "Madiha",
+                    "Salma",
+                    "Nour",
+                    "Khadijah"
+                ]
+            },
+            "Undergrowth Layer": {
+                "voters": [
+                    "Suweda"
+                ]
+            },
+            "Forest Floor": {
+                "voters": [
+                    "Samiya",
+                    "Zainab",
+                    "Aiza",
+                    "Aliyah"
+                ]
+            }
+        },
+
+        "Choose the one that calls out to you": {
+            "1": {
+                "voters": [
+                    "Samiya",
+                    "Aliyah"
+                ]
+            },
+            "2": {
+                "voters": [
+                    "Rameen",
+                    "Madiha"
+                ]
+            },
+            "3": {
+                "voters": [
+                    "Safaa",
+                    "Suweda"
+                ]
+            },
+            "4": {
+                "voters": [
+                    "Khadijah",
+                    "Anica"
+                ]
+            },
+            "5": {
+                "voters": [
+                    "Salma"
+                ]
+            },
+            "6": {
+                "voters": [
+                    "Nour",
+                    "Safaa",
+                    "Zainab",
+                    "Aiza"
+                ]
+            }
+        }
+    }
+}

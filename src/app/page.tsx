@@ -1,103 +1,417 @@
-import Image from "next/image";
+type PollsData = {
+  people: string[];
+  polls: {
+    [key: string]: {
+      [key: string]: {
+        voters: string[];
+      };
+    };
+  };
+}
+
+"use client";
+
+import pollData from "./json_files/polls.json";
+import styles from "./index.module.scss";
+import { useState, useEffect } from "react";
+
+function capitalize(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function mostIndecisive(polls: PollsData): string[] {
+  const indecisivePeople: string[] = [];
+  const people = polls.people;  
+  const pollEntries = Object.entries(polls.polls);
+  const pollCount: { [key: string]: number } = {};
+  people.forEach(person => {
+    pollCount[person] = 0;
+  });
+
+  pollEntries.forEach(([pollName, pollDetails]) => {
+    Object.entries(pollDetails).forEach(([option, details]) => {
+      details.voters.forEach(voter => {
+        if (pollCount[voter] !== undefined) {
+          pollCount[voter]++;
+        }
+      });
+    });
+  });
+
+  const maxVotes = Math.max(...Object.values(pollCount));
+  indecisivePeople.push(...Object.keys(pollCount).filter(person => pollCount[person] === maxVotes));
+  return indecisivePeople;
+}
+
+function rankActivity(polls: PollsData): { [key: string]: number } {
+  const people = polls.people;
+  const pollEntries = Object.entries(polls.polls);
+  const pollCount: { [key: string]: number } = {};
+  
+  people.forEach(person => {
+    pollCount[person] = 0;
+  });
+
+  pollEntries.forEach(([pollName, pollDetails]) => {
+    const seenInThisPoll = new Set<string>(); // Track who we've seen in this poll
+    
+    Object.entries(pollDetails).forEach(([option, details]) => {
+      details.voters.forEach(voter => {
+        if (pollCount[voter] !== undefined && !seenInThisPoll.has(voter)) {
+          pollCount[voter]++;
+          seenInThisPoll.add(voter); // Mark this person as seen in this poll
+        }
+      });
+    });
+  });
+
+  return pollCount;
+}
+
+function mostActive(polls: PollsData): string[] {
+  const activityRanking = rankActivity(polls);
+  const maxVotes = Math.max(...Object.values(activityRanking));
+  const activePeople = Object.keys(activityRanking).filter(person => activityRanking[person] === maxVotes);
+  return activePeople;
+}
+
+function countVotes(polls: PollsData, person: string): number {
+  let voteCount = 0;
+  const pollEntries = Object.entries(polls.polls);
+  pollEntries.forEach(([pollName, pollDetails]) => {
+    Object.entries(pollDetails).forEach(([option, details]) => {
+      if (details.voters.includes(person)) {
+        voteCount++;
+      }
+    });
+  });
+  return voteCount;
+}
+
+function countPolls(polls: PollsData, person: string): number {
+  let pollCount = 0;
+  const pollEntries = Object.entries(polls.polls);
+  pollEntries.forEach(([pollName, pollDetails]) => {
+    const options = Object.keys(pollDetails);
+    if (options.some(option => pollDetails[option].voters.includes(person))) {
+      pollCount++;
+    }
+  });
+  return pollCount;
+}
+
+type SlideContent = {
+  title: string;
+  subtitle?: string;
+  content: React.ReactNode;
+  showProgressBar?: boolean;
+};
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [mostIndecisivePeople, setMostIndecisivePeople] = useState<string[]>([]);
+  const [mostActivePeople, setMostActivePeople] = useState<string[]>([]);
+  const [activityRanking, setActivityRanking] = useState<{ [key: string]: number }>({});
+  const [totalPolls, setTotalPolls] = useState<number>(0);
+  const [totalVotes, setTotalVotes] = useState<number>(0);
+  const [mostPopularPerson, setMostPopularPerson] = useState<string>("");
+  const [currentSlide, setCurrentSlide] = useState<number>(0);
+  const [userName, setUserName] = useState<string>("");
+  const [nameNotFound, setNameNotFound] = useState<boolean>(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  // Calculate proper percentile
+  const allScores = Object.values(activityRanking).sort((a, b) => b - a);
+  const userScore = activityRanking[userName] || 0;
+  const userRank = allScores.indexOf(userScore) + 1;
+  const percentile = Math.round((userRank / allScores.length) * 100);
+
+ const slides: SlideContent[] = [
+    // Slide 1: Welcome
+    {
+      title: `Welcome ${userName}!`,
+      subtitle: "Your 2025 STEMM Sisters Poll WRAPPED",
+      content: <p>Let's see how your group stacked up this year</p>,
+      showProgressBar: true
+    },
+    // Slide 2: Most Indecisive
+    {
+      title: "🤔 Most Indecisive Person",
+      content: (
+        <div>
+          <p>This person could barely ever choose one option:</p>
+          {mostIndecisivePeople.length > 0 ? (
+            mostIndecisivePeople.map((person, index) => (
+              <p key={index}><strong>{person}</strong></p>
+            ))
+          ) : (
+            <p>Loading...</p>
+          )}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      ),
+      showProgressBar: true
+    },
+    // Slide 3: Most Active
+    {
+      title: "⭐ Most Active People",
+      content: (
+        <div>
+          <p>These people participated in the most polls:</p>
+          <ol type="1">
+            {mostActivePeople.length > 0 ? (
+              mostActivePeople.map((person, index) => (
+                <li key={index}><strong>{person}</strong></li>
+              ))
+            ) : (
+              <p>Loading...</p>
+            )}
+          </ol>
+        </div>
+      ),
+      showProgressBar: true
+    },
+    // Slide 4: Statistics
+    {
+      title: "📊 Poll Statistics",
+      content: (
+        <div className={styles.statsSlide}>
+          <div className={styles.statItem}>
+            <p><strong>Total Polls:</strong> {totalPolls}</p>
+          </div>
+          <div className={styles.statItem}>
+            <p><strong>Total Votes:</strong> {totalVotes}</p>
+          </div>
+          <div className={styles.statItem}>
+            <p><strong>Average Votes per Poll:</strong> {Math.round((totalVotes / totalPolls) * 10) / 10 || 0}</p>
+          </div>
+        </div>
+      ),
+      showProgressBar: true
+    },
+
+    {
+      title: "🤝 Most Evenly Split Poll",
+      content: (
+        <div>
+          <ul>
+            <p><b>Zainab</b></p>
+          </ul>
+          <p>Matcha: Love or Hate?</p>
+        </div>
+      ),
+      showProgressBar: true
+    },
+
+    {
+      title: "🔎 Now about you!",
+      content: (
+        <div>
+          <p>Let's see how you did, {userName}!</p>
+        </div>
+      ),
+      showProgressBar: true
+    },
+
+    {
+      title: "🗳️ You Voted...",
+      content: (
+        <div>
+          <ul>
+            <p>{countVotes(pollData as PollsData, userName)} times!</p>
+          </ul>
+          <p>You are in the top {percentile || 0}% of voters</p>
+        </div>
+      ),
+      showProgressBar: true
+    },
+
+    {
+      title: "📋 You Voted In...",
+      content: (
+        <div>
+          <ul>
+            <p>{countPolls(pollData as PollsData, userName)} polls</p>
+          </ul>
+          <p>That means on average, you picked {Math.round((countVotes(pollData as PollsData, userName) / countPolls(pollData as PollsData, userName)) * 10) / 10 || 0} options per poll</p>
+        </div>
+      ),
+      showProgressBar: true
+    },
+
+    // Next slides: Best friend (person you agreed with the most)
+    // Arch nemesis (person you disagreed with the most)
+
+    {
+      title: "💕 Thank You!",
+      content: (
+        <div>
+          <p>Thanks for participating in the Sisters Poll!</p>
+          <p>Hope you enjoyed your wrapped experience! 🎉</p>
+        </div>
+      ),
+      showProgressBar: true // Use old progress bar for final slide
+    }
+  ];
+
+  const maxSlides = slides.length;
+
+  const handleSlideClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const clickX = event.clientX - rect.left;
+    const middleX = rect.width / 2;
+
+    if (clickX > middleX) {
+      // Clicked on right side - next slide
+      if (currentSlide < maxSlides) {
+        setCurrentSlide(currentSlide + 1);
+      }
+    } else {
+      // Clicked on left side - previous slide
+      if (currentSlide > 1) {
+        setCurrentSlide(currentSlide - 1);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const indecisivePeople = mostIndecisive(pollData as PollsData);
+    setMostIndecisivePeople(indecisivePeople);
+
+    // Calculate activity ranking first
+    const ranking = rankActivity(pollData as PollsData);
+    setActivityRanking(ranking);
+
+    // Then get most active people from the ranking
+    const activePeople = mostActive(pollData as PollsData);
+    setMostActivePeople(activePeople);
+    
+    // Calculate total polls
+    const pollCount = Object.keys(pollData.polls).length;
+    setTotalPolls(pollCount);
+    
+    // Calculate total votes and most popular person
+    const voteCount: { [key: string]: number } = {};
+    let totalVoteCount = 0;
+    
+    pollData.people.forEach(person => {
+      voteCount[person] = 0;
+    });
+    
+    Object.entries(pollData.polls).forEach(([pollName, pollDetails]) => {
+      Object.entries(pollDetails).forEach(([option, details]) => {
+        details.voters.forEach(voter => {
+          if (voteCount[voter] !== undefined) {
+            voteCount[voter]++;
+            totalVoteCount++;
+          }
+        });
+      });
+    });
+    
+    setTotalVotes(totalVoteCount);
+  }, []);
+
+  // Reusable slide component
+  const renderSlide = (slideIndex: number) => {
+    const slide = slides[slideIndex - 1];
+    if (!slide) return null;
+
+    return (
+      <div className={`${styles.slide} ${slideIndex === 1 ? styles.welcomeSlide : ''}`} onClick={handleSlideClick}>
+        {/* Progress Bar */}
+        {slide.showProgressBar ? (
+          <div className={styles.progressBar}>
+            {Array.from({length: maxSlides}, (_, index) => (
+              <div key={index + 1} className={styles.progressSegment}>
+                <div 
+                  className={styles.progressSegmentFill}
+                  style={{
+                    width: index + 1 < currentSlide ? '100%' : 
+                           index + 1 === currentSlide ? '100%' : '0%'
+                  }}
+                ></div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className={styles.progressBar}>
+            <div 
+              className={styles.progressFill} 
+              style={{width: `${(currentSlide / maxSlides) * 100}%`}}
+            ></div>
+          </div>
+        )}
+
+        <h1>{slide.title}</h1>
+        {slide.subtitle && <h2 className={styles["subtitle"]}>{slide.subtitle}</h2>}
+        {slide.content}
+        
+        {/* Navigation indicators */}
+        <div className={styles.slideNavigation}>
+          <div className={styles.navLeft}>
+            {currentSlide > 1 && <span>← Previous</span>}
+          </div>
+          <div className={styles.slideCounter}>
+            {currentSlide} / {maxSlides}
+          </div>
+          <div className={styles.navRight}>
+            {currentSlide < maxSlides && <span>Next →</span>}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className={styles.main}>
+      <div className={styles["logo-div"]}></div>
+      <div className={styles["name-title"]}>
+        <h1>Enter your name to see your 2025 STEMM Sisters Poll Wrapped!</h1>
+        <input 
+          type="text" 
+          placeholder="Enter your name" 
+          className={styles["name-input"]} 
+          id="name-input"
+          onChange={() => setNameNotFound(false)} // Clear error when user types
+        />
+        <button
+          onClick={() => {
+            const input = document.getElementById("name-input") as HTMLInputElement | null;
+            if (input && input.value.trim()) {
+              const enteredName = input.value.trim();
+              // Check if name exists in poll data (case-insensitive)
+              const nameExists = pollData.people.some(person => 
+                person.toLowerCase() === enteredName.toLowerCase()
+              );
+              
+              if (nameExists) {
+                // Find the correctly capitalized name from the data
+                const correctName = pollData.people.find(person => 
+                  person.toLowerCase() === enteredName.toLowerCase()
+                ) || enteredName;
+                
+                setUserName(correctName);
+                setCurrentSlide(1);
+                setNameNotFound(false);
+              } else {
+                setNameNotFound(true);
+                setUserName("");
+                setCurrentSlide(0);
+              }
+            }
+          }}
+          className={styles["go-button"]}
+        >Go!</button>
+        
+        {/* Name not found error message */}
+        {nameNotFound && (
+          <div className={styles["error-message"]}>
+            <p>Name not found! Please check your spelling or try a different name.</p>
+          </div>
+        )}
+      </div>
+
+      {/* Render current slide */}
+      {currentSlide > 0 && currentSlide <= maxSlides && renderSlide(currentSlide)}
+
     </div>
   );
 }

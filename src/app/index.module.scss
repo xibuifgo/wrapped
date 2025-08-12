@@ -1,0 +1,403 @@
+.main {
+    background: linear-gradient(135deg, #fce7f3, #f3e8ff);
+}
+
+.statsContainer {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    padding: 40px 20px;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.statCard {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(219, 39, 119, 0.2);
+    min-width: 250px;
+    width: calc(33.333% - 20px);
+    min-height: 160px;
+    flex: 1 1 250px;
+    max-width: 350px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 2px solid rgba(236, 72, 153, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.statCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(219, 39, 119, 0.3);
+    border-color: rgba(236, 72, 153, 0.6);
+}
+
+.statNumber {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: #db2777;
+    margin-bottom: 10px;
+    line-height: 1;
+}
+
+.statText {
+    font-size: 1.1rem;
+    color: #be185d;
+    font-weight: 500;
+    word-wrap: break-word;
+    hyphens: auto;
+    line-height: 1.4;
+    margin-top: 10px;
+}
+
+.name-title {
+    text-align: center;
+    padding: 60px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.name-title h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #be185d;
+    margin: 0 0 40px 0;
+    text-shadow: 0 2px 4px rgba(190, 24, 93, 0.3);
+    letter-spacing: -1px;
+    line-height: 1.2;
+}
+
+.name-input {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px 25px;
+    font-size: 1.2rem;
+    border: 2px solid rgba(236, 72, 153, 0.4);
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #be185d;
+    text-align: center;
+    margin: 0 0 30px 0;
+    transition: all 0.3s ease;
+    outline: none;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(219, 39, 119, 0.1);
+}
+
+.name-input::placeholder {
+    color: rgba(190, 24, 93, 0.6);
+    font-weight: 500;
+}
+
+.name-input:focus {
+    border-color: #db2777;
+    box-shadow: 0 4px 20px rgba(219, 39, 119, 0.3);
+    background: rgba(255, 255, 255, 1);
+    transform: scale(1.02);
+}
+
+.go-button {
+    padding: 18px 40px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(45deg, #db2777, #ec4899);
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(219, 39, 119, 0.3);
+    min-width: 120px;
+}
+
+.go-button:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(219, 39, 119, 0.4);
+    background: linear-gradient(45deg, #ec4899, #f472b6);
+}
+
+.go-button:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.error-message {
+    margin-top: 15px;
+    padding: 12px 20px;
+    background: rgba(239, 68, 68, 0.1);
+    border: 2px solid rgba(239, 68, 68, 0.3);
+    border-radius: 10px;
+    color: #dc2626;
+    font-weight: 500;
+    text-align: center;
+    animation: fadeIn 0.3s ease-in;
+}
+
+.error-message p {
+    margin: 0;
+    font-size: 1rem;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.poll {
+    background-color: pink;
+    padding: 20px;
+    color: purple;
+}
+
+.indecisiveSection {
+    background-color: lightblue;
+    padding: 20px;
+    color: darkblue;
+}
+@media screen and (max-width: 1000px) {
+    .logo-div {
+        height: 300px !important;
+    }
+    
+    .statsContainer {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .statCard {
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+}
+.logo-div {
+    background-image: url('/wrapped_logo.png');
+    width: 100%;
+    height: 500px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-bottom: 1px solid gray;
+}
+
+.slide {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    background: linear-gradient(135deg, #fce7f3, #f3e8ff, #fdf2f8);
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.slideNavigation {
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 50px;
+    color: rgba(190, 24, 93, 0.7);
+    font-size: 0.9rem;
+}
+
+.navLeft, .navRight {
+    flex: 1;
+    font-weight: 500;
+}
+
+.navLeft {
+    text-align: left;
+}
+
+.navRight {
+    text-align: right;
+}
+
+.slideCounter {
+    flex: 1;
+    text-align: center;
+    font-weight: 600;
+    color: #be185d;
+}
+
+.slide:hover .slideNavigation {
+    color: #be185d;
+}
+
+.slide ol {
+    list-style-type: decimal;
+    list-style-position: outside;
+    text-align: left;
+    margin: 30px 0;
+    padding-left: 30px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    padding: 30px 50px;
+    box-shadow: 0 8px 25px rgba(219, 39, 119, 0.15);
+    border: 2px solid rgba(236, 72, 153, 0.2);
+    max-width: 600px;
+}
+
+.slide ul {
+    list-style-type: disc;
+    list-style-position: outside;
+    text-align: left;
+    margin: 30px 0;
+    padding-left: 30px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    padding: 30px 50px;
+    box-shadow: 0 8px 25px rgba(219, 39, 119, 0.15);
+    border: 2px solid rgba(236, 72, 153, 0.2);
+    max-width: 600px;
+}
+
+.slide li {
+    margin: 15px 0;
+    font-size: 1.4rem;
+    color: #be185d;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.slide h1 {
+    color: #be185d;
+    font-size: 3rem;
+    margin-bottom: 30px;
+    font-weight: 900;
+    text-align: center;
+    text-shadow: 0 2px 4px rgba(190, 24, 93, 0.3);
+    letter-spacing: -1px;
+}
+
+.slide p {
+    color: #be185d;
+    font-size: 1.5rem;
+    margin: 20px 0;
+    text-align: center;
+    font-weight: 500;
+    max-width: 700px;
+    line-height: 1.6;
+}
+
+.statsSlide {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    align-items: center;
+}
+
+.statItem {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    padding: 25px 40px;
+    box-shadow: 0 8px 25px rgba(219, 39, 119, 0.15);
+    border: 2px solid rgba(236, 72, 153, 0.2);
+    min-width: 300px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.statItem:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(219, 39, 119, 0.25);
+}
+
+.statItem p {
+    margin: 10px 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.welcomeSlide h1 {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+}
+
+.welcomeSlide h1:first-child {
+    font-size: 2.5rem;
+    color: #ec4899;
+    margin-bottom: 30px;
+}
+
+.progressBar {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 400px;
+    height: 4px;
+    display: flex;
+    gap: 4px;
+    z-index: 1001;
+}
+
+.progressSegment {
+    flex: 1;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progressSegmentFill {
+    height: 100%;
+    background: linear-gradient(45deg, #db2777, #ec4899, #f472b6);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 8px rgba(219, 39, 119, 0.5);
+}
+
+.progressDots {
+    position: absolute;
+    top: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 1001;
+}
+
+.progressDot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    transition: all 0.3s ease;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+}
+
+.progressDot.active {
+    background: #ec4899;
+    border-color: #ec4899;
+    box-shadow: 0 0 8px rgba(236, 72, 153, 0.6);
+    transform: scale(1.2);
+}
+
+.progressDot.completed {
+    background: #db2777;
+    border-color: #db2777;
+}
