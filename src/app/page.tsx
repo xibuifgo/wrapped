@@ -164,9 +164,6 @@ function archNemesis(polls: PollsData, person: string): { [key: string]: number 
       }
     });
 
-    console.log("[ARCH NEMESIS] Poll:", pollName, "Person voted:", personVotedInThisPoll);
-    console.log("[ARCH NEMESIS] Current poll disagreements:", current_poll_count);
-
     // Only count disagreements if the person voted in this poll
     if (personVotedInThisPoll) {
       ppl.forEach(p => {
@@ -175,10 +172,82 @@ function archNemesis(polls: PollsData, person: string): { [key: string]: number 
     }
   });
 
-  console.log("[ARCH NEMESIS] Final disagree count:", disagree_count);
-
   return orderDict(disagree_count, "d");
 }
+
+function trendsetter(polls: PollsData): string {
+  const ppl = polls.people;
+  let most_votes = 0;
+  let most_votes_option = "";
+
+  const trend_count: { [key: string]: number } = {};
+  const pollEntries = Object.entries(polls.polls);
+
+  ppl.forEach(person => {
+    trend_count[person] = 0;
+  });
+
+  pollEntries.forEach(([pollName, pollDetails]) => {
+    Object.entries(pollDetails).forEach(([option, details]) => {
+      const voteCount = details.voters.length;
+      if (voteCount > most_votes) {
+        most_votes = voteCount;
+        most_votes_option = option;
+      }
+    });
+
+    if (most_votes_option && pollDetails[most_votes_option] && pollDetails[most_votes_option].voters) {
+      pollDetails[most_votes_option].voters.forEach(voter => {
+        if (trend_count[voter] !== undefined) {
+          trend_count[voter]++;
+        }
+      });
+    }
+  });
+
+  const ordered = orderDict(trend_count, "d");
+
+  return Object.keys(ordered)[0]; // Return the person with the most trend votes
+}
+
+function rebel(polls: PollsData): string {
+  const ppl = polls.people;
+  let least_votes = 100;
+  let least_votes_option = "";
+
+  const rebel_count: { [key: string]: number } = {};
+  const pollEntries = Object.entries(polls.polls);
+
+  ppl.forEach(person => {
+    rebel_count[person] = 0;
+  });
+
+  Object.entries(polls.polls).forEach(([pollName, pollDetails]) => {
+    Object.entries(pollDetails).forEach(([option, details]) => {
+      const vote_count = details.voters.length;
+      if (vote_count < least_votes) {
+        least_votes = vote_count;
+        least_votes_option = option;
+      }
+    });
+
+    if (least_votes_option && pollDetails[least_votes_option] && pollDetails[least_votes_option].voters) {
+      pollDetails[least_votes_option].voters.forEach(voter => {
+        if (rebel_count[voter] !== undefined) {
+          rebel_count[voter]++;
+        }
+      });
+    }
+
+  });
+
+  const ordered = orderDict(rebel_count, "d");
+
+  return Object.keys(ordered)[0]; // Return the person with the most rebel votes
+
+}
+
+
 
 type SlideContent = {
   title: string;
@@ -212,7 +281,7 @@ export default function Home() {
   const enemy = Object.keys(disagreement)[0];
 
  const slides: SlideContent[] = [
-    // Slide 1: Welcome
+    // Welcome
     {
       title: honorarySis ? `WE MISS YOU ${userName.toUpperCase()}!` : `Welcome ${userName}!`,
       subtitle: honorarySis
@@ -227,7 +296,7 @@ export default function Home() {
       ),
       showProgressBar: true
     },
-    // Slide 2: Most Indecisive
+    // Most Indecisive
     {
       title: "🤔 Most Indecisive Person",
       content: (
@@ -244,7 +313,7 @@ export default function Home() {
       ),
       showProgressBar: true
     },
-    // Slide 3: Most Active
+    // Most Active
     {
       title: "⭐ Most Active People",
       content: (
@@ -263,7 +332,33 @@ export default function Home() {
       ),
       showProgressBar: true
     },
-    // Slide 4: Statistics
+    //Trendsetter Slide 
+    {
+      title: "🌟 Trendsetter",
+      content: (
+        <div>
+          <p>The trendsetter is the person whose choice ends up winning most often:</p>
+          <ul>
+            <li><strong>{trendsetter(pollData as PollsData)}</strong></li>
+          </ul>
+        </div>
+      ),
+      showProgressBar: true
+    },
+    // Rebel Slide 
+    {
+      title: "👹 Rebel",
+      content: (
+        <div>
+          <p>The rebel is the person who consistently votes against the majority: </p>
+          <ul>
+            <li><strong>{rebel(pollData as PollsData)}</strong></li>
+          </ul>
+        </div>
+      ),
+      showProgressBar: true
+    },
+    // Statistics
     {
       title: "📊 Poll Statistics",
       content: (
@@ -281,7 +376,7 @@ export default function Home() {
       ),
       showProgressBar: true
     },
-    // Slide 5: Most Evenly Split
+    // Most Evenly Split
     {
       title: "🤝 Most Evenly Split Poll",
       content: (
@@ -294,7 +389,7 @@ export default function Home() {
       ),
       showProgressBar: true
     },
-    // Slide 6: Avatar
+    // Avatar
     {
       title: "NO ONE WANTS TO BE THE AVATAR",
       subtitle: "Credit: Aiza and her ATLA poll",
@@ -307,7 +402,7 @@ export default function Home() {
       ),
       showProgressBar: true
     },
-    // Slide 7: About you
+    // About you
     {
       title: "🔎 Now about you!",
       content: (
@@ -317,7 +412,7 @@ export default function Home() {
       ),
       showProgressBar: true
     },
-    // Slide 8: You Voted...
+    // You Voted...
     {
       title: "🗳️ You Voted...",
       content: (
@@ -330,7 +425,7 @@ export default function Home() {
       ),
       showProgressBar: true
     },
-    // Slide 9: You Voted In...
+    // You Voted In...
     {
       title: "📋 You Voted In...",
       content: (
@@ -343,7 +438,7 @@ export default function Home() {
       ),
       showProgressBar: true
     },
-    // Slide 10: Best friend
+    // Best friend
     {
       title: "👯‍♀️ Best Friend",
       content: (
@@ -357,7 +452,7 @@ export default function Home() {
       extra: `You two agreed ${agreement[bff]} times!`,
       showProgressBar: true
     },
-    // Slide 11: Arch Nemesis
+    // Arch Nemesis
     {
       title: "⚔️ Your Arch Nemesis",
       content: (
@@ -371,7 +466,7 @@ export default function Home() {
       extra: `You two disagreed ${disagreement[enemy]} times!`,
       showProgressBar: true
     },
-    // Slide 12: Thank You
+    // Thank You
     {
       title: "💕 Thank You!",
       content: (

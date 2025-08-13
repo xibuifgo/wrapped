@@ -365,7 +365,9 @@
                     "Samiya",
                     "Salma",
                     "Aiza",
-                    "Safaa"
+                    "Safaa",
+                    "Khadijah",
+                    "Zainab"
                 ]
             },
             "Necklace": {
@@ -379,11 +381,15 @@
                     "Anica",
                     "Aiza",
                     "Safaa",
-                    "Madiha"
+                    "Madiha",
+                    "Zainab",
+                    "Rameen"
                 ]
             },
             "Nose ring or stub thingy": {
-                "voters": []
+                "voters": [
+                    "Rameen"
+                ]
             },
             "Tiara": {
                 "voters": []
@@ -394,7 +400,8 @@
             "Bracelet": {
                 "voters": [
                     "Suweda",
-                    "Anica"
+                    "Anica",
+                    "Zainab"
                 ]
             },
             "Ankle Bracelet": {
@@ -409,7 +416,8 @@
             },
             "Dangly things from ear to nose": {
                 "voters": [
-                    "Madiha"
+                    "Madiha",
+                    "Khadijah"
                 ]
             },
             "Some weird freaky thing": {
