@@ -15,6 +15,9 @@ import pollData from "./json_files/polls.json";
 import styles from "./index.module.scss";
 import { useState, useEffect } from "react";
 
+// helper to set CSS custom property --i safely for JSX/TS
+const cssVar = (i: number) => ({ ['--i']: i } as unknown as React.CSSProperties);
+
 function capitalize(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
@@ -72,7 +75,7 @@ function rankActivity(polls: PollsData): { [key: string]: number } {
     });
   });
 
-  return pollCount;
+  return orderDict(pollCount, "d");
 }
 
 function mostActive(polls: PollsData): string[] {
@@ -247,7 +250,37 @@ function rebel(polls: PollsData): string {
 
 }
 
+function allRounder(polls: PollsData): string {
+  const ppl = polls.people;
+  const agreement: { [key: string]: number } = {};
 
+  ppl.forEach(person => {
+    agreement[person] = 0;
+  });
+
+  // For each person, count how many unique people they agreed with across all polls
+  ppl.forEach(person => {
+    const agreedWith = new Set<string>();
+
+    Object.values(polls.polls).forEach(pollDetails => {
+      Object.values(pollDetails).forEach(optionDetails => {
+        if (optionDetails.voters.includes(person)) {
+          optionDetails.voters.forEach(voter => {
+            if (voter !== person) {
+              agreedWith.add(voter);
+            }
+          });
+        }
+      });
+    });
+
+    agreement[person] = agreedWith.size;
+  });
+
+  // Return the person who agreed with the most unique people
+  const ordered = orderDict(agreement, "d");
+  return Object.keys(ordered)[1] || "";
+}
 
 type SlideContent = {
   title: string;
@@ -269,10 +302,16 @@ export default function Home() {
   const [honorarySis, setHonorarySis] = useState<boolean>(false);
 
   // Calculate proper percentile
-  const allScores = Object.values(activityRanking).sort((a, b) => b - a);
+  const allScores = rankActivity(pollData as PollsData);
   const userScore = activityRanking[userName] || 0;
-  const userRank = allScores.indexOf(userScore) + 1;
-  const percentile = Math.round((userRank / allScores.length) * 100);
+
+  const ppl = Object.keys(allScores)
+  const userRank = ppl.indexOf(userName) + 1;
+  const percentile = Math.round((userRank / ppl.length) * 100);
+
+  // const scoresArray = Object.values(allScores);
+  // const userRank = scoresArray.indexOf(userScore) + 1;
+  // const percentile = Math.round((userRank / scoresArray.length) * 100);
 
   // Random stuff
   const agreement = bestFriend(pollData as PollsData, userName);
@@ -301,14 +340,16 @@ export default function Home() {
       title: "🤔 Most Indecisive Person",
       content: (
         <div>
-          <p>This person could barely ever choose one option:</p>
-          {mostIndecisivePeople.length > 0 ? (
-            mostIndecisivePeople.map((person, index) => (
-              <p key={index}><strong>{person}</strong></p>
-            ))
-          ) : (
-            <p>Loading...</p>
-          )}
+          <p className={styles["description"]}>This person could barely ever choose one option:</p>
+          <ul className={styles["indecisive-result"]}>
+            {mostIndecisivePeople.length > 0 ? (
+              mostIndecisivePeople.map((person, index) => (
+                <li key={index} style={cssVar(index)}><strong>{person}</strong></li>
+              ))
+            ) : (
+              <li>Loading...</li>
+            )}
+          </ul>
         </div>
       ),
       showProgressBar: true
@@ -318,14 +359,14 @@ export default function Home() {
       title: "⭐ Most Active People",
       content: (
         <div>
-          <p>These people participated in the most polls:</p>
+          <p className={styles.description}>These people participated in the most polls:</p>
           <ol type="1">
             {mostActivePeople.length > 0 ? (
               mostActivePeople.map((person, index) => (
-                <li key={index}><strong>{person}</strong></li>
+                <li key={index} style={cssVar(index)}><strong>{person}</strong></li>
               ))
             ) : (
-              <p>Loading...</p>
+              <li>Loading...</li>
             )}
           </ol>
         </div>
@@ -337,9 +378,9 @@ export default function Home() {
       title: "🌟 Trendsetter",
       content: (
         <div>
-          <p>The trendsetter is the person whose choice ends up winning most often:</p>
+          <p className={styles.description}>The trendsetter is the person whose choice ends up winning most often:</p>
           <ul>
-            <li><strong>{trendsetter(pollData as PollsData)}</strong></li>
+            <li style={cssVar(0)}><strong>{trendsetter(pollData as PollsData)}</strong></li>
           </ul>
         </div>
       ),
@@ -350,9 +391,138 @@ export default function Home() {
       title: "👹 Rebel",
       content: (
         <div>
-          <p>The rebel is the person who consistently votes against the majority: </p>
+          <p className={styles.description}>The rebel is the person who consistently votes against the majority: </p>
           <ul>
-            <li><strong>{rebel(pollData as PollsData)}</strong></li>
+            <li style={cssVar(0)}><strong>{rebel(pollData as PollsData)}</strong></li>
+          </ul>
+        </div>
+      ),
+      showProgressBar: true
+    },
+    //All Rounded
+    {
+      title: "🏆 The All-Rounder",
+      content: (
+        <div>
+          <p className={styles.description}>The all-rounder is the person who agrees with the most people across all polls:</p>
+          <ul>
+            <li style={cssVar(0)}><strong>{allRounder(pollData as PollsData)}</strong></li>
+          </ul>
+        </div>
+      ),
+      showProgressBar: true
+    },
+    {
+      title: "🥔 Yummiest Poll",
+      content: (
+        <ul>
+          <li>Salma</li>
+        </ul>
+      ),
+      extra: "You got all of comm excited over potatoes",
+      showProgressBar: true
+    },
+    // Most Evenly Split
+    {
+      title: "🤝 Most Evenly Split Poll",
+      content: (
+        <div>
+          <ul>
+            <li style={cssVar(0)}><b>Zainab</b></li>
+          </ul>
+          <p>Matcha: Love or Hate?</p>
+        </div>
+      ),
+      showProgressBar: true
+    },
+    // Most Controversial
+    {
+      title: "🗣️ Most controversial poll",
+      content: (
+        <div>
+          <p className={styles.description}>This person's poll caused the biggest argument on the groupchat:</p>
+          <ul>
+            <li>Samiya</li>
+          </ul>
+        </div>
+      ),
+      showProgressBar: true
+    },
+    // Loves to Draw 
+    {
+      title: "✏️ Loves to Draw",
+      content: (
+        <div>
+          <p className={styles.description}>This person picked tied options every time:</p>
+          <ul>
+            <li>Bilgesu</li>
+          </ul>
+        </div>
+      ),
+      showProgressBar: true
+    },
+    // Funniest Poll 
+    {
+      title: "😂 Funniest Poll",
+      content: (
+        <div>
+          <p className={styles.description}>This person's poll started the funniest convo:</p>
+          <ul>
+            <li>Aliyah</li>
+          </ul>
+        </div>
+      ),
+      extra: "There's no way some of you actually use LinkedIn Reels",
+      showProgressBar: true
+    },
+    {
+      title: "⁉️ Hardest Poll",
+      content: (
+        <div>
+          <p className={styles.description}>This person's poll was the hardest to answer (also the most cultured):</p>
+          <ul>
+            <li>Safaa</li>
+          </ul>
+        </div>
+      ),
+      extra: "You almost made Nour watch all the Spider-Man movies",
+      showProgressBar: true
+    },
+    // Most Innovative
+    {
+      title: "🎨 Most innovative poll",
+      content: (
+        <div>
+          <p className={styles.description}>This person changed the way polls were made:</p>
+          <ul>
+            <li>Rameen</li>
+          </ul>
+        </div>
+      ),
+      extra: "You introduced pictures to the game!",
+      showProgressBar: true
+    },
+    // Most catastrophic
+    {
+      title: "😼 Most CAT-astrophic Poll",
+      content: (
+        <div>
+          <p className={styles.description}>This person's poll a sticker war before it was even released:</p>
+          <ul>
+            <li>Khadeja</li>
+          </ul>
+        </div>
+      ),
+      extra: "Even the admins had to get involved",
+      showProgressBar: true
+    },
+    {
+      title: "🥹 Most Wholesome Poll",
+      content: (
+        <div>
+          {/* <p className={styles.description}>This person's poll started the funniest convo:</p> */}
+          <ul>
+            <li>Suweda</li>
           </ul>
         </div>
       ),
@@ -363,41 +533,15 @@ export default function Home() {
       title: "📊 Poll Statistics",
       content: (
         <div className={styles.statsSlide}>
-          <div className={styles.statItem}>
+          <div className={`${styles.statItem} ${styles.statItem1}`}>
             <p><strong>Total Polls:</strong> {totalPolls}</p>
           </div>
-          <div className={styles.statItem}>
+          <div className={`${styles.statItem} ${styles.statItem2}`}>
             <p><strong>Total Votes:</strong> {totalVotes}</p>
           </div>
-          <div className={styles.statItem}>
+          <div className={`${styles.statItem} ${styles.statItem3}`}>
             <p><strong>Average Votes per Poll:</strong> {Math.round((totalVotes / totalPolls) * 10) / 10 || 0}</p>
           </div>
-        </div>
-      ),
-      showProgressBar: true
-    },
-    // Most Evenly Split
-    {
-      title: "🤝 Most Evenly Split Poll",
-      content: (
-        <div>
-          <ul>
-            <p><b>Zainab</b></p>
-          </ul>
-          <p>Matcha: Love or Hate?</p>
-        </div>
-      ),
-      showProgressBar: true
-    },
-    // Avatar
-    {
-      title: "NO ONE WANTS TO BE THE AVATAR",
-      subtitle: "Credit: Aiza and her ATLA poll",
-      content: (
-        <div>
-          <ul>
-            <p>We have a comm of scaredy cats. Or are we just "a humble lot" as Salma said?</p>
-          </ul>
         </div>
       ),
       showProgressBar: true
@@ -418,7 +562,7 @@ export default function Home() {
       content: (
         <div>
           <ul>
-            <p>{countVotes(pollData as PollsData, userName)} times!</p>
+            <li style={cssVar(0)}>{countVotes(pollData as PollsData, userName)} times!</li>
           </ul>
           <p>You are in the top {percentile || 0}% of voters</p>
         </div>
@@ -431,9 +575,9 @@ export default function Home() {
       content: (
         <div>
           <ul>
-            <p>{countPolls(pollData as PollsData, userName)} polls</p>
+            <li style={cssVar(0)}>{countPolls(pollData as PollsData, userName)} polls</li>
           </ul>
-          <p>That means on average, you picked {Math.round((countVotes(pollData as PollsData, userName) / countPolls(pollData as PollsData, userName)) * 10) / 10 || 0} options per poll</p>
+          <p className={styles.lead}>That means on average, you picked {Math.round((countVotes(pollData as PollsData, userName) / countPolls(pollData as PollsData, userName)) * 10) / 10 || 0} options per poll</p>
         </div>
       ),
       showProgressBar: true
@@ -443,9 +587,9 @@ export default function Home() {
       title: "👯‍♀️ Best Friend",
       content: (
         <div>
-          <p>Your best friend is the person you agreed with the most:</p>
+          <p className={styles.lead}>Your best friend is the person you agreed with the most:</p>
           <ul>
-            <p>{bff}</p>
+            <li style={cssVar(0)}>{bff}</li>
           </ul>
         </div>
       ),
@@ -457,9 +601,9 @@ export default function Home() {
       title: "⚔️ Your Arch Nemesis",
       content: (
         <div>
-          <p>Your arch nemesis is the person you disagreed with the most:</p>
+          <p className={styles.lead}>Your arch nemesis is the person you disagreed with the most:</p>
           <ul>
-            <p>{enemy}</p>
+            <li style={cssVar(0)}>{enemy}</li>
           </ul>
         </div>
       ),
@@ -554,7 +698,7 @@ export default function Home() {
     if (!slide) return null;
 
     return (
-      <div className={`${styles.slide} ${slideIndex === 1 ? styles.welcomeSlide : ''}`} onClick={handleSlideClick}>
+      <div key={slideIndex} className={`${styles.slide} ${styles[`slide${slideIndex}`]} ${slideIndex === 1 ? styles.welcomeSlide : ''}`} onClick={handleSlideClick}>
         <div className={styles["slide-top"]}>
           {/* Exit button */}
           <button 
@@ -592,10 +736,12 @@ export default function Home() {
           )}
         </div>
 
-        <h1>{slide.title}</h1>
-        {slide.subtitle && <h2 className={styles["subtitle"]}>{slide.subtitle}</h2>}
-        {slide.content}
-        {slide.extra && <p>{slide.extra}</p>}
+        <h1 className={styles.slideTitle}>{slide.title}</h1>
+        {slide.subtitle && <h2 className={`${styles["subtitle"]} ${styles.slideSubtitle}`}>{slide.subtitle}</h2>}
+        <div className={styles.slideContent}>
+          {slide.content}
+          {slide.extra && <p>{slide.extra}</p>}
+        </div>
         
         {/* Navigation indicators at bottom */}
         <div className={styles.slideNavigation}>
@@ -673,3 +819,4 @@ export default function Home() {
     </div>
   );
 }
+
