@@ -1,0 +1,168 @@
+{
+    "item_prices": {
+        "Deck of Cards": 3,
+        "Lock picking kit": 7,
+        "Balloons": 2,
+        "Picnic Mat": 10,
+        "Uno": 5,
+        "Coloring Book + Crayons": 8,
+        "Lip Gloss": 6,
+        "Camera": 12,
+        "Mirror": 6,
+        "German/English Dictionary": 5,
+        "STEMM Sticker": 1,
+        "GitHub Account": 0
+    },
+
+    "paths": [
+        "Cabin",
+        "Forest",
+        "Rock Climbing Wall"
+    ],
+
+    "adventures": {
+        "Anica": {
+            "items": [
+                "Deck of Cards",
+                "Lock picking kit",
+                "Balloons"
+            ],
+            "path": 1,
+            "guess": 88,
+            "actions": [
+                "Balloon Animals"
+            ],
+            "slang": "Cheeky Nandos"
+        },
+
+        "Aiza": {
+            "items": [
+                "Deck of Cards",
+                "Lock picking kit",
+                "Balloons",
+                "German/English Dictionary"
+            ],
+            "path": 1,
+            "guess": 16,
+            "actions": [
+                "Cards",
+                "Investing Advice",
+                "Balloon Animals"
+            ],
+            "slang": "Butters"
+        },
+
+        "Aliyah": {
+            "items": [
+                "Coloring Book + Crayons",
+                "Camera"
+            ],
+            "path": "Forest",
+            "guess": 23,
+            "actions": [
+                "Selfie",
+                "Colour together"
+            ],
+            "slang": "Having beef"
+        },
+
+        "Bilgesu": {},
+
+        "Khadeja": {},
+
+        "Madiha": {},
+
+        "Nour": {},
+
+        "Rameen": {
+            "items": [
+                ""
+            ],
+            "path": 3,
+            "guess": 88,
+            "actions": [
+                "Colour together",
+                "Balloon Animals",
+                "Picnic"
+            ],
+            "slang": "Bare"
+        },
+
+        "Safaa": {
+            "items": [
+                "STEMM Sticker",
+                "Lipgloss"
+            ],
+            "path": 3,
+            "guess": 45,
+            "actions": [
+                "Play cards",
+                "Investing Advice",
+                "Selfie"
+            ],
+            "slang": "Having beef"
+        },
+
+        "Salma": {
+            "items": [
+                "Deck of Cards",
+                "Lock picking kit",
+                "Picnic Mat"
+            ],
+            "path": 2,
+            "guess": 36,
+            "actions": [
+                "Play cards",
+                "Picnic"
+            ],
+            "slang": "Having beef"
+        },
+
+        "Samiya": {
+            "items": [
+                "Deck of Cards",
+                "Lock picking kit",
+                "Balloons",
+                "German/English Dictionary",
+                "GitHub Account"
+            ],
+            "path": 3,
+            "guess": 97,
+            "actions": [
+                "Play cards",
+                "Balloon Animals",
+                "Investing Advice"
+            ],
+            "slang": "Sicko"
+        },
+
+        "Suweda": {
+            "items": [
+                "Deck of Cards",
+                "Camera",
+                "Balloons",
+                "GitHub Account"
+            ],
+            "path": 1,
+            "guess": 97,
+            "actions": [
+                "Investing Advice",
+                "Play cards",
+                "Balloon Animals"
+            ],
+            "slang": "Shut up Fatty"
+        },
+
+        "Zainab": {
+            "items": [
+                "Camera"
+            ],
+            "path": 3,
+            "guess": 45,
+            "actions": [
+                "Investing Advice"
+            ],
+            "slang": "Having beef"
+        }
+    }
+}

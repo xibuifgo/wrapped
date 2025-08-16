@@ -578,7 +578,6 @@
 .slide16 .slideContent {
     opacity: 1 !important; /* Ensure stats container is visible */
 }
-
 /* popIn keyframe for a dramatic pop-in animation */
 @keyframes popIn {
   0% { 
@@ -838,7 +837,7 @@
     list-style-type: decimal;
     list-style-position: outside;
     text-align: left;
-    margin-bottom: 30px;
+    margin: 30px auto 30px auto;
     padding-left: 30px;
     background: rgba(255, 255, 255, 0.8);
     border-radius: 20px;
@@ -852,7 +851,7 @@
     list-style-type: disc;
     list-style-position: outside;
     text-align: left;
-    margin: 30px 0;
+    margin: 30px auto;
     padding-left: 30px;
     background: rgba(255, 255, 255, 0.8);
     border-radius: 20px;

@@ -507,7 +507,7 @@ export default function Home() {
       title: "😼 Most CAT-astrophic Poll",
       content: (
         <div>
-          <p className={styles.description}>This person's poll a sticker war before it was even released:</p>
+          <p className={styles.description}>This person's poll caused a sticker war before it was even released:</p>
           <ul>
             <li>Khadeja</li>
           </ul>
