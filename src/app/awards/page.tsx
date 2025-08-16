@@ -575,9 +575,9 @@ export default function AwardsPage() {
             if (newIndex === 7 || newIndex === 8) { // 8th and 9th awards
                 setTimeout(() => {
                     throwTomatoes();
-                }, 300); // Reduced timing for faster response
+                }, 400); // Match the new animation timing
             }
-        }, 150); // Reduced from 300ms to 150ms
+        }, 200); // Slightly longer to match new transition
     };
 
     const prevAward = () => {
@@ -591,9 +591,9 @@ export default function AwardsPage() {
             if (newIndex === 7 || newIndex === 8) { // 8th and 9th awards
                 setTimeout(() => {
                     throwTomatoes();
-                }, 300); // Reduced timing for faster response
+                }, 400); // Match the new animation timing
             }
-        }, 150); // Reduced from 300ms to 150ms
+        }, 200); // Slightly longer to match new transition
     };
 
     return (
@@ -732,7 +732,7 @@ export default function AwardsPage() {
                                 <li 
                                     key={index} 
                                     className={`${styles[`winner-item-1`]} ${
-                                        shouldShow ? styles["winner-pop-in"] : styles["winner-hidden"]
+                                        shouldShow ? styles["pop-in"] : styles["hidden"]
                                     }`}
                                 >
                                     {winner}

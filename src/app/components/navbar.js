@@ -117,7 +117,7 @@ export default function Navbar() {
                                         ▼
                                     </span>
                                 </div>
-                                <ul className={`${styles.dropdownContent} ${expandedSubmenu === index ? styles.show : ''}`}>
+                                <ul className={`${styles.dropdownContent} ${titleName === "🤖 AI Predictions" ? styles["ai-pred"] : ''} ${expandedSubmenu === index ? styles.show : ''}`}>
                                     {dropdownItems.map(([itemName, itemRoute]) => {
                                         console.log("Rendering dropdown item:", itemName, itemRoute);
                                         return (
