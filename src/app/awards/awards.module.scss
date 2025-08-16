@@ -74,14 +74,13 @@
 
 /* Apply slide animations to the title as well */
 .awards-title.slide-out-left {
-  transform: translateX(-100%);
   opacity: 0;
+  transition: opacity 0.2s ease;
 }
 
 .awards-title.slide-in-right {
-  transform: translateX(0);
   opacity: 1;
-  animation: slideInFromRight 0.4s ease-out;
+  transition: opacity 0.2s ease;
 }
 
 .podium-wrapper {
@@ -171,20 +170,18 @@
   font-size: 24px !important;
   min-width: 70px;
   text-align: center;
-  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
   font-family: 'Poppins', 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 /* Slide animation classes */
 .name-label.slide-out-left {
-  transform: translateX(-100%);
   opacity: 0;
+  transition: opacity 0.2s ease;
 }
 
 .name-label.slide-in-right {
-  transform: translateX(0);
   opacity: 1;
-  animation: slideInFromRight 0.4s ease-out;
+  transition: opacity 0.2s ease;
 }
 
 /* Staggered animation delays for smoother flow */
@@ -524,11 +521,9 @@
 .winners-container.spotlight {
     position: relative;
     z-index: 999;
-    transform: scale(1.05);
     transition: all 0.5s ease-out;
-    box-shadow: 0 0 50px rgba(251, 191, 36, 0.6), 0 0 100px rgba(251, 191, 36, 0.4);
+    box-shadow: 0 0 30px rgba(251, 191, 36, 0.6), 0 0 60px rgba(251, 191, 36, 0.4);
     border: 3px solid rgba(251, 191, 36, 0.8);
-    animation: spotlightPulse 2s ease-in-out infinite alternate;
     
     &::before {
         content: '🏆';
@@ -537,7 +532,6 @@
         left: 50%;
         transform: translateX(-50%);
         font-size: 3rem;
-        animation: bounce 1s ease-in-out infinite;
     }
 }
 
@@ -563,15 +557,13 @@
 
 /* Winner item animations */
 .winner-hidden {
-    transform: scale(0) rotate(180deg);
     opacity: 0;
-    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: opacity 0.3s ease;
 }
 
 .winner-pop-in {
-    transform: scale(1) rotate(0deg);
     opacity: 1;
-    animation: winnerBounce 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: opacity 0.3s ease;
 }
 
 @keyframes winnerBounce {

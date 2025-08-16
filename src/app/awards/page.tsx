@@ -286,23 +286,23 @@ export default function AwardsPage() {
         setShowDone(true);
         setAnimatingWinner(-1); // Start with all hidden
         
-        // Staggered winner animations: third -> second -> first
-        setTimeout(() => setAnimatingWinner(2), 800);  // Third place
-        setTimeout(() => setAnimatingWinner(1), 1400); // Second place  
+        // Faster staggered winner animations
+        setTimeout(() => setAnimatingWinner(2), 400);  // Third place
+        setTimeout(() => setAnimatingWinner(1), 700); // Second place  
         setTimeout(() => {
             setAnimatingWinner(0); // First place
-        }, 2000);
+        }, 1000);
         
         // Trigger confetti after all winners are revealed
         setTimeout(() => {
             fireConfetti();
-        }, 2500);
+        }, 1300);
         
         // After showing the spotlight effect for a few seconds, remove it
         setTimeout(() => {
             setIsFullScreen(false);
             setAnimatingWinner(3); // Show all winners after animation
-        }, 6000);
+        }, 4000);
         
         // Scroll to winners section
         setTimeout(() => {
@@ -310,7 +310,7 @@ export default function AwardsPage() {
                 behavior: 'smooth',
                 block: 'center'
             });
-        }, 500);
+        }, 300);
 
     };
 
@@ -575,9 +575,9 @@ export default function AwardsPage() {
             if (newIndex === 7 || newIndex === 8) { // 8th and 9th awards
                 setTimeout(() => {
                     throwTomatoes();
-                }, 500); // Wait a bit after slide-in animation
+                }, 300); // Reduced timing for faster response
             }
-        }, 300);
+        }, 150); // Reduced from 300ms to 150ms
     };
 
     const prevAward = () => {
@@ -591,9 +591,9 @@ export default function AwardsPage() {
             if (newIndex === 7 || newIndex === 8) { // 8th and 9th awards
                 setTimeout(() => {
                     throwTomatoes();
-                }, 500); // Wait a bit after slide-in animation
+                }, 300); // Reduced timing for faster response
             }
-        }, 300);
+        }, 150); // Reduced from 300ms to 150ms
     };
 
     return (
