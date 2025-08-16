@@ -47,9 +47,9 @@ function mostIndecisive(polls: PollsData): string[] {
 }
 
 function countPolls(polls: PollsData): { [ key: string ]: number } {
-    let pollCount: { [ key: string ]: number } = {};
+    const pollCount: { [ key: string ]: number } = {};
     const pollEntries = Object.entries(polls.polls);
-    let ppl = polls.people;
+    const ppl = polls.people;
 
     ppl.forEach(person => {
         pollCount[person] = 0;
@@ -66,7 +66,7 @@ function countPolls(polls: PollsData): { [ key: string ]: number } {
 }
 
 function countVotes(polls: PollsData): { [key: string]: number } {
-    let voteCount: { [key: string]: number } = {};
+    const voteCount: { [key: string]: number } = {};
     const pollEntries = Object.entries(polls.polls);
     const ppl = polls.people;
 
@@ -86,7 +86,7 @@ function countVotes(polls: PollsData): { [key: string]: number } {
 }
 
 function mostDecisive(polls: PollsData, polls_count: { [key: string]: number }, votes_count: { [key: string]: number }): string[] {
-    let decisivePeople: { [key: string]: number } = {};
+    const decisivePeople: { [key: string]: number } = {};
     const ppl = polls.people;
 
     ppl.forEach(person => {
@@ -343,7 +343,7 @@ export default function AwardsPage() {
             return Math.random() * (max - min) + min;
         }
 
-        const interval: any = setInterval(function() {
+        const interval = setInterval(function() {
             const timeLeft = animationEnd - Date.now();
 
             if (timeLeft <= 0) {

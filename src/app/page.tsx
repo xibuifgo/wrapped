@@ -122,7 +122,7 @@ function bestFriend(polls: PollsData, person: string): { [key: string]: number }
   pollEntries.forEach(([pollName, pollDetails ]) => {
     Object.entries(pollDetails).forEach(([option, details]) => {
       if (details.voters.includes(person)) {
-        for (let voter of details.voters) {
+        for (const voter of details.voters) {
           agree_count[voter]++;
         }
       }
@@ -440,7 +440,7 @@ export default function Home() {
       title: "🗣️ Most controversial poll",
       content: (
         <div>
-          <p className={styles.description}>This person's poll caused the biggest argument on the groupchat:</p>
+          <p className={styles.description}>This person&apos;s poll caused the biggest argument on the groupchat:</p>
           <ul>
             <li>Samiya</li>
           </ul>
@@ -466,7 +466,7 @@ export default function Home() {
       title: "😂 Funniest Poll",
       content: (
         <div>
-          <p className={styles.description}>This person's poll started the funniest convo:</p>
+          <p className={styles.description}>This person&apos;s poll started the funniest convo:</p>
           <ul>
             <li>Aliyah</li>
           </ul>
@@ -479,7 +479,7 @@ export default function Home() {
       title: "⁉️ Hardest Poll",
       content: (
         <div>
-          <p className={styles.description}>This person's poll was the hardest to answer (also the most cultured):</p>
+          <p className={styles.description}>This person&apos;s poll was the hardest to answer (also the most cultured):</p>
           <ul>
             <li>Safaa</li>
           </ul>
@@ -507,7 +507,7 @@ export default function Home() {
       title: "😼 Most CAT-astrophic Poll",
       content: (
         <div>
-          <p className={styles.description}>This person's poll caused a sticker war before it was even released:</p>
+          <p className={styles.description}>This person&apos;s poll caused a sticker war before it was even released:</p>
           <ul>
             <li>Khadeja</li>
           </ul>
@@ -526,6 +526,7 @@ export default function Home() {
           </ul>
         </div>
       ),
+      extra: "No explanation needed",
       showProgressBar: true
     },
     // Statistics

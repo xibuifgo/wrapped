@@ -11,7 +11,7 @@ export default function PersonAIPredictionsPage() {
 
     // Define unique gradient colors for each person
     const personGradients: Record<string, { start: string; end: string }> = {
-        
+
         // carbs–chaos–Shrek; playful “swamp → sunshine”
         Nour:   { start: '#79C000', end: '#FFD166' }, // lively green → warm amber
 
@@ -86,7 +86,7 @@ export default function PersonAIPredictionsPage() {
     if (!personPrediction) {
         return (
             <div className={styles.cont}>
-                <h1>{person}'s AI Predictions</h1>
+                <h1>{person}&apos;s AI Predictions</h1>
                 <div className={styles.card}>
                     <p>AI prediction data not available for {person}.</p>
                 </div>
@@ -96,7 +96,7 @@ export default function PersonAIPredictionsPage() {
 
     return (
         <div className={styles.cont}>
-            <h1>{person}'s AI Personality Prediction</h1>
+            <h1>{person}&apos;s AI Personality Prediction</h1>
             <div className={styles.card}>
                 <div style={{ fontSize: '1.1rem', lineHeight: '1.8' }}>
                     {personPrediction.split('\n\n').map((paragraph, index) => (

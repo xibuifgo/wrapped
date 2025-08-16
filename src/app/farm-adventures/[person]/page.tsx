@@ -28,7 +28,7 @@ export default function PersonAdventurePage() {
     if (!personAdventure.items || !personAdventure.actions) {
         return (
             <div style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto' }}>
-                <h1>{person}'s Farm Adventure</h1>
+                <h1>{person}&apos;s Farm Adventure</h1>
                 <div style={{ 
                     background: '#f8f9fa', 
                     padding: '1.5rem', 
@@ -46,7 +46,7 @@ export default function PersonAdventurePage() {
     
     return (
         <div style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto' }}>
-            <h1>{person}'s Farm Adventure</h1>
+            <h1>{person}&apos;s Farm Adventure</h1>
             <div style={{ 
                 background: '#f8f9fa', 
                 padding: '1.5rem', 
@@ -90,7 +90,7 @@ export default function PersonAdventurePage() {
                 
                 <div>
                     <h3>Slang:</h3>
-                    <p>"{personAdventure.slang}"</p>
+                    <p>&quot;{personAdventure.slang}&quot;</p>
                 </div>
             </div>
         </div>
