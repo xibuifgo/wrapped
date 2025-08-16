@@ -552,7 +552,7 @@ export default function Home() {
       title: "🔎 Now about you!",
       content: (
         <div>
-          <p>Let's see how you did, {userName}!</p>
+          <p>Let&apos;s see how you did, {userName}!</p>
         </div>
       ),
       showProgressBar: true
