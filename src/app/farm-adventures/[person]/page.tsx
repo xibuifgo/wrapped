@@ -610,7 +610,7 @@ export default function PersonAdventurePage() {
                     </p>
                     
                     <p>
-                        You heard a rumor that the reason he's isolated is because his cows have the ability to speak English. This farmer read animal farm and does NOT wanna risk anything.
+                        You heard a rumor that the reason he&apos;s isolated is because his cows have the ability to speak English. This farmer read animal farm and does NOT wanna risk anything.
                     </p>
                     
                     <p>
@@ -630,7 +630,7 @@ export default function PersonAdventurePage() {
                     </p>
                     
                     <p>
-                        You watch as your things are dragged by the conveyer belt. You and the cashier give each other an awkward look. "Why does the cashier kind of look like Bilgesu" you think to yourself, but shut the thought down. Its not like shes the treasurer or something.
+                        You watch as your things are dragged by the conveyer belt. You and the cashier give each other an awkward look. &quot;Why does the cashier kind of look like Bilgesu?&quot; you think to yourself, but shut the thought down. Its not like shes the treasurer or something.
                     </p>
                     
                     <p>
@@ -696,7 +696,7 @@ export default function PersonAdventurePage() {
                 </button>
             
                 {tech && (
-                    <p>You realized the GitHub account is not on your receipt. But why would it be? You're tech lead of course you have a GitHub Account!</p>
+                    <p>You realized the GitHub account is not on your receipt. But why would it be? You&apos;re tech lead of course you have a GitHub Account!</p>
                 )}
         
             </div>
@@ -716,11 +716,11 @@ export default function PersonAdventurePage() {
                     )}
                     
                     <p>
-                        Your heart is racing, your palms are sweaty. It's getting real now. As you walk, the sun that was once shining warmly on your back suddenly disappears.
+                        Your heart is racing, your palms are sweaty. It&apos;s getting real now. As you walk, the sun that was once shining warmly on your back suddenly disappears.
                     </p>
                     
                     <p>
-                        You slowly raise you head up and see something towering above you. You've reached the base of the mountain.
+                        You slowly raise you head up and see something towering above you. You&apos;ve reached the base of the mountain.
                     </p>
                 </div>
             </div>
@@ -736,9 +736,9 @@ export default function PersonAdventurePage() {
                     </p>
                     
                     <ol>
-                        <li>A cabin on the mountain's left edge.</li>
-                        <li>A rock climbing wall on the mountain's middle.</li>
-                        <li>A forest on the mountain's right edge.</li>
+                        <li>A cabin on the mountain&apos;s left edge.</li>
+                        <li>A rock climbing wall on the mountain&apos;s middle.</li>
+                        <li>A forest on the mountain&apos;s right edge.</li>
                     </ol>
                     
                     <p>
