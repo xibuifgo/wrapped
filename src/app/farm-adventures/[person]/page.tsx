@@ -21,6 +21,30 @@ type PersonAdventure = {
 export default function PersonAdventurePage() {
     const params = useParams();
     const person = params.person as string;
+    
+    // Handle special cases before any hooks
+    if (person === "Bilgesu") {
+        return (
+            <div className={styles.container}>
+                <h1 className={styles.title}>{person}&apos;s Farm Adventure</h1>
+                <div className={styles.journalContainer}>
+                    <p>You were handling the finances at the Sister Supply Store all day.</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (person === "Nour") {
+        return (
+            <div className={styles.container}>
+                <h1 className={styles.title}>{person}&apos;s Farm Adventure</h1>
+                <div className={styles.journalContainer}>
+                    <p>You hid behind a <i>LOG</i> and <i>TROLLED</i> everyone on comm.</p>
+                </div>
+            </div>
+        );
+    }
+    
     const [isClient, setIsClient] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
     const receiptRef = useRef<HTMLDivElement>(null);
@@ -145,32 +169,8 @@ export default function PersonAdventurePage() {
         return { afterTurnOne: false, afterTurnTwo: false, afterTurnThree: true };
     }, [personAdventure?.actions, change, isClient, bender]);
 
-    if (person === "Bilgesu") {
-        return (
-            <div className={styles.container}>
-                <h1 className={styles.title}>{person}&apos;s Farm Adventure</h1>
-                <div className={styles.journalContainer}>
-                    <p>You were handling the finances at the Sister Supply Store all day.</p>
-                </div>
-            </div>
-        );
-
-    }
-
-    else if (person === "Nour") {
-        return (
-            <div className={styles.container}>
-                <h1 className={styles.title}>{person}&apos;s Farm Adventure</h1>
-                <div className={styles.journalContainer}>
-                    <p>You hid behind a <i>LOG</i> and <i>TROLLED</i> everyone on comm.</p>
-                </div>
-            </div>
-        );
-
-    }
-
     // Check if the person has complete data
-    else if (!personAdventure.items || !personAdventure.actions) {
+    if (!personAdventure.items || !personAdventure.actions) {
         return (
             <div className={styles.container}>
                 <h1 className={styles.title}>{person}&apos;s Farm Adventure</h1>
