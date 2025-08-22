@@ -1,7 +1,7 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { notFound } from 'next/navigation';
+// import { notFound } from 'next/navigation';
 import { useState, useEffect, useRef, useMemo, captureOwnerStack } from 'react';
 import adventureData from "../../json_files/adventure.json";
 import styles from "./farm-preson.module.scss";
@@ -37,12 +37,11 @@ export default function PersonAdventurePage() {
     const itemPrices = adventureData.item_prices as Record<string, number>;
     
     // Check if the person exists in the adventures data
-    if (!adventures || !(person in adventures)) {
-        notFound();
-    }
-    
-    const personAdventure = adventures[person];
-    
+    const personAdventure: PersonAdventure | undefined = 
+        adventures && (person in adventures) 
+        ? (adventures[person] as PersonAdventure) 
+        : undefined;
+
     // Calculate poll data
     const poll = polls.polls["ATLA: What bender would you be?"];
     type BenderKey = keyof typeof poll;
@@ -80,12 +79,18 @@ export default function PersonAdventurePage() {
         }
     }
 
-    const tech = person === "Suweda" && personAdventure.items?.includes("GitHub Account");
-    
+    const tech = person === "Suweda" && personAdventure?.items?.includes("GitHub Account");
+
     // Only calculate change on client to avoid hydration mismatch
-    const change = isClient && personAdventure.items ? Math.floor(20 - personAdventure.items
-        .filter(item => !(person === "Suweda" && item === "GitHub Account"))
-        .reduce((total, item) => total + (itemPrices[item] || 0), 0)) : 0;
+    const items = personAdventure?.items ?? [];
+    const change = isClient
+    ? Math.floor(
+        20 -
+        items
+            .filter(item => !(person === "Suweda" && item === "GitHub Account"))
+            .reduce((total, item) => total + (itemPrices[item] || 0), 0)
+        )
+    : 0;
 
     // Calculate farmer convincing logic progressively - this hook must be called for all cases
     const isFarmerConvinced = useMemo(() => {
@@ -174,7 +179,7 @@ export default function PersonAdventurePage() {
     }
 
     // Check if the person has complete data
-    if (!personAdventure.items || !personAdventure.actions) {
+    if (!personAdventure?.items || !personAdventure?.actions) {
         return (
             <div className={styles.container}>
                 <h1 className={styles.title}>{person}&apos;s Farm Adventure</h1>
@@ -418,9 +423,9 @@ export default function PersonAdventurePage() {
 
         }
 
-        html += "<p>", personAdventure.guess, "you say. The troll laughs and rubs its hands together. </p>";
+        html += "<p>" + personAdventure.guess + ", you say. The troll laughs and rubs its hands together. </p>";
 
-        html += "<p>", personAdventure.guess, "you say. The troll laughs and rubs its hands together. </p>";
+        html += "<p>" + personAdventure.guess + ", you say. The troll laughs and rubs its hands together. </p>";
 
         html += "<p> 'Okay, my guess is " + personAdventure.guess + "!' you say. </p>";
 
@@ -599,7 +604,7 @@ export default function PersonAdventurePage() {
 
 
     // Create journal pages for the story
-    const journalPages = useMemo(() => [
+    const journalPages = [
         // Page 1: Introduction
         <div key="page1" className={styles.journalPage}>
             <div className={styles.pageContent}>
@@ -862,7 +867,7 @@ export default function PersonAdventurePage() {
                 </div>
             </div>
         </div>
-    ], [isFarmerConvinced, personAdventure, change, isClient, tech, person, paths, itemPrices, bender]);
+    ];
     
     return (
         <div className={`${styles.container} ${styles[`page${currentPage + 1}`]} ${styles[`path${personAdventure.path}`]}`}>
