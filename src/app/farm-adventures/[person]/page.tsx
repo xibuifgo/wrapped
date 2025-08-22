@@ -22,29 +22,7 @@ export default function PersonAdventurePage() {
     const params = useParams();
     const person = params.person as string;
     
-    // Handle special cases before any hooks
-    if (person === "Bilgesu") {
-        return (
-            <div className={styles.container}>
-                <h1 className={styles.title}>{person}&apos;s Farm Adventure</h1>
-                <div className={styles.journalContainer}>
-                    <p>You were handling the finances at the Sister Supply Store all day.</p>
-                </div>
-            </div>
-        );
-    }
-
-    if (person === "Nour") {
-        return (
-            <div className={styles.container}>
-                <h1 className={styles.title}>{person}&apos;s Farm Adventure</h1>
-                <div className={styles.journalContainer}>
-                    <p>You hid behind a <i>LOG</i> and <i>TROLLED</i> everyone on comm.</p>
-                </div>
-            </div>
-        );
-    }
-    
+    // All hooks must be called before any conditional returns
     const [isClient, setIsClient] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
     const receiptRef = useRef<HTMLDivElement>(null);
@@ -53,6 +31,19 @@ export default function PersonAdventurePage() {
         setIsClient(true);
     }, []);
 
+    // Load data before any conditional logic
+    const adventures = adventureData.adventures as unknown as Record<string, PersonAdventure>;
+    const paths = adventureData.paths;
+    const itemPrices = adventureData.item_prices as Record<string, number>;
+    
+    // Check if the person exists in the adventures data
+    if (!adventures || !(person in adventures)) {
+        notFound();
+    }
+    
+    const personAdventure = adventures[person];
+    
+    // Calculate poll data
     const poll = polls.polls["ATLA: What bender would you be?"];
     type BenderKey = keyof typeof poll;
 
@@ -89,50 +80,14 @@ export default function PersonAdventurePage() {
         }
     }
 
-    // Function to save receipt as image
-    const saveReceiptAsImage = async () => {
-        if (!receiptRef.current) return;
-        
-        try {
-            // Dynamically import html2canvas
-            const html2canvas = (await import('html2canvas')).default;
-            
-            const canvas = await html2canvas(receiptRef.current, {
-                background: '#ffffff',
-                useCORS: true,
-                allowTaint: true,
-                logging: false
-            });
-            
-            // Create download link
-            const link = document.createElement('a');
-            link.download = `${person}-farm-adventure-receipt.png`;
-            link.href = canvas.toDataURL();
-            link.click();
-        } catch (error) {
-            console.error('Error saving receipt:', error);
-            alert('Sorry, there was an error saving the receipt. Please try again.');
-        }
-    };
-    
-    // Check if the person exists in the adventures data
-    const adventures = adventureData.adventures as unknown as Record<string, PersonAdventure>;
-    if (!adventures || !(person in adventures)) {
-        notFound();
-    }
-    
-    const personAdventure = adventures[person];
-    const paths = adventureData.paths;
-    const itemPrices = adventureData.item_prices as Record<string, number>;
-
-    const tech = person === "Suweda" && personAdventure.items.includes("GitHub Account");
+    const tech = person === "Suweda" && personAdventure.items?.includes("GitHub Account");
     
     // Only calculate change on client to avoid hydration mismatch
     const change = isClient && personAdventure.items ? Math.floor(20 - personAdventure.items
         .filter(item => !(person === "Suweda" && item === "GitHub Account"))
         .reduce((total, item) => total + (itemPrices[item] || 0), 0)) : 0;
 
-    // Calculate farmer convincing logic progressively
+    // Calculate farmer convincing logic progressively - this hook must be called for all cases
     const isFarmerConvinced = useMemo(() => {
         if (!personAdventure?.actions || !isClient) {
             return { afterTurnOne: false, afterTurnTwo: false, afterTurnThree: false };
@@ -168,6 +123,55 @@ export default function PersonAdventurePage() {
         // After Turn Three, farmer is always convinced regardless
         return { afterTurnOne: false, afterTurnTwo: false, afterTurnThree: true };
     }, [personAdventure?.actions, change, isClient, bender]);
+
+    // Function to save receipt as image
+    const saveReceiptAsImage = async () => {
+        if (!receiptRef.current) return;
+        
+        try {
+            // Dynamically import html2canvas
+            const html2canvas = (await import('html2canvas')).default;
+            
+            const canvas = await html2canvas(receiptRef.current, {
+                background: '#ffffff',
+                useCORS: true,
+                allowTaint: true,
+                logging: false
+            });
+            
+            // Create download link
+            const link = document.createElement('a');
+            link.download = `${person}-farm-adventure-receipt.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        } catch (error) {
+            console.error('Error saving receipt:', error);
+            alert('Sorry, there was an error saving the receipt. Please try again.');
+        }
+    };
+
+    // Handle special cases after all hooks are called
+    if (person === "Bilgesu") {
+        return (
+            <div className={styles.container}>
+                <h1 className={styles.title}>{person}&apos;s Farm Adventure</h1>
+                <div className={styles.journalContainer}>
+                    <p>You were handling the finances at the Sister Supply Store all day.</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (person === "Nour") {
+        return (
+            <div className={styles.container}>
+                <h1 className={styles.title}>{person}&apos;s Farm Adventure</h1>
+                <div className={styles.journalContainer}>
+                    <p>You hid behind a <i>LOG</i> and <i>TROLLED</i> everyone on comm.</p>
+                </div>
+            </div>
+        );
+    }
 
     // Check if the person has complete data
     if (!personAdventure.items || !personAdventure.actions) {
