@@ -1,0 +1,1083 @@
+/* Container and main layout */
+.container {
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: 
+        /* Mountain landscape inspired by the image */
+        radial-gradient(ellipse 400px 250px at 50% 65%, transparent 40%, rgba(128, 100, 162, 0.4) 41%, rgba(128, 100, 162, 0.4) 80%, transparent 81%),
+        radial-gradient(ellipse 350px 200px at 30% 70%, transparent 50%, rgba(139, 115, 176, 0.3) 51%, rgba(139, 115, 176, 0.3) 85%, transparent 86%),
+        radial-gradient(ellipse 300px 180px at 70% 68%, transparent 45%, rgba(147, 112, 149, 0.3) 46%, rgba(147, 112, 149, 0.3) 80%, transparent 81%),
+        /* Forest in foreground */
+        radial-gradient(ellipse 400px 100px at 50% 90%, transparent 30%, rgba(34, 139, 34, 0.4) 31%, rgba(34, 139, 34, 0.4) 70%, transparent 71%),
+        radial-gradient(ellipse 300px 80px at 20% 85%, transparent 40%, rgba(46, 125, 50, 0.3) 41%, rgba(46, 125, 50, 0.3) 75%, transparent 76%),
+        radial-gradient(ellipse 250px 70px at 80% 88%, transparent 35%, rgba(56, 142, 60, 0.3) 36%, rgba(56, 142, 60, 0.3) 80%, transparent 81%),
+        /* Sky gradient */
+        linear-gradient(to bottom, 
+            #87CEEB 0%,     /* Sky blue */
+            #B0E0E6 25%,    /* Powder blue */
+            #98D8E8 50%,    /* Light blue */
+            #90EE90 75%,    /* Light green */
+            #9ACD32 100%    /* Yellow green */
+        );
+    min-height: 100vh;
+    position: relative;
+}
+
+.title {
+    text-align: center;
+    color: #4a4a4a;
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: 'Georgia', serif;
+    background: linear-gradient(135deg, #8b4513, #a0522d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Journal-style interface */
+.journalContainer {
+    padding: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+    font-family: 'Georgia', 'Times New Roman', serif;
+}
+
+.journalBook {
+    background: 
+        /* Wood grain texture */
+        linear-gradient(90deg, transparent 79%, rgba(139, 69, 19, 0.1) 80%, rgba(139, 69, 19, 0.1) 81%, transparent 82%),
+        linear-gradient(90deg, transparent 89%, rgba(160, 82, 45, 0.1) 90%, rgba(160, 82, 45, 0.1) 91%, transparent 92%),
+        /* Main journal background */
+        linear-gradient(145deg, #f8f6f0, #f0ede6);
+    border: 6px solid #8b4513;
+    border-radius: 20px;
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        inset 0 0 30px rgba(139, 69, 19, 0.15),
+        0 0 0 2px rgba(222, 184, 135, 0.5);
+    overflow: hidden;
+    position: relative;
+    min-height: 600px;
+    
+    /* Add leather texture */
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            radial-gradient(ellipse at center, transparent 40%, rgba(139, 69, 19, 0.05) 50%),
+            repeating-linear-gradient(45deg, transparent, transparent 1px, rgba(139, 69, 19, 0.03) 1px, rgba(139, 69, 19, 0.03) 2px);
+        pointer-events: none;
+        z-index: 1;
+    }
+}
+
+.journalBook::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 80px;
+    width: 3px;
+    height: 100%;
+    background: repeating-linear-gradient(
+        to bottom,
+        #ff6b6b 0px,
+        #ff6b6b 1px,
+        transparent 1px,
+        transparent 25px
+    );
+    z-index: 1;
+}
+
+.journalPage {
+    min-height: 500px;
+    padding: 50px;
+    padding-left: 120px;
+    background: 
+        /* Subtle field rows */
+        repeating-linear-gradient(
+            135deg,
+            transparent 0px,
+            transparent 25px,
+            rgba(107, 142, 35, 0.03) 25px,
+            rgba(107, 142, 35, 0.03) 27px,
+            transparent 27px,
+            transparent 50px
+        ),
+        /* Paper texture */
+        linear-gradient(90deg, rgba(139, 69, 19, 0.1) 1px, transparent 1px),
+        linear-gradient(rgba(139, 69, 19, 0.08) 1px, transparent 1px),
+        /* Warm paper background */
+        linear-gradient(135deg, #fefdfb 0%, #faf8f3 50%, #f8f6f0 100%);
+    background-size: 
+        100% 100%,
+        30px 25px,
+        100% 25px,
+        100% 100%;
+    line-height: 1.8;
+    position: relative;
+    z-index: 2;
+}
+
+.pageContent {
+    max-width: 700px;
+}
+
+.chapterTitle {
+    color: #8b4513;
+    font-size: 2rem;
+    margin: 0 0 25px 0;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    border-bottom: 3px solid #deb887;
+    padding-bottom: 15px;
+    position: relative;
+    
+    /* Add decorative elements */
+    &::before {
+        content: '🏔️';
+        position: absolute;
+        left: -45px;
+        top: 0;
+        font-size: 1.5rem;
+        opacity: 0.6;
+    }
+    
+    &::after {
+        content: '🌲';
+        position: absolute;
+        right: -35px;
+        top: 5px;
+        font-size: 1.3rem;
+        opacity: 0.7;
+        animation: gentle-sway 4s ease-in-out infinite;
+    }
+}
+
+@keyframes gentle-sway {
+    0%, 100% { transform: rotate(-3deg) translateY(0px); }
+    50% { transform: rotate(3deg) translateY(-2px); }
+}
+
+.storyText {
+    p {
+        margin-bottom: 18px;
+        text-indent: 25px;
+        color: #3a3a3a;
+        font-size: 1.1rem;
+        line-height: 1.9;
+        
+        &:first-of-type {
+            text-indent: 0;
+            font-weight: 500;
+            color: #8b4513;
+        }
+        
+        em {
+            font-style: italic;
+            color: #8b4513;
+            font-weight: 600;
+        }
+    }
+    
+    ol, ul {
+        margin: 20px 0;
+        padding-left: 30px;
+        
+        li {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            font-weight: 500;
+            color: #654321;
+        }
+    }
+}
+
+.choice {
+    background: linear-gradient(135deg, #8b4513, #a0522d);
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    margin: 25px 0;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    text-indent: 0 !important;
+}
+
+.summaryContent {
+    .summarySection {
+        margin-bottom: 30px;
+        background: rgba(248, 246, 240, 0.7);
+        padding: 20px;
+        border-radius: 12px;
+        border: 1px solid #e0d0b8;
+        
+        h3 {
+            color: #8b4513;
+            margin: 0 0 15px 0;
+            font-size: 1.3rem;
+            border-left: 4px solid #deb887;
+            padding-left: 15px;
+        }
+        
+        p {
+            margin: 0;
+            text-indent: 0 !important;
+            font-size: 1.1rem;
+            color: #3a3a3a;
+        }
+        
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            
+            li {
+                background: white;
+                margin: 8px 0;
+                padding: 12px 15px;
+                border-radius: 8px;
+                border-left: 4px solid #deb887;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 1rem;
+                color: #3a3a3a;
+            }
+        }
+    }
+}
+
+/* Receipt container for journal */
+.receiptContainer {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+    background: rgba(222, 184, 135, 0.1);
+    border-radius: 15px;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.pageNavigation {
+    background: 
+        /* Mountain dirt road texture */
+        radial-gradient(ellipse at top, rgba(160, 82, 45, 0.15) 0%, transparent 50%),
+        repeating-linear-gradient(
+            90deg,
+            transparent 0px,
+            transparent 15px,
+            rgba(139, 69, 19, 0.05) 15px,
+            rgba(139, 69, 19, 0.05) 17px,
+            transparent 17px,
+            transparent 30px
+        ),
+        linear-gradient(145deg, #ede4d1, #e0d4c1);
+    padding: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 4px solid #deb887;
+    position: relative;
+    
+    /* Add subtle mountain ground pattern */
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: 
+            /* Pebbles and dirt */
+            radial-gradient(1px 1px at 30px 15px, rgba(160, 82, 45, 0.2), transparent),
+            radial-gradient(2px 1px at 80px 25px, rgba(139, 69, 19, 0.15), transparent),
+            radial-gradient(1px 2px at 150px 10px, rgba(218, 165, 32, 0.1), transparent),
+            /* Small stones */
+            radial-gradient(1px 1px at 200px 20px, rgba(105, 105, 105, 0.1), transparent);
+        background-repeat: repeat-x;
+        pointer-events: none;
+    }
+}
+
+.navButton {
+    background: 
+        /* Wood grain effect */
+        linear-gradient(90deg, rgba(160, 82, 45, 0.1) 0%, transparent 25%, rgba(139, 69, 19, 0.1) 50%, transparent 75%, rgba(160, 82, 45, 0.1) 100%),
+        linear-gradient(135deg, #8b4513, #a0522d);
+    color: white;
+    border: 2px solid #654321;
+    padding: 15px 25px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 
+        0 6px 15px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    font-family: 'Georgia', serif;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 2;
+    
+    &:hover:not(:disabled) {
+        background: 
+            linear-gradient(90deg, rgba(160, 82, 45, 0.2) 0%, transparent 25%, rgba(139, 69, 19, 0.2) 50%, transparent 75%, rgba(160, 82, 45, 0.2) 100%),
+            linear-gradient(135deg, #a0522d, #8b4513);
+        transform: translateY(-3px);
+        box-shadow: 
+            0 8px 20px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+    
+    &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: 
+            0 2px 5px rgba(0, 0, 0, 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+}
+
+.pageIndicator {
+    font-size: 1.1rem;
+    color: #8b4513;
+    font-weight: bold;
+    font-family: 'Georgia', serif;
+}
+
+.pageIndicatorSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.pageJumpForm {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.pageInput {
+    width: 80px;
+    padding: 8px 12px;
+    border: 2px solid #8b4513;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Georgia', serif;
+    text-align: center;
+    background: #f8f6f0;
+    color: #4a4a4a;
+    transition: all 0.3s ease;
+    
+    &:focus {
+        outline: none;
+        border-color: #a0522d;
+        box-shadow: 0 0 8px rgba(160, 82, 45, 0.3);
+    }
+    
+    &::placeholder {
+        color: #8b7355;
+        font-size: 0.9rem;
+    }
+}
+
+.pageJumpButton {
+    background: linear-gradient(135deg, #8b4513, #a0522d);
+    color: white;
+    border: 2px solid #654321;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Georgia', serif;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    
+    &:hover {
+        background: linear-gradient(135deg, #a0522d, #8b4513);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+}
+
+.journalTitle {
+    text-align: center;
+    color: #4a4a4a;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: 'Georgia', serif;
+}
+
+.journal {
+    background: linear-gradient(145deg, #f8f6f0, #f0ede6);
+    border: 4px solid #8b4513;
+    border-radius: 20px;
+    box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.2),
+        inset 0 0 20px rgba(139, 69, 19, 0.1);
+    overflow: hidden;
+    position: relative;
+}
+
+.journal::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 80px;
+    width: 3px;
+    height: 100%;
+    background: repeating-linear-gradient(
+        to bottom,
+        #ff6b6b 0px,
+        #ff6b6b 1px,
+        transparent 1px,
+        transparent 25px
+    );
+    z-index: 1;
+}
+
+.journalHeader {
+    background: linear-gradient(135deg, #8b4513, #a0522d);
+    color: white;
+    padding: 25px;
+    text-align: center;
+    border-bottom: 3px solid #654321;
+    position: relative;
+    
+    h2 {
+        margin: 0 0 10px 0;
+        font-size: 2rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        font-family: 'Georgia', serif;
+    }
+}
+
+.pageIndicator {
+    font-size: 1rem;
+    opacity: 0.9;
+    font-style: italic;
+    letter-spacing: 1px;
+}
+
+.journalPage {
+    min-height: 500px;
+    padding: 50px;
+    padding-left: 50px;
+    background: 
+        linear-gradient(90deg, rgba(139, 69, 19, 0.1) 1px, transparent 1px),
+        linear-gradient(rgba(139, 69, 19, 0.08) 1px, transparent 1px),
+        #fefdfb;
+    background-size: 30px 25px;
+    line-height: 1.8;
+    position: relative;
+    z-index: 2;
+}
+
+.journalEntry {
+    max-width: 700px;
+}
+
+.entryHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #deb887;
+    
+    h3 {
+        color: #8b4513;
+        font-size: 1.8rem;
+        margin: 0;
+        font-weight: bold;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+}
+
+.entryDate {
+    color: #a0522d;
+    font-style: italic;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.entryContent {
+    p {
+        margin-bottom: 18px;
+        text-indent: 25px;
+        color: #3a3a3a;
+        font-size: 1.1rem;
+        line-height: 1.9;
+        
+        &:first-of-type {
+            text-indent: 0;
+            font-weight: 500;
+            color: #8b4513;
+        }
+    }
+    
+    h4 {
+        color: #8b4513;
+        margin: 25px 0 15px 0;
+        font-size: 1.3rem;
+        border-left: 4px solid #deb887;
+        padding-left: 15px;
+    }
+    
+    ol, ul {
+        margin: 20px 0;
+        padding-left: 30px;
+    }
+    
+    li {
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+        line-height: 1.7;
+    }
+}
+
+.pathList {
+    background: rgba(222, 184, 135, 0.2);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+    border-left: 5px solid #deb887;
+    
+    li {
+        font-weight: 500;
+        color: #654321;
+    }
+}
+
+.decisionBox {
+    background: linear-gradient(135deg, #8b4513, #a0522d);
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    margin: 25px 0;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.changeNote {
+    background: rgba(255, 235, 205, 0.8);
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid #ff8c00;
+    margin: 15px 0;
+    font-style: italic;
+    color: #8b4513;
+}
+
+.summarySection {
+    margin-bottom: 30px;
+    background: rgba(248, 246, 240, 0.7);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #e0d0b8;
+}
+
+.pathChosen {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #8b4513;
+    background: rgba(222, 184, 135, 0.3);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    margin: 0;
+    text-indent: 0 !important;
+}
+
+.itemList, .actionList {
+    list-style: none;
+    padding: 0;
+    
+    li {
+        background: white;
+        margin: 8px 0;
+        padding: 12px 15px;
+        border-radius: 8px;
+        border-left: 4px solid #deb887;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.itemPrice {
+    color: #8b4513;
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+
+.guessNumber {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #8b4513;
+    text-align: center;
+    background: rgba(222, 184, 135, 0.3);
+    padding: 20px;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    text-indent: 0 !important;
+}
+
+.slangQuote {
+    font-size: 1.3rem;
+    font-style: italic;
+    color: #654321;
+    text-align: center;
+    background: linear-gradient(145deg, #f8f6f0, #f0ede6);
+    padding: 25px;
+    border-radius: 15px;
+    border: 2px solid #deb887;
+    margin: 20px 0;
+    position: relative;
+    
+    &::before, &::after {
+        content: '"';
+        font-size: 3rem;
+        color: #8b4513;
+        position: absolute;
+        font-family: serif;
+    }
+    
+    &::before {
+        top: -10px;
+        left: 15px;
+    }
+    
+    &::after {
+        bottom: -20px;
+        right: 15px;
+    }
+}
+
+.missingEntry {
+    text-align: center;
+    color: #a0522d;
+    font-style: italic;
+    font-size: 1.2rem;
+    padding: 50px;
+}
+
+.journalControls {
+    background: linear-gradient(145deg, #ede4d1, #e0d4c1);
+    padding: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 3px solid #deb887;
+}
+
+.pageButton {
+    background: linear-gradient(135deg, #8b4513, #a0522d);
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    font-family: 'Georgia', serif;
+    
+    &:hover:not(:disabled) {
+        background: linear-gradient(135deg, #a0522d, #8b4513);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+}
+
+.pageNumbers {
+    display: flex;
+    gap: 10px;
+}
+
+.pageNumber {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #8b4513;
+    background: white;
+    color: #8b4513;
+    border-radius: 50%;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Georgia', serif;
+    font-size: 1rem;
+    
+    &:hover {
+        background: #f8f6f0;
+        transform: scale(1.15);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    &.activePage {
+        background: #8b4513;
+        color: white;
+        transform: scale(1.25);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* Mobile responsiveness for journal */
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 1rem;
+        min-height: 100vh;
+    }
+    
+    .journalBook {
+        width: 95%;
+        max-width: none;
+        min-height: 500px;
+        padding: 15px;
+        border-radius: 8px;
+    }
+    
+    .journalPage {
+        padding: 20px;
+        margin-bottom: 20px;
+        min-height: 400px;
+    }
+    
+    .pageContent {
+        padding: 15px;
+    }
+    
+    .chapterTitle {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+    }
+    
+    .storyText {
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+    
+    .choice {
+        padding: 12px 15px;
+        font-size: 1rem;
+        margin: 8px 5px;
+        border-radius: 8px;
+        color: white !important;
+    }
+    
+    .summaryContent {
+        padding: 15px;
+        
+        h3 {
+            font-size: 1.5rem;
+        }
+    }
+    
+    .pageNavigation {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+    }
+    
+    .navButton {
+        padding: 12px 20px;
+        font-size: 1rem;
+        min-width: 120px;
+    }
+    
+    .pageIndicator {
+        font-size: 1rem;
+        padding: 8px 15px;
+    }
+    
+    .pageIndicatorSection {
+        gap: 12px;
+    }
+    
+    .pageJumpForm {
+        gap: 10px;
+    }
+    
+    .pageInput {
+        width: 70px;
+        padding: 10px;
+        font-size: 1rem;
+    }
+    
+    .pageJumpButton {
+        padding: 10px 14px;
+        font-size: 0.9rem;
+    }
+    
+    /* Legacy mobile styles for backward compatibility */
+    .journalContainer {
+        padding: 1rem;
+    }
+    
+    .journalTitle {
+        font-size: 2rem;
+    }
+    
+    .journal::before {
+        left: 40px;
+    }
+    
+    .entryHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        
+        h3 {
+            font-size: 1.5rem;
+        }
+    }
+    
+    .entryContent p {
+        font-size: 1rem;
+        text-indent: 20px;
+    }
+    
+    .journalControls {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+    }
+    
+    .pageNumbers {
+        order: -1;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .pageButton {
+        padding: 12px 20px;
+        font-size: 1rem;
+    }
+    
+    .slangQuote {
+        padding: 20px;
+        
+        &::before, &::after {
+            font-size: 2rem;
+        }
+        
+        &::before {
+            top: -5px;
+            left: 10px;
+        }
+        
+        &::after {
+            bottom: -15px;
+            right: 10px;
+        }
+    }
+}
+
+/* Keep existing receipt styles */
+
+.receipt-container {
+    display: flex;
+    justify-content: center;
+}
+
+.receipt {
+    background: white;
+    border: 3px dashed #666;
+    padding: 30px;
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 20px auto;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    position: relative;
+    flex-shrink: 0;
+    
+    /* Add thermal printer effect */
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: repeating-linear-gradient(
+            90deg,
+            transparent 0px,
+            transparent 2px,
+            #ddd 2px,
+            #ddd 4px
+        );
+    }
+}
+
+.receiptSaveButton {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 20px auto;
+    display: block;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    
+    &:hover {
+        background: linear-gradient(135deg, #45a049, #3d8b40);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    &:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+}
+
+.receiptHeader {
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 2px dashed #666;
+    padding-bottom: 12px;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+.receiptInfo {
+    margin-bottom: 15px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.receiptItems {
+    border-bottom: 2px dashed #666;
+    margin-bottom: 15px;
+    padding-bottom: 12px;
+}
+
+.receiptItemsHeader {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 4px;
+}
+
+.receiptItem {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    padding: 2px 0;
+    font-size: 14px;
+}
+
+.receiptTotal {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 8px 0;
+    border-top: 2px solid #333;
+    margin-top: 8px;
+}
+
+.receiptFooter {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 12px;
+    border-top: 2px dashed #666;
+    font-size: 12px;
+    font-style: italic;
+    line-height: 1.4;
+}
+
+/* Mobile responsiveness for receipt */
+@media screen and (max-width: 768px) {
+    .receiptContainer {
+        margin: 20px 0;
+    }
+    
+    .receipt {
+        width: 100%;
+        max-width: 350px;
+        padding: 20px;
+        font-size: 14px;
+    }
+    
+    .receiptHeader {
+        font-size: 14px;
+    }
+    
+    .receiptTotal {
+        font-size: 16px;
+    }
+    
+    .receiptSaveButton {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .receipt {
+        width: 100%;
+        max-width: 300px;
+        padding: 15px;
+        font-size: 12px;
+    }
+    
+    .receiptHeader {
+        font-size: 12px;
+    }
+    
+    .receiptTotal {
+        font-size: 14px;
+    }
+}

@@ -20,8 +20,19 @@
         "Rock Climbing Wall"
     ],
 
+    "troll_outcomes": {
+        "97": "only one cow",
+        "23": "correct",
+        "36": "minecraft cows",
+        "88": "you speak backwards",
+        "45": "you speak German",
+        "16": "correct"
+    },
+
     "adventures": {
         "Anica": {
+            "time": "11:17",
+            "date": "13/08/2025",
             "items": [
                 "Deck of Cards",
                 "Lock picking kit",
@@ -36,6 +47,8 @@
         },
 
         "Aiza": {
+            "time": "10:55",
+            "date": "13/08/2025",
             "items": [
                 "Deck of Cards",
                 "Lock picking kit",
@@ -45,7 +58,7 @@
             "path": 1,
             "guess": 16,
             "actions": [
-                "Cards",
+                "Play cards",
                 "Investing Advice",
                 "Balloon Animals"
             ],
@@ -53,11 +66,13 @@
         },
 
         "Aliyah": {
+            "time": "10:48",
+            "date": "13/08/2025",
             "items": [
                 "Coloring Book + Crayons",
                 "Camera"
             ],
-            "path": "Forest",
+            "path": 2,
             "guess": 23,
             "actions": [
                 "Selfie",
@@ -70,13 +85,34 @@
 
         "Khadeja": {},
 
-        "Madiha": {},
+        "Madiha": {
+            "time": "13:16",
+            "date": "19/08/2025",
+            "items": [
+                "Deck of Cards",
+                "Balloons",
+                "GitHub Account",
+                "STEMM Sticker"
+            ],
+            "path": 1,
+            "guess": 16,
+            "actions":[
+                "Play cards",
+                "Investing Advice"
+            ],
+            "slang":"Shut up Fatty"
+        },
 
         "Nour": {},
 
         "Rameen": {
+            "time": "04:51",
+            "date": "17/08/2025",
             "items": [
-                ""
+                "Balloons",
+                "GitHub Account",
+                "Picnic Mat",
+                "Uno"
             ],
             "path": 3,
             "guess": 88,
@@ -89,21 +125,25 @@
         },
 
         "Safaa": {
+            "time": "11:05",
+            "date": "13/08/2025",
             "items": [
                 "STEMM Sticker",
-                "Lipgloss"
+                "Lip Gloss"
             ],
             "path": 3,
             "guess": 45,
             "actions": [
                 "Play cards",
-                "Investing Advice",
-                "Selfie"
+                "Selfie",
+                "Investing Advice"
             ],
             "slang": "Having beef"
         },
 
         "Salma": {
+            "time": "12:01",
+            "date": "13/08/2025",
             "items": [
                 "Deck of Cards",
                 "Lock picking kit",
@@ -119,6 +159,8 @@
         },
 
         "Samiya": {
+            "time": "09:41",
+            "date": "14/08/2025", 
             "items": [
                 "Deck of Cards",
                 "Lock picking kit",
@@ -137,6 +179,8 @@
         },
 
         "Suweda": {
+            "time": "11:49",
+            "date": "13/08/2025",
             "items": [
                 "Deck of Cards",
                 "Camera",
@@ -154,6 +198,8 @@
         },
 
         "Zainab": {
+            "time": "10:44",
+            "date": "13/08/2025",
             "items": [
                 "Camera"
             ],

@@ -3,7 +3,6 @@
 import styles from "./navbar.module.scss";
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { Inter } from "next/font/google";
 import polls from "../json_files/polls.json";
 
@@ -112,14 +111,22 @@ export default function Navbar() {
                                     }}
                                     style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}
                                 >
-                                    <Link href={titleRoute}>{titleName}</Link>
+                                    <Link 
+                                        href={titleRoute}
+                                        onClick={(e) => {
+                                            // Close the menu when clicking the main link
+                                            setMenuActive(false);
+                                            setExpandedSubmenu(null);
+                                        }}
+                                    >
+                                        {titleName}
+                                    </Link>
                                     <span className={`${styles.dropdownToggle} ${expandedSubmenu === index ? styles.active : ''}`}>
                                         ▼
                                     </span>
                                 </div>
                                 <ul className={`${styles.dropdownContent} ${titleName === "🤖 AI Predictions" ? styles["ai-pred"] : ''} ${expandedSubmenu === index ? styles.show : ''}`}>
                                     {dropdownItems.map(([itemName, itemRoute]) => {
-                                        console.log("Rendering dropdown item:", itemName, itemRoute);
                                         return (
                                             <li key={itemRoute}>
                                                 <Link href={itemRoute}>{itemName}</Link>

@@ -51,7 +51,7 @@
         },
 
         "Best Comfort Movie": {
-            "Princess Diareis": {
+            "Princess Diaries": {
                 "voters": [
                     "Anica",
                     "Madiha",
@@ -279,6 +279,18 @@
                     "Safaa"
                 ]
             },
+
+            "Watching Anime": {
+                "voters": [
+                    "Anica",
+                    "Rameen",
+                    "Bilgesu",
+                    "Aliyah",
+                    "Khadeja",
+                    "Aiza"
+                ]
+            },
+
             "Camping": {
                 "voters": [
                     "Nour",

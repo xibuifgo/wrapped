@@ -529,6 +529,20 @@ export default function Home() {
       extra: "No explanation needed",
       showProgressBar: true
     },
+    // The Gatherers
+    {
+      title: "👩🏽‍👩🏽‍👧🏽‍👧🏽 The Gatherers",
+      content: (
+        <div>
+          <p className={styles.description}>These people got everyone on comm to vote on their polls:</p>
+          <ul>
+            <li>Zainab</li>
+            <li>Bilgesu</li>
+          </ul>
+        </div>
+      ),
+      showProgressBar: true
+    },
     // Statistics
     {
       title: "📊 Poll Statistics",
