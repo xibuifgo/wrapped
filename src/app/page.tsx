@@ -301,6 +301,64 @@ export default function Home() {
   const [nameNotFound, setNameNotFound] = useState<boolean>(false);
   const [honorarySis, setHonorarySis] = useState<boolean>(false);
 
+  // Helper to toggle body attribute and force-hide nav for main slideshow
+  function setBodySlideshowFullscreen(flag: boolean) {
+    try {
+      if (flag) {
+        document.body.setAttribute('data-main-slideshow', 'true');
+
+        // Force-hide any <nav> with inline styles to work around stubborn mobile browsers (iOS Safari/Chrome)
+        document.querySelectorAll('nav').forEach((el) => {
+          const nav = el as HTMLElement;
+          if (!nav.dataset.prevDisplayMain) {
+            nav.dataset.prevDisplayMain = nav.style.display || '';
+            nav.dataset.prevVisibilityMain = nav.style.visibility || '';
+            nav.dataset.prevPointerMain = nav.style.pointerEvents || '';
+          }
+          nav.style.display = 'none';
+          nav.style.visibility = 'hidden';
+          nav.style.pointerEvents = 'none';
+        });
+      } else {
+        document.body.removeAttribute('data-main-slideshow');
+        document.querySelectorAll('nav').forEach((el) => {
+          const nav = el as HTMLElement;
+          if (nav.dataset.prevDisplayMain !== undefined) nav.style.display = nav.dataset.prevDisplayMain || '';
+          if (nav.dataset.prevVisibilityMain !== undefined) nav.style.visibility = nav.dataset.prevVisibilityMain || '';
+          if (nav.dataset.prevPointerMain !== undefined) nav.style.pointerEvents = nav.dataset.prevPointerMain || '';
+          delete nav.dataset.prevDisplayMain;
+          delete nav.dataset.prevVisibilityMain;
+          delete nav.dataset.prevPointerMain;
+        });
+      }
+    } catch (e) {
+      // ignore
+    }
+  }
+
+  // Watch slideshow start/stop and toggle body/nav accordingly
+  useEffect(() => {
+    if (currentSlide > 0) {
+      setBodySlideshowFullscreen(true);
+    } else {
+      setBodySlideshowFullscreen(false);
+    }
+
+    return () => {
+      // ensure cleanup if component unmounts
+      try { document.body.removeAttribute('data-main-slideshow'); } catch (e) {}
+      document.querySelectorAll('nav').forEach((el) => {
+        const nav = el as HTMLElement;
+        if (nav.dataset.prevDisplayMain !== undefined) nav.style.display = nav.dataset.prevDisplayMain || '';
+        if (nav.dataset.prevVisibilityMain !== undefined) nav.style.visibility = nav.dataset.prevVisibilityMain || '';
+        if (nav.dataset.prevPointerMain !== undefined) nav.style.pointerEvents = nav.dataset.prevPointerMain || '';
+        delete nav.dataset.prevDisplayMain;
+        delete nav.dataset.prevVisibilityMain;
+        delete nav.dataset.prevPointerMain;
+      });
+    };
+  }, [currentSlide]);
+
   // Calculate proper percentile
   const allScores = rankActivity(pollData as PollsData);
   const userScore = activityRanking[userName] || 0;

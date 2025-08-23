@@ -46,6 +46,12 @@ body {
     visibility: hidden !important;
     pointer-events: none !important;
   }
+  
+  body[data-main-slideshow="true"] nav {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
 }
 
 /* Hide any browser default buttons or controls */
