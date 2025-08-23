@@ -282,7 +282,9 @@ export default function AwardsPage() {
         // Play cheer sound immediately when button is clicked
         playCheerSound();
         
-        setIsFullScreen(true);
+    // Mark body as fullscreen awards mode so navbar can hide on mobile
+    setBodyAwardsFullscreen(true);
+    setIsFullScreen(true);
         setShowDone(true);
         setAnimatingWinner(-1); // Start with all hidden
         
@@ -302,6 +304,8 @@ export default function AwardsPage() {
         setTimeout(() => {
             setIsFullScreen(false);
             setAnimatingWinner(3); // Show all winners after animation
+            // Remove fullscreen flag from body
+            setBodyAwardsFullscreen(false);
         }, 4000);
         
         // Scroll to winners section
@@ -313,6 +317,28 @@ export default function AwardsPage() {
         }, 300);
 
     };
+
+    // Helper to toggle body attribute used by navbar styles
+    function setBodyAwardsFullscreen(flag: boolean) {
+        try {
+            if (flag) {
+                document.body.setAttribute('data-awards-fullscreen', 'true');
+            } else {
+                document.body.removeAttribute('data-awards-fullscreen');
+            }
+        } catch (e) {
+            // server-side or other environments may not have document
+        }
+    }
+
+    // Ensure cleanup on unmount in case component is removed while fullscreen
+    useEffect(() => {
+        return () => {
+            try {
+                document.body.removeAttribute('data-awards-fullscreen');
+            } catch (e) {}
+        }
+    }, []);
 
     const playCheerSound = () => {
         try {

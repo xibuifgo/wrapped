@@ -485,52 +485,45 @@ export default function PersonAdventurePage() {
 
         html += "<p> All of a sudden a troll spawns from every log in the forest. There were 228 trolls to be exact. WHY DO ALL THESE TROLLS LOOK THE SAME? </p>";
 
-        html += "<p> 'Okay woah there why are there so many of you?' you ask, confused. </p>";
+        html += "<p> &quot;Okay woah there why are there so many of you?&quot; you ask, confused. </p>";
 
-        html += "<p> The trolls face lights up. 'Oh! We actually reproduce logarithmically! But don't worry we're slowing down soon' </p>";
+        html += "<p> The trolls face lights up. &quot;Oh! We actually reproduce logarithmically! But don't worry we're slowing down soon&quot; </p>";
 
-        html += "<p> 'How soon is soon?' you ask </p>";
+        html += "<p> &quot;How soon is soon?&quot; you ask </p>";
 
-        html += "<p> 'Around a thousand years' the troll says with a smile. </p>";
+        html += "<p> &quot;Around a thousand years&quot; the troll says with a smile. </p>";
 
-        html += "<p> 'WHAT? THATS NOT SOON!' you exclaim </p>";
+        html += "<p> &quot;WHAT? THATS NOT SOON!&quot; you exclaim </p>";
 
-        html += "<p> 'HEY YOU HAVE NO RIGHT TO SPEAK YOUR BREED PRODUCES EXPONENTIALLY! HOW DID YOU REACH EIGHT BILLION ALREADY?' the troll yells back </p>";
+        html += "<p> &quot;HEY YOU HAVE NO RIGHT TO SPEAK YOUR BREED PRODUCES EXPONENTIALLY! HOW DID YOU REACH EIGHT BILLION ALREADY?&quot; the troll yells back </p>";
 
-        html += "<p> 'Okay okay chill, I just want to get to the farm' you say. The troll laughs at that. </p>";
+        html += "<p> &quot;Okay okay chill, I just want to get to the farm&quot; you say. The troll laughs at that. </p>";
 
         html += "<p> The troll says if you do not guess ONE of the two numbers it's thinking of you will be punished without knowing what the punishment is. </p>";
 
         if ( personAdventure.items.includes("Uno") ) {
-            html += "<p> 'No' you say. </p>";
-            html += "<p> 'What do you mean no?' the troll is beginning to look stressed 'I am very powerful in this forest. You don't want to mess with me. '</p>";
-            html += "<p> 'Oh ya?' you say pulling out an Uno reverse card. 'How about you guess my number instead?' </p>";
-            html += "<p> The troll drops to it's knees. 'I can't believe I got trolled by a human' it says. 'Fine, you win. You can go to the farm now' </p>";
+            html += "<p> &quot;No&quot; you say. </p>";
+            html += "<p> &quot;What do you mean no?&quot; the troll is beginning to look stressed &quot;I am very powerful in this forest. You don't want to mess with me.&quot; </p>";
+            html += "<p> &quot;Oh ya?&quot; you say pulling out an Uno reverse card. &quot;How about you guess my number instead?&quot; </p>";
+            html += "<p> The troll drops to it's knees. &quot;I can't believe I got trolled by a human&quot; it says. &quot;Fine, you win. You can go to the farm now&quot; </p>";
             html += "<p> You walk past the troll line and continue your journey to the farm </p>";
             html += "<p><i> Minus one point for <b>Nour</b></i></p>";
             return html;
 
         }
 
-        html += "<p> 'Okay, my guess is " + personAdventure.guess + "!' you say. </p>";
+        html += "<p> &quot;Okay, my guess is " + personAdventure.guess + "!&quot; you say. </p>";
 
-        html += "<p> The troll grins and rubs its hands together. 'Very well then' it says. </p>"
+        html += "<p> The troll grins and rubs its hands together. &quot;Very well then&quot; it says. </p>"
 
         if (personAdventure.guess === 36 || personAdventure.guess === 97) {
             html += "<p>Just then you hear a faint scream coming from the farm. </p>";
-            html += "<p> 'What was that?!' you exclaim </p>";
-            html += "<p> 'Idk' the troll says cooly as it shrugs its shoulders. 'But you're free to go now!' </p>";
+            html += "<p> &quot;What was that?!&quot; you exclaim </p>";
+            html += "<p> &quot;Idk&quot; the troll says cooly as it shrugs its shoulders. &quot;But you're free to go now!&quot; </p>";
         } 
-        // else if (personAdventure.guess === 88 ) {
-        //     html += "<p>  </p>";
-        // } else if (personAdventure.guess === 45) {
-        //     html += "<p>  </p>";
-        // } else {
-        //     html += "<p>  </p>";
-        // }
 
-        html += "<p> 'Did I get the number correct?' you ask";
-        html += "<p> 'There's no way of knowing until you arrive to the farm' the troll says </p>";
+        html += "<p> &quot;Did I get the number correct?&quot; you ask </p>";
+        html += "<p> &quot;There's no way of knowing until you arrive to the farm&quot; the troll says </p>";
         html += "<p> You can barely hide your annoyance. The troll sees this and realizes it succesfully trolled you </p> "
         html += "<p><i>One point for <b>Nour</b></i></p>";
 
@@ -583,9 +576,11 @@ export default function PersonAdventurePage() {
 
             html += "<p> &quot;It's time&quot; he says. &quot;I've been running away from the inevitable. Silence doesn't sit well with the mind. I was so expressive then, now I'm just a soulless vessel. What is life without connection? Go do it. Talk to the cows. Let them connect the way we just did. Let them learn the value of expression. A value I've failed to recognize.&quot; </p>";
 
+            html += "You both stand in silence for a moment, the weight of his words settling in. He reads the diary entry one more time"
+
             html += "<p> &quot;Thank you&quot; he mutters, a sad smile on his face.</p>";
 
-            html += "<p> And with that, the farmer clutches his diary entry, gives you a slight nod and heads back into his shed. </p>";
+            html += "<p> And with that, the farmer clutches his diary entry, gives you a slight nod and heads to the cabin </p>";
 
         } else if ( action === "Play cards" || action === "Cards" ) {
             if ( inventory.includes("Deck of Cards") ) {

@@ -228,4 +228,9 @@
     padding: 0.75rem 2rem;
     background-color: #f8f9fa;
   }
+
+  /* Hide the navbar during awards fullscreen/slideshow on mobile */
+  body[data-awards-fullscreen="true"] .navbar {
+    display: none !important;
+  }
 }
