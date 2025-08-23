@@ -1074,6 +1074,8 @@ export default function PersonAdventurePage() {
     function afterMath(personAdventure: PersonAdventure): string {
         let html = "<p> A few months pass. You bla bla </p>";
 
+        html += "<p> WOO </p>";
+
         return html;
     }
 
