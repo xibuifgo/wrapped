@@ -38,6 +38,16 @@ body {
   overflow-x: hidden;
 }
 
+/* Ensure navbar is hidden globally on small screens when awards slideshow is fullscreen
+   Use a global rule so CSS-module scoping doesn't prevent the selector from matching */
+@media (max-width: 768px) {
+  body[data-awards-fullscreen="true"] nav {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+}
+
 /* Hide any browser default buttons or controls */
 button:not([class]), 
 input[type="button"]:not([class]) {
