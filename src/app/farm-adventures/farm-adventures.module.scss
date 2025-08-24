@@ -137,3 +137,210 @@
 		letter-spacing: 0.2px;
 	}
 }
+
+/* ============ Farm Themed Slider ============ */
+.slider {
+	position: relative;
+	width: min(100%, 980px);
+	margin-top: 1rem;
+	border-radius: 16px;
+	overflow: hidden;
+	box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+
+	/* Sky to grass backdrop */
+	background:
+		linear-gradient(180deg, #87CEEB 0%, #bfe7fb 45%, #9bd18b 46%, #68b35f 100%);
+}
+
+.track {
+	display: flex;
+	transition: transform 400ms ease;
+	will-change: transform;
+}
+
+.slide {
+	/* Ensure each slide takes exactly the viewport width */
+	flex: 0 0 100%;
+	min-width: 100%;
+	box-sizing: border-box;
+	padding: 20px;
+}
+
+.card {
+	background: rgba(255,255,255,0.9);
+	border-radius: 14px;
+	border: 1px solid rgba(0,0,0,0.07);
+	overflow: hidden;
+	display: grid;
+	grid-template-rows: auto 1fr auto;
+}
+
+.cardHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 14px 16px;
+	background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+	border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.group {
+	font-weight: 800;
+}
+
+.badge {
+	padding: 6px 10px;
+	border-radius: 999px;
+	font-size: 12px;
+	font-weight: 700;
+}
+.correct {
+	background: #e6f7ea;
+	color: #137a2a;
+	border: 1px solid #b8e6c2;
+}
+.wrong {
+	background: #fff2f2;
+	color: #a81d1d;
+	border: 1px solid #f3c0c0;
+}
+
+.cardBody {
+	display: grid;
+	grid-template-columns: 1fr 1.2fr;
+	gap: 16px;
+	padding: 16px;
+}
+
+.media {
+	background: #e6efe9;
+	border-radius: 10px;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.media img { width: 100%; height: 200px; object-fit: cover; display: block; }
+.placeholder { width: 100%; height: 200px; background: repeating-linear-gradient(45deg, #cddbd1 0, #cddbd1 8px, #b7c8be 8px, #b7c8be 16px); }
+
+.content { display: flex; flex-direction: column; gap: 8px; }
+.option { font-size: 1.25rem; margin: 0; }
+.desc { margin: 0; color: #333; }
+/* removed trollIcon and optionRow */
+
+.cardFooter { padding: 10px 16px; border-top: 1px solid rgba(0,0,0,0.06); }
+.progress { font-weight: 700; color: #2d6a4f; }
+
+.navBtn {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 2;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	border: 1px solid rgba(0,0,0,0.2);
+	background: rgba(255,255,255,0.95);
+	display: grid;
+	place-items: center;
+	font-size: 22px;
+	font-weight: 800;
+	cursor: pointer;
+	box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+.navBtn.left { left: 10px; }
+.navBtn.right { right: 10px; }
+
+.dots {
+	position: absolute;
+	left: 50%;
+	bottom: 10px;
+	transform: translateX(-50%);
+	display: flex;
+	gap: 6px;
+	z-index: 2;
+}
+.dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: rgba(0,0,0,0.2);
+	border: none;
+}
+.dot.active { background: #2d6a4f; }
+
+/* Responsive */
+@media (max-width: 700px) {
+	.cardBody { grid-template-columns: 1fr; }
+	.media img, .placeholder { height: 160px; }
+}
+.sections {
+	display: flex;
+	flex-direction: column;
+	gap: 28px;
+	width: min(100%, 980px);
+}
+
+.section {
+	position: relative;
+	background: linear-gradient(180deg, #87CEEB 0%, #bfe7fb 45%, #9bd18b 46%, #68b35f 100%);
+	border-radius: 16px;
+	box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+	overflow: hidden;
+}
+
+.sectionTitle {
+	margin: 0;
+	padding: 14px 16px;
+	font-size: 1.25rem;
+	font-weight: 900;
+	color: #1b4332;
+	background: rgba(255,255,255,0.85);
+	border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.miniSlider { position: relative; overflow: hidden; }
+.miniTrack {
+	display: flex;
+	transition: transform 400ms ease;
+	will-change: transform;
+}
+.miniSlide {
+	/* Prevent offscreen text from bleeding into view */
+	flex: 0 0 100%;
+	min-width: 100%;
+	box-sizing: border-box;
+	padding: 16px;
+}
+
+.miniNavBtn {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 2;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	border: 1px solid rgba(0,0,0,0.2);
+	background: rgba(255,255,255,0.95);
+	display: grid;
+	place-items: center;
+	font-size: 20px;
+	font-weight: 800;
+	cursor: pointer;
+	box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+.miniNavBtn.left { left: 10px; }
+.miniNavBtn.right { right: 10px; }
+
+.miniDots {
+	position: absolute;
+	left: 50%;
+	bottom: 10px;
+	transform: translateX(-50%);
+	display: flex;
+	gap: 6px;
+	z-index: 2;
+}
+.miniDot { width: 8px; height: 8px; border-radius: 50%; background: rgba(0,0,0,0.2); border: none; }
+.miniDot.active { background: #2d6a4f; }
