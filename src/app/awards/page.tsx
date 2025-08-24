@@ -340,6 +340,13 @@ export default function AwardsPage() {
         }
     }, []);
 
+    // Clear slide animation classes after they finish to avoid lingering states
+    useEffect(() => {
+        if (!slideDirection) return;
+        const id = setTimeout(() => setSlideDirection(''), 350);
+        return () => clearTimeout(id);
+    }, [slideDirection]);
+
     const playCheerSound = () => {
         try {
             const cheer_sounds = new Audio('/cheer.mp3');
@@ -669,7 +676,7 @@ export default function AwardsPage() {
                     />
                 ))}
 
-                <div className={styles["podium-wrapper"]}>
+                <div className={styles["podium-wrapper"]} key={currentAwardIndex}>
                     {/* Navigation arrows */}
                     <button 
                         className={`${styles["nav-arrow"]} ${styles["nav-left"]}`}
@@ -724,7 +731,7 @@ export default function AwardsPage() {
                         <text x="109.5" y="50" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">3</text>
                     </svg>
 
-                    <p>{currentAward.extra ? currentAward.extra : ''}</p>
+                    <p key={currentAwardIndex}>{currentAward.extra ?? ''}</p>
 
                     <div className={styles["progress-bar"]}>
                     {Array.from({length: awards.length}, (_, index) => (
