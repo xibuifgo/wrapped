@@ -453,7 +453,7 @@ export default function AwardsPage() {
 
     // Check if current award should trigger tomato throwing
     const shouldThrowTomatoes = () => {
-        return currentAwardIndex === 7 || currentAwardIndex === 8; // 8th and 9th awards (0-indexed)
+        return currentAwardIndex === 7 || currentAwardIndex === 8 || currentAwardIndex === 9; // 8th and 9th awards (0-indexed)
     };
 
     // Award data
@@ -563,6 +563,16 @@ export default function AwardsPage() {
             },
             extra: "EVERYONE TELL SAMIYA TO GO TO SLEEP"
         },
+        // Copilot 
+        {
+            title: "Most Pages Corrupted",
+            winners: {
+                first: "Copilot",
+                second: "",
+                third: ""
+            },
+            extra: "Copilot corrupted our code FIVE TIMES"
+        },
         // Go see overall winners
         {
             title: "Go see overall winners",
@@ -583,7 +593,7 @@ export default function AwardsPage() {
 
     // Trigger tomatoes on initial load if we're on 8th or 9th award
     useEffect(() => {
-        if (currentAwardIndex === 7 || currentAwardIndex === 8) {
+        if (currentAwardIndex === 7 || currentAwardIndex === 8 || currentAwardIndex === 9 ) {
             setTimeout(() => {
                 throwTomatoes();
             }, 1000); // Wait a second after component loads
@@ -598,7 +608,7 @@ export default function AwardsPage() {
             setSlideDirection('slide-in-right');
             
             // Check if we should throw tomatoes for this award
-            if (newIndex === 7 || newIndex === 8) { // 8th and 9th awards
+            if (newIndex === 7 || newIndex === 8 || newIndex === 9) { // 8th, 9th, and 10th awards
                 setTimeout(() => {
                     throwTomatoes();
                 }, 400); // Match the new animation timing
@@ -614,7 +624,7 @@ export default function AwardsPage() {
             setSlideDirection('slide-in-right');
             
             // Check if we should throw tomatoes for this award
-            if (newIndex === 7 || newIndex === 8) { // 8th and 9th awards
+            if (newIndex === 7 || newIndex === 8 || newIndex === 9) { // 8th, 9th, and 10th awards
                 setTimeout(() => {
                     throwTomatoes();
                 }, 400); // Match the new animation timing

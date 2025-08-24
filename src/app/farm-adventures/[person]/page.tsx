@@ -317,7 +317,15 @@ export default function PersonAdventurePage() {
 
             if (personAdventure.items.includes("Lock picking kit")) {
                 html += "<p>You notice the door is locked, but fortunately you brought your lock picking kit! After a few tense minutes of work, you hear the satisfying click of the lock opening.</p>";
+
                 html += "<p>Inside, you discover an old journal filled with daily diary entries written in a child's handwriting. The pages are yellowed with age, and you can barely make out the words in the dim light. You rip the page and shove it into your bag. This sounds an awful lot like the farmer, you think. Maybe it will be useful when I get there. </p>";
+
+                html += "<p> You go deeper into the cabin, hoping to uncover more secrets. You suddenly reach a bed room. Just as you're about to look around, you hear movement coming from outside. </p>";
+
+                html += "<p> &quot;Shoot!&quot; you think. &quot;Someone's coming!&quot; </p>";
+
+                html += "<p> You open the window and jump out, landing softly in the dirt. You quickly run away, to avoid being caught. </p>"
+
                 inventory.push("Diary Entry");
                 return html;
             } else if (personAdventure.items.includes("Camera")) {

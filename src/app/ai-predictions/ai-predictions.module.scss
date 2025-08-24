@@ -1,0 +1,162 @@
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: #666;
+  margin: 0;
+}
+
+.leaderboard {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.leaderboardHeader {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.leaderboardRow {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  padding: 1rem;
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: #f8f9fa;
+    transform: translateX(4px);
+  }
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  &.topThree {
+    background: linear-gradient(90deg, #fff9e6 0%, #ffffff 100%);
+    
+    &:hover {
+      background: linear-gradient(90deg, #fff3d3 0%, #f8f9fa 100%);
+    }
+  }
+}
+
+.rankColumn, .nameColumn, .scoreColumn {
+  display: flex;
+  align-items: center;
+  text-align: left;
+}
+
+.scoreColumn {
+  justify-content: flex-end;
+}
+
+.rank {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.playerName {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.score {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #27ae60;
+  background: #e8f5e8;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  min-width: 60px;
+  text-align: center;
+}
+
+.footer {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  
+  p {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+}
+
+// Mobile responsive
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+  
+  .title {
+    font-size: 2rem;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+  }
+  
+  .leaderboardHeader, .leaderboardRow {
+    grid-template-columns: 80px 1fr 80px;
+    padding: 0.75rem;
+  }
+  
+  .rank {
+    font-size: 1.2rem;
+  }
+  
+  .playerName {
+    font-size: 1rem;
+  }
+  
+  .score {
+    font-size: 1.2rem;
+    padding: 0.3rem 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .leaderboardHeader, .leaderboardRow {
+    grid-template-columns: 60px 1fr 70px;
+    padding: 0.5rem;
+  }
+  
+  .title {
+    font-size: 1.8rem;
+  }
+  
+  .playerName {
+    font-size: 0.9rem;
+  }
+}
