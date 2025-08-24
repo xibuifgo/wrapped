@@ -190,6 +190,15 @@ export default function FarmAdventuresPage() {
     };
   }, [options.length]);
 
+  // Re-measure when index changes to accommodate different slide heights
+  useEffect(() => {
+    const id = requestAnimationFrame(() => {
+      const el = slideRefs.current[idx];
+      if (el) setSliderH(el.offsetHeight);
+    });
+    return () => cancelAnimationFrame(id);
+  }, [idx]);
+
     const prevLocal = () => setIdx((i) => (i - 1 + options.length) % options.length);
     const nextLocal = () => setIdx((i) => (i + 1) % options.length);
 

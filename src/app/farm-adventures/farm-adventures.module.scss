@@ -303,10 +303,8 @@
 .miniSlider { position: relative; overflow: hidden; touch-action: pan-y; }
 .miniTrack {
 	display: flex;
-	transition: transform 280ms ease-out;
+	transition: transform 400ms ease;
 	will-change: transform;
-	contain: layout paint;
-	backface-visibility: hidden;
 }
 .miniSlide {
 	/* Prevent offscreen text from bleeding into view */
@@ -315,8 +313,6 @@
 	box-sizing: border-box;
 	padding: 16px;
 	overflow: hidden;
-	content-visibility: auto;
-	contain-intrinsic-size: 520px;
 }
 
 .miniNavBtn {
