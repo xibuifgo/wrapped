@@ -639,9 +639,7 @@ export default function AwardsPage() {
                 <div className={styles["blur-overlay"]}></div>
             )}
             
-            <div className={styles["awards-header"]}>
-                <h1>Awards!</h1>
-            </div>
+            <div className={styles["awards-header"]}></div>
             <div className={`${styles["podium-container"]} ${isBeingPelted ? styles["being-pelted"] : ""}`} ref={podiumContainerRef}>
                 <h1 className={`${styles["awards-title"]} ${slideDirection ? styles[slideDirection] : ''}`}>{currentAward.title}</h1>
 
