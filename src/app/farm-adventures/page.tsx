@@ -90,8 +90,8 @@ export default function FarmAdventuresPage() {
       {
         title: "Farmer Interaction: Turn One",
         sols: {
-          "Play Cards": "You play cambio and let him win. He gets super happy",
-          "Picnic": "He goes and gets your favorite potatoes, you share it",
+          "Play Cards": "You show him a magic trick and impress him, but still not enough to convince him to let you through",
+          "Picnic": "He goes and gets some potatoes, you share it in silence",
           "Selfie": "You take a selfie together, he sees he has a slight smile after so long of not smiling. This makes him feel more at e",
           "Make Balloon Animals": "He loves his balloon dog and starts smiling",
           "Investing Advice": "If you give him more than £5 he will get convinced and leave",
@@ -129,7 +129,7 @@ export default function FarmAdventuresPage() {
           "Investing Advice": "If you give him more than £5 he will get convinced and leave"
         },
         correct: [
-          "Cards",
+          "Play Cards",
           "Investing Advice",
           "Picnic",
           "Selfie",
@@ -141,9 +141,9 @@ export default function FarmAdventuresPage() {
         sols: {
           "Bare": "They learn what bare means and figure out they've experienced &quot;Bare Animal Rights Violations&quot;. Animal Farm Unfolds",
           "Cheeky Nandos": "Animalism. The chickens hate the cows because the cows found out they're food.",
-          "Shut up Fatty": "??",
+          "Shut up Fatty": "???",
           "Butters": "The cows find out what butter is and ???",
-          "Sicko": "????",
+          "Sicko": "???",
           "Having Beef": "???",
           "Mad": "???"
         }

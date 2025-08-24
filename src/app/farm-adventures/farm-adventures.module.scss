@@ -156,6 +156,8 @@
 	display: flex;
 	transition: transform 400ms ease;
 	will-change: transform;
+	backface-visibility: hidden;
+	transform: translateZ(0);
 }
 
 .slide {
@@ -248,6 +250,9 @@
 	font-weight: 800;
 	cursor: pointer;
 	box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+	will-change: transform, opacity;
+	backface-visibility: hidden;
+	transform: translateZ(0);
 }
 .navBtn.left { left: 10px; }
 .navBtn.right { right: 10px; }
@@ -274,6 +279,11 @@
 @media (max-width: 700px) {
 	.cardBody { grid-template-columns: 1fr; }
 	.media img, .placeholder { height: 160px; }
+	/* Faster, smoother slide transitions on mobile */
+	.track, .miniTrack { transition: transform 280ms ease-out; }
+	/* Lighter shadows to reduce paint cost */
+	.section, .slider { box-shadow: 0 8px 22px rgba(0,0,0,0.16); }
+	.navBtn, .miniNavBtn { box-shadow: 0 4px 10px rgba(0,0,0,0.12); }
 }
 .sections {
 	display: flex;
@@ -305,6 +315,8 @@
 	display: flex;
 	transition: transform 400ms ease;
 	will-change: transform;
+	backface-visibility: hidden;
+	transform: translateZ(0);
 }
 .miniSlide {
 	/* Prevent offscreen text from bleeding into view */
@@ -331,6 +343,9 @@
 	font-weight: 800;
 	cursor: pointer;
 	box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+	will-change: transform, opacity;
+	backface-visibility: hidden;
+	transform: translateZ(0);
 }
 .miniNavBtn.left { left: 10px; }
 .miniNavBtn.right { right: 10px; }

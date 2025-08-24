@@ -277,6 +277,9 @@ export default function AwardsPage() {
     const [tomatoes, setTomatoes] = useState<Array<{id: number, side: 'left' | 'right'}>>([]);
     const [splats, setSplats] = useState<Array<{id: number, x: number, y: number}>>([]);
     const [isBeingPelted, setIsBeingPelted] = useState(false);
+    const cheerRef = useRef<HTMLAudioElement | null>(null);
+    const booRef = useRef<HTMLAudioElement | null>(null);
+    const audioPrimedRef = useRef(false);
 
     const scrollToWinners = () => {
         // Play cheer sound immediately when button is clicked
@@ -347,20 +350,49 @@ export default function AwardsPage() {
         return () => clearTimeout(id);
     }, [slideDirection]);
 
+    // Init audio once
+    useEffect(() => {
+        cheerRef.current = new Audio('/cheer.mp3');
+        booRef.current = new Audio('/boo.mp3');
+        const unlock = () => {
+            if (audioPrimedRef.current) return;
+            audioPrimedRef.current = true;
+            // iOS requires a user interaction to start audio context
+            cheerRef.current?.play().then(() => {
+                if (cheerRef.current) {
+                    cheerRef.current.pause();
+                    cheerRef.current.currentTime = 0;
+                }
+            }).catch(() => {});
+            booRef.current?.play().then(() => {
+                if (booRef.current) {
+                    booRef.current.pause();
+                    booRef.current.currentTime = 0;
+                }
+            }).catch(() => {});
+            window.removeEventListener('touchstart', unlock);
+            window.removeEventListener('click', unlock);
+        };
+        window.addEventListener('touchstart', unlock, { passive: true });
+        window.addEventListener('click', unlock);
+        return () => {
+            window.removeEventListener('touchstart', unlock);
+            window.removeEventListener('click', unlock);
+        };
+    }, []);
+
     const playCheerSound = () => {
         try {
-            const cheer_sounds = new Audio('/cheer.mp3');
-
-            cheer_sounds.volume = Math.random() * 0.3 + 0.2;
-            cheer_sounds.playbackRate = Math.random() * 0.2 + 0.9;
-            cheer_sounds.play().catch(() => {});
-            
-            // Stop the sound after 2 seconds to keep it short
+            const a = cheerRef.current;
+            if (!a) return;
+            a.volume = Math.random() * 0.3 + 0.2;
+            a.playbackRate = Math.random() * 0.2 + 0.9;
+            a.currentTime = 0;
+            a.play().catch(() => {});
             setTimeout(() => {
-                cheer_sounds.pause();
-                cheer_sounds.currentTime = 0;
-            }, 7000);
-
+                a.pause();
+                a.currentTime = 0;
+            }, 2000);
         } catch (error) {
             console.log("Audio file not supported or found", error);
         }
@@ -446,13 +478,12 @@ export default function AwardsPage() {
 
     const playBooSound = () => {
         try {
-            const boo_sounds = new Audio('/boo.mp3');
-
-            setTimeout(() => {
-                boo_sounds.volume = Math.random() * 0.3 + 0.2; // Random volume between 0.2 and 0.5
-                boo_sounds.playbackRate = Math.random() * 0.2 + 0.9; // Random playback rate between 0.9 and 1.1
-                boo_sounds.play().catch(() => {});
-            }, 10);
+            const a = booRef.current;
+            if (!a) return;
+            a.volume = Math.random() * 0.3 + 0.2;
+            a.playbackRate = Math.random() * 0.2 + 0.9;
+            a.currentTime = 0;
+            a.play().catch(() => {});
         } catch (error) {
             console.log('Audio not supported or file not found:', error);
         }
