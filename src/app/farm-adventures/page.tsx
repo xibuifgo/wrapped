@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './farm-adventures.module.scss';
 
 export default function FarmAdventuresPage() {
@@ -171,6 +171,24 @@ export default function FarmAdventuresPage() {
     const deltaX = useRef(0);
   const img = getImageForGroup(group.title);
   const hasCorrect = Array.isArray(group.correct);
+  const [sliderH, setSliderH] = useState<number | undefined>(undefined);
+  const slideRefs = useRef<Array<HTMLDivElement | null>>([]);
+
+  useEffect(() => {
+    const measure = () => {
+      const heights = slideRefs.current
+        .filter((el): el is HTMLDivElement => !!el)
+        .map((el) => el.offsetHeight);
+      if (heights.length) setSliderH(Math.max(...heights));
+    };
+    // Measure after paint
+    const id = requestAnimationFrame(measure);
+    window.addEventListener('resize', measure);
+    return () => {
+      cancelAnimationFrame(id);
+      window.removeEventListener('resize', measure);
+    };
+  }, [options.length]);
 
     const prevLocal = () => setIdx((i) => (i - 1 + options.length) % options.length);
     const nextLocal = () => setIdx((i) => (i + 1) % options.length);
@@ -194,7 +212,7 @@ export default function FarmAdventuresPage() {
     return (
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>{group.title}</h2>
-        <div className={styles.miniSlider} onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
+  <div className={styles.miniSlider} style={sliderH ? { height: sliderH } : undefined} onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
           <button className={`${styles.miniNavBtn} ${styles.left}`} onClick={prevLocal} aria-label={`Previous ${group.title} option`}>
             <span aria-hidden>‹</span>
           </button>
@@ -202,11 +220,11 @@ export default function FarmAdventuresPage() {
             <span aria-hidden>›</span>
           </button>
 
-          <div className={styles.miniTrack} style={{ transform: `translateX(-${idx * 100}%)` }}>
+          <div className={styles.miniTrack} style={{ transform: `translate3d(-${idx * 100}%, 0, 0)` }}>
             {options.map(([option, desc], i) => {
               const isCorrect = hasCorrect && (group.correct as string[]).includes(option);
               return (
-                <div className={styles.miniSlide} key={`${group.title}-${option}-${i}`}>
+                <div className={styles.miniSlide} key={`${group.title}-${option}-${i}`} ref={(el) => { slideRefs.current[i] = el; }}>
                   <div className={styles.card}>
                     <div className={styles.cardHeader}>
                       <span className={styles.group}>{group.title}</span>
@@ -220,7 +238,7 @@ export default function FarmAdventuresPage() {
                       <div className={styles.media}>
                         {img ? (
                           // eslint-disable-next-line @next/next/no-img-element
-                          <img src={img} alt="scene" />
+                          <img src={img} alt="scene" decoding="async" loading="eager" />
                         ) : (
                           <div className={styles.placeholder} aria-hidden />
                         )}
