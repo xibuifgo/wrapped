@@ -1244,6 +1244,36 @@ export default function PersonAdventurePage() {
 
                 html += "<p> &quot; Now we turn to an interview with the farmer himself. Let's see what he has to say - &quot;. You cut Salma off </p>";
 
+            } else if (personAdventure.slang === "Butters") {
+
+                html += "<p> &quot;Butter. A product we all know and love, has been taken over by cows when judge Madiha granted them the production rights. Because of this, the price of butter has increased dramatically. Here with us is the lead butter-maker Marcow.&quot; Salma says. </p>";
+
+                html += "<p> The slideshow of images switches to a video of a cow in a construction hat. &quot;Thank you Salma. After learning what butters meant we decided humans should no longer use us for their dairy delicacies.&quot; the cow says in a thick british accent. &quot; Hence, we decided to take things into our own hands and produce butter CONSENSUALLY. We are happy to say that sales are skyrocketing!&quot; </p>";
+
+                html += "<p> As he mentions the sales skyrocketing you notice a little footnote that reads: </p>";
+
+                html += "<p> *Among Vegans ONLY </p>";
+
+                html += "<p> The video cuts back to a slideshow of more cartoons of butter, cows and factories. &quot;Well there you have it! Butter sales are down as the price continues to skyrocket, and we can all thank " + person + " for this. If you want more content like this make sure to follow!&quot;  </p>"
+
+            } else if (personAdventure.slang === "Cheeky Nandos") {
+
+                html += "<p> &quot;Animalism is what they're calling it.&quot; Salma starts.  &quot;The chickens have now turned on the cows for hate speech. The heads of HR are taking a stand against this workplace conflict. Here with us now are Samiya and Madiha.&quot; </p>";
+
+                html += "<p> &quot;Just to add onto that&quot; Samiya says. &quot;The chickens are also able to speak English! And they are not very happy with whoever taught the cows Cheeky Nandos. To all the chickens and cows, if you or a loved one has been affected by animalism, please reach out to us.&quot;  </p>";
+
+                html += "<p> The screen cuts back to a slideshow showing animations of chickens and cows fighting. You can't help but appreciate how well the visuals are (shoutout to Rameen and Khadeja).  &quot;Thank you so much Madiha&quot;, Salma says. &quot;And now we turn to a representative of the cow community.&quot; </p>";
+
+
+                html += "<p> &quot;Why are we to blame?!&quot; The cow says in a British accent, he is also standing at the farm. In the background you can see Madiha running towards the cow.   </p>";
+
+                html += "<p> &quot;Oi! Shut up Fatty!&quot; Madiha yells. &quot;Why is your ego inflated just cuz chickens get eaten. Have you ever heard of beef?&quot; </p>";
+
+
+                html += "<p> Samiya rushes to the camera and lowers it with her hand. “WOAHHH THERE I'm so sorry about her (madiha),” she says. You can see her feet trying to shuffle in between Madiha and the cow. “Apologize right now Madiha!” Samiya whispers. Then the camera cuts. </p>";
+
+                html += "<p> &quot;Well there you have it!&quot; Salma says. &quot;Glad to see workplace conflicts don't just exist among humans!&quot; she jokes &quot;Was that too far? Oh well it's too late now. If you want to see more content like this make sure to follow!&quot;  </p>";
+
             }
 
         } else {

@@ -76,8 +76,8 @@ export default function FarmAdventuresPage() {
       sols: {
         "88": "You can only speak to the cows in reverse because 88 is a palindrome. Maybe a reflective surface will help?",
         "45": "You can only speak to the cows in German. A German/English Dictionary might be handy for this!",
-        "16": "Correct",
-        "23": "Correct",
+        "16": "I (Nour) am the troll, and the two correct numbers are from my shortcode! nm1623",
+        "23": "I (Nour) am the troll, and the two correct numbers are from my shortcode! nm1623",
         "97": "The troll keeps only one cow because 97 is a prime number. There is no way to reverse this",
         "36": "The cows become minecraft cows because 36 is a square number. There is no way to escape this"
       },
