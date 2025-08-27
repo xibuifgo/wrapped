@@ -16,6 +16,7 @@ export default function VoteButtons({ person }: VoteButtonsProps) {
 
   useEffect(() => {
     loadVotes();
+    loadUserVote();
   }, [person]);
 
   const loadVotes = async () => {
@@ -27,20 +28,58 @@ export default function VoteButtons({ person }: VoteButtonsProps) {
     }
   };
 
+  // Load user's previous vote from localStorage
+  const loadUserVote = () => {
+    try {
+      const storedVote = localStorage.getItem(`vote_${person}`);
+      if (storedVote === 'up' || storedVote === 'down') {
+        setUserVote(storedVote);
+      }
+    } catch (error) {
+      console.error('Error loading user vote from localStorage:', error);
+    }
+  };
+
   const handleVote = async (voteType: 'up' | 'down') => {
     if (isLoading) return;
     
+    // If clicking the same button that's already voted, do nothing
+    if (userVote === voteType) {
+      return;
+    }
+    
     setIsLoading(true);
-    // voting logic!!
     try {
       if (voteType === 'up') {
         await addUpvote(person);
-        setVotes(prev => ({ ...prev, upvotes: prev.upvotes + 1 }));
+        // Update local state based on previous vote
+        if (userVote === 'down') {
+          // Switching from downvote to upvote
+          setVotes(prev => ({ 
+            upvotes: prev.upvotes + 1, 
+            downvotes: prev.downvotes - 1 
+          }));
+        } else {
+          // New upvote
+          setVotes(prev => ({ ...prev, upvotes: prev.upvotes + 1 }));
+        }
         setUserVote('up');
+        localStorage.setItem(`vote_${person}`, 'up');
       } else {
         await addDownvote(person);
-        setVotes(prev => ({ ...prev, downvotes: prev.downvotes + 1 }));
+        // Update local state based on previous vote
+        if (userVote === 'up') {
+          // Switching from upvote to downvote
+          setVotes(prev => ({ 
+            upvotes: prev.upvotes - 1, 
+            downvotes: prev.downvotes + 1 
+          }));
+        } else {
+          // New downvote
+          setVotes(prev => ({ ...prev, downvotes: prev.downvotes + 1 }));
+        }
         setUserVote('down');
+        localStorage.setItem(`vote_${person}`, 'down');
       }
     } catch (error) {
       console.error('Error voting:', error);

@@ -42,17 +42,26 @@ export async function getVotes(person: string): Promise<VoteData> {
   }
 }
 
-// Add an upvote for a person
+// Add an upvote for a person (removes downvote if exists)
 export async function addUpvote(person: string): Promise<void> {
   try {
     const voteDoc = doc(db, 'votes', person);
     const voteSnapshot = await getDoc(voteDoc);
     
     if (voteSnapshot.exists()) {
-      // Document exists, update it
-      await updateDoc(voteDoc, {
-        upvotes: increment(1)
-      });
+      const currentData = voteSnapshot.data() as VoteData;
+      // If user previously downvoted, remove that downvote and add upvote
+      if (currentData.downvotes > 0) {
+        await updateDoc(voteDoc, {
+          upvotes: increment(1),
+          downvotes: increment(-1)
+        });
+      } else {
+        // Just add upvote
+        await updateDoc(voteDoc, {
+          upvotes: increment(1)
+        });
+      }
     } else {
       // Document doesn't exist, create it
       await setDoc(voteDoc, {
@@ -66,17 +75,26 @@ export async function addUpvote(person: string): Promise<void> {
   }
 }
 
-// Add a downvote for a person
+// Add a downvote for a person (removes upvote if exists)
 export async function addDownvote(person: string): Promise<void> {
   try {
     const voteDoc = doc(db, 'votes', person);
     const voteSnapshot = await getDoc(voteDoc);
     
     if (voteSnapshot.exists()) {
-      // Document exists, update it
-      await updateDoc(voteDoc, {
-        downvotes: increment(1)
-      });
+      const currentData = voteSnapshot.data() as VoteData;
+      // If user previously upvoted, remove that upvote and add downvote
+      if (currentData.upvotes > 0) {
+        await updateDoc(voteDoc, {
+          downvotes: increment(1),
+          upvotes: increment(-1)
+        });
+      } else {
+        // Just add downvote
+        await updateDoc(voteDoc, {
+          downvotes: increment(1)
+        });
+      }
     } else {
       // Document doesn't exist, create it
       await setDoc(voteDoc, {
