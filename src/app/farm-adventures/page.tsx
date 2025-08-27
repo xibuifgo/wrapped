@@ -139,25 +139,26 @@ export default function FarmAdventuresPage() {
       {
         title: "Slang",
         sols: {
-          "Bare": "They learn what bare means and figure out they've experienced &quot;Bare Animal Rights Violations&quot;. Animal Farm Unfolds",
+          "Bare": "They learn what bare means and figure out they've experienced \"Bare Animal Rights Violations\". Animal Farm Unfolds",
           "Cheeky Nandos": "Animalism. The chickens hate the cows because the cows found out they're food.",
-          "Shut up Fatty": "???",
-          "Butters": "The cows find out what butter is and ???",
-          "Sicko": "???",
-          "Having Beef": "???",
-          "Mad": "???"
+          "Shut up Fatty": "Moozempic.",
+          "Butters": "The cows find out what butter is and buy the production rights. Now all the butter in the town is produced by them.",
+          "Sicko": "You start something called the \"Sicko Cow Trials\" if you don't pick 97.",
+          "Having Beef": "Animal Farm + Vegan Movement",
+          "Mad": "If you're not wearing the STEMM Sticker, the cows will learn how to express their feelings. If you are wearing it they will find their leader."
         }
       }
   ];
 
   const getImageForGroup = (groupTitle: string): string | undefined => {
     const title = groupTitle.toLowerCase();
-  if (title.includes('sisters') || title.includes('store')) return '/store.jpg';
+    if (title.includes('sisters') || title.includes('store')) return '/store.jpg';
     if (title.includes('cabin')) return '/cabin.jpeg';
     if (title.includes('forest')) return '/mountains.jpg';
     if (title.includes('rock')) return '/rock_climb.png';
-    if (title.includes('troll')) return '/troll.jpg';
-  if (title.includes('farmer')) return '/cow_cute.png';
+    if (title.includes('troll')) return '/troll_img.jpg';
+    if (title.includes('slang')) return '/cow_cute.png';
+    if (title.includes('farm')) return '/farm.jpg';
     return undefined;
   };
 
@@ -219,7 +220,7 @@ export default function FarmAdventuresPage() {
     };
 
     return (
-      <section className={styles.section}>
+  <section className={`${styles.section} ${group.title.toLowerCase().includes('slang') ? styles.slang : ''}`}>
         <h2 className={styles.sectionTitle}>{group.title}</h2>
   <div className={styles.miniSlider} style={sliderH ? { height: sliderH } : undefined} onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
           <button className={`${styles.miniNavBtn} ${styles.left}`} onClick={prevLocal} aria-label={`Previous ${group.title} option`}>

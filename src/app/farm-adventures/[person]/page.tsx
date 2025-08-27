@@ -25,6 +25,9 @@ export default function PersonAdventurePage() {
     const [isClient, setIsClient] = useState(false);
     const [currentPage, setCurrentPage] = useState(0);
     const receiptRef = useRef<HTMLDivElement>(null);
+    // Lightbox state for viewing journal photos
+    const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+    const [lightboxIndex, setLightboxIndex] = useState(0);
     
     useEffect(() => {
         setIsClient(true);
@@ -34,6 +37,37 @@ export default function PersonAdventurePage() {
     const adventures = adventureData.adventures as unknown as Record<string, PersonAdventure>;
     const paths = adventureData.paths;
     const itemPrices = adventureData.item_prices as Record<string, number>;
+    // Static list of journal images in public/journal (prefer png variants)
+    const journalImagePaths = ['/journal/1.png', '/journal/2.png', '/journal/3.png', '/journal/4.png'];
+
+    // Lightbox keyboard navigation
+    useEffect(() => {
+        if (!isLightboxOpen) return;
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                setIsLightboxOpen(false);
+                document.body.style.overflow = '';
+            } else if (e.key === 'ArrowRight') {
+                setLightboxIndex((i) => (i + 1) % journalImagePaths.length);
+            } else if (e.key === 'ArrowLeft') {
+                setLightboxIndex((i) => (i - 1 + journalImagePaths.length) % journalImagePaths.length);
+            }
+        };
+        window.addEventListener('keydown', onKey);
+        return () => window.removeEventListener('keydown', onKey);
+    }, [isLightboxOpen, journalImagePaths.length]);
+
+    const openLightbox = (index: number) => {
+        setLightboxIndex(index);
+        setIsLightboxOpen(true);
+        try { document.body.style.overflow = 'hidden'; } catch {}
+    };
+    const closeLightbox = () => {
+        setIsLightboxOpen(false);
+        try { document.body.style.overflow = ''; } catch {}
+    };
+    const prevLightbox = () => setLightboxIndex((i) => (i - 1 + journalImagePaths.length) % journalImagePaths.length);
+    const nextLightbox = () => setLightboxIndex((i) => (i + 1) % journalImagePaths.length);
     
     // Check if the person exists in the adventures data
     const personAdventure: PersonAdventure | undefined = 
@@ -69,7 +103,7 @@ export default function PersonAdventurePage() {
     const fav_content = polls.polls["Best short-form content"];
     type contentKey = keyof typeof fav_content;
 
-    let content: contentKey | 'pass' = 'pass';
+    let content: contentKey | 'LinkedIn Reels' = 'LinkedIn Reels';
 
     for (const [content_type, data] of Object.entries(fav_content) as [contentKey, { voters: string[] }][]) {  
         if (data.voters.includes(person)) {
@@ -94,6 +128,7 @@ export default function PersonAdventurePage() {
 
     // Only calculate change on client to avoid hydration mismatch
     const items = personAdventure?.items ?? [];
+    const hasCamera = items.includes('Camera');
     const change = isClient
     ? Math.floor(
         20 -
@@ -219,6 +254,19 @@ export default function PersonAdventurePage() {
         );
     }
 
+    if (person === "Khadeja") {
+        return (
+            <div className={styles.container}>
+                <h1 className={styles.title}>{person}&apos;s Farm Adventure</h1>
+                <div className={styles.journalContainer}>
+                    <div className={styles.journalPage}>
+                        <p>You spent your time trying to make cats talk instead.</p>
+                    </div>
+                </div>
+            </div>
+        );  
+    }
+
     // Check if the person has complete data
     if (!personAdventure?.items || !personAdventure?.actions) {
         return (
@@ -331,13 +379,13 @@ export default function PersonAdventurePage() {
             } else if (personAdventure.items.includes("Camera")) {
                 // ADD MORE STORY TO THIS
 
-                html += "<p>You decide to document this mysterious place. You take several photos of the cabin's exterior, capturing its weathered wood. You decide to scout the perimeter. At a distance you can see sections blocked off by fences, it looks farm-like, you think. You decide to take a picture of it, intrigued by the stillness of what you believe used to be a vibrant farm.</p>";
+                html += "<p>You decide to document this mysterious place. You take a photo of the cabin's exterior, capturing its weathered wood. You decide to scout the perimeter. At a distance you can see sections blocked off by fences, it looks farm-like, you think. You decide to take a picture of it, intrigued by the stillness of what you believe used to be a vibrant farm.</p>";
 
                 html += "<p> You walk towards the back of the cabin and find a plushie. You can't make out what animal it's supposed to be as it has been left in the dirt for so long it's starting to decompose. You decide to take a picture of that as well.  </p>";
 
                 html += "<p> Still curious, you peer into one of the windows. The sunlight perfectly strikes a photo sitting on a desk. It's a picture of  a troll with a baby cow. &quot;Is that the farmer's cow?&quot; you think. You decide to snap a photo. </p>";
 
-                html += "<p> Satisfied with the three photos and the stories you might unravel, you decide to continue your adventure. </p>";
+                html += "<p> Satisfied with the four photos and the stories you might unravel, you decide to continue your adventure. </p>";
 
                 return html;
             } else {
@@ -488,7 +536,7 @@ export default function PersonAdventurePage() {
     }
 
     function trollDialogue(personAdventure: PersonAdventure): string {
-        // Why are there so many of you? Dont worry we reproduce logarithmically and we're nearing our asymptote.
+        // Why are there so many of you? Dont worry we reproduce logarithmically
         let html = "<p>As you walk, you see a line of cut logs laid out across the mountain. Without knowing, you cross into the troll line and bump into a troll. You sigh, why does this troll look familiar?</p>";
 
         html += "<p> All of a sudden a troll spawns from every log in the forest. There were 228 trolls to be exact. WHY DO ALL THESE TROLLS LOOK THE SAME? </p>";
@@ -847,7 +895,22 @@ export default function PersonAdventurePage() {
 
                     html += "<p> &quot;Ya, troll told me. So weird&quot; </p>";
 
-                    html += "<p> &quot;Do you wanna know the equation? It is [INSERT EQUATION HERE]. Solve this to find my age :)&quot; he jotted. </p>";
+                    html += "<p> &quot;Do you wanna know the equation? It is "
+                        + "<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline' style='margin:0 6px; font-size:1.1em; vertical-align: middle;'>"
+                        + "<mrow>"
+                        + "<mn>1</mn>"
+                        + "<mo>+</mo>"
+                        + "<mn>162</mn>"
+                        + "<mo>&#x22C5;</mo>"
+                        + "<mi>log</mi>"
+                        + "<mo>(</mo>"
+                        + "<mn>1</mn>"
+                        + "<mo>+</mo>"
+                        + "<mfrac><mi>x</mi><mn>3</mn></mfrac>"
+                        + "<mo>)</mo>"
+                        + "</mrow>"
+                        + "</math>"
+                        + ". Solve this to find my age :)&quot; he jotted. </p>";
 
                     html += "<p> &quot;Haha, I'm sure you're no older than 30.&quot;</p>";
 
@@ -1075,9 +1138,118 @@ export default function PersonAdventurePage() {
     }
 
     function afterMath(personAdventure: PersonAdventure): string {
-        let html = "<p> A few months pass. You bla bla </p>";
 
-        html += "<p> WOO </p>";
+        const fam_voice = person != "Salma" ? "Salma" : "Madiha";
+
+        const lang_extra = personAdventure.guess === 45 ? "- wait actually scratch that, they speak German" : "";
+
+        const num_extra = personAdventure.guess === 97 ? "or should I say cow singular?" : "";
+
+        const ref = personAdventure.guess === 97 ? "cow is" : "cows are";
+
+        let html = "<p> A few months pass. The events of that day are starting to fade. You're sitting in your room watching " + content + " when suddenly you hear a familiar voice. </p>";
+
+        html += "<p> &quot;Breaking News!&quot; " + fam_voice + " says. &quot;The rumors have just been confirmed to be true. The cows " + num_extra + " can indeed speak English" + lang_extra + "! Now I know it wasn&apos;t just me who thought " + person +" was crazy when she came back from the mountain, don't tell her I told you, but it's true. Now even though that sounds like great news, you will not believe what the " + ref + " up to now. Make sure to follow to be the first to find out! &quot; </p>";
+
+        if (personAdventure.guess !== 97){
+            html += "<p> &quot; UGH I HATE IT WHEN THEY DO THAT &quot; you shout. The adrenaline is getting to you now. What is going on with the cows? They're supposed to be isolated in poll peak, how have they reached " + fam_voice + " and her team so quickly?&quot; </p>";
+
+            html += "<p> You find another video on her account and click on it. <p>";
+
+            if (personAdventure.guess === 36) {
+
+                html += "<p>  </p>";
+
+            }
+
+            if (personAdventure.guess === 45) {
+                html += "<p> &quot; We can see now that the cows are migrating to Germany! &quot; Salma says. &quot; Let&apos;s hope they don&apos;t get turned into Stroganoff! &quot; Salma jokes </p>";
+
+                html += "<p> Your heart stops, you quickly open google and search the vegan percentage in Germany. Your stomach drops as you see the result. </p>";
+
+                html += "<p> 2 percent. </p>";
+
+                html += "<p> You bury your head in your hands, &quot; I just killed those cows &quot; you whisper, defeated. </p>";
+
+                html += "&quot; And now, here is the farmer! &apos; Salma says, as the video cuts to the same farmer standing in his farm";
+
+                html += "&quot; Honestly I&apos;m quite relieved&quot; he says. &quot; They can go do whatever they want in Germany I&apos;m FREE! &quot; </p>";
+
+                html += "&quot; Well there you have it folks! A happy ending for the farmer! Make sure to follow me for more content like this! </p>";
+            } else if (personAdventure.slang === "Shut up Fatty") {
+
+                html += "<p> &quot; Moozempic. The new craze among humans and cows alike. And the first trend to be made by cows! &quot; </p>";
+
+                html += "<p> &quot; We managed to talk to the lead developer Cowlie Jenner. &quot; </p>";
+
+                html += "<p> &quot; Well it started really simply. As you know, there was a mad person screaming Shut up Fatty! at us. Through extensive research we found out what it meant and were horrified at it's implications. Was she telling us we weren't worth listening to because of our weight? Upon further research we found this was common among humans and decided to change that. So that's why we made moozempic, so the fattys can finally be heard! &quot; </p>";
+
+                html += "<p> &quot; And now, here is the farmer! &apos; Salma says, as the video cuts to the same farmer standing in his farm";
+
+                html += "&quot; Honestly I&apos;m quite relieved&quot; he says. &quot; They can go do whatever they want as long as it's not animal farm! &quot; he gives a soft relieved chuckle. </p>";
+
+                html += "<p> &quot; Well there you have it! We might not be advancing as a society but at least even the cows learned how to profit on our insecurities! &quot; </p>"
+
+            } else if (personAdventure.slang === "Bare") {
+
+                html += "<p> &quot; Animal Farm.&quot; Salma begins. &quot; We've all read it in school, but have we seen it play out? Well now you can! The animals of poll peak have declared war on the human race, after finding out what bare means. Here is a clip from one of the cows &quot; </p>"
+
+                html += "<p> &quot; Oi mate so we was just chillin havin a nice time when a random lady comes yelling bare at us. I was a tad confused but me and the lads put our 'eads together and decided to learn what it meant. Turns out we've been experiencing BARE ANIMAL RIGHTS VIOLATIONS. We couldn't accept that so we overthrew the old lad. Anyways, GO BEASTS OF ENGLAND!!! </p>";
+
+                html += "<p> You can't believe it. Your vision starts to blur as your hands get clammy. The farmers one fear has come true. </p>";
+
+                html += "<p> &quot; Now we turn to an interview with the farmer himself. Let's see what he has to say - &quot;. You cut Salma off </p>";
+
+            }
+
+        } else {
+            html += "<p> &quot; UGH I HATE IT WHEN THEY DO THAT &quot; you shout. The adrenaline is getting to you now. What is going on with the cow? It's supposed to be isolated in poll peak, how has she reached " + fam_voice + " and her team so quickly?&quot; </p>"; 
+            
+            html += "<p> You click on the account and find another video of Salma speaking over a bunch of animated images. </p>";
+
+            html += "<p> &quot; So turns out there was only one cow on the farm, and her first word was" + personAdventure.slang + "! Since the poor girl does not have any cow counterparts she was taken into an animal shelter and assimilated with the humans over there. We have a short video of her speaking thanks to the staff of that shelter! &quot;" + fam_voice + " says</p>";
+
+            html += "The next thing you know, you&apos;re staring at a cow standing on it&apos;s two hind legs and wearing a blond wig."
+
+            if (personAdventure.slang === "Sicko") {
+                html += "<p> &quot; Well ya know it was really traumatic for me, one minute I'm chillin with my mates having some fresh grass and next thing ye know they're all gone! &quot; the cow starts in a thick british accent. &quot; And before I could wrap my head around it some SICKO comes up to me and starts screaming the word sicko! I was scared for me life so I just repea'ed it! Anyways, after searching wut that word meant, I've decided to become a vet, so I guess I should thank 'er. If you're watching this thanks luv! &quot; </p>";
+
+                html += "<p>&quot; Well there you have it! A happy ending! A cow that has found purpose among so much loss. We tried to contact the farmer but he didn't respond. &quot; </p>";
+
+            } else if (personAdventure.slang === "Having Beef") {
+                html += "<p> &quot; I just wanted to come on 'ere and encourage everyone to be a vegan.&quot; the cow says in a thick british accent. &quot;There's no way you lot are casually just eating us? When I first heard that abhorrent statement I had no clue what I was sayin! Just to learn a bit more English and realize what it meant. Oh! The horror! Is that where all my friends went? Are they just food to you?!&quot; </p>";
+
+                html += "<p> Next thing you know the cow is starting to get violent and swing her hoofs. You stare at your screen in shock. What have you done? Next thing you know Madiha wrestles the cow. </p>"
+
+                html += "<p> &quot; Remember what we talked about Cowleen, take a deep breath, it&apos;s going to be okay. &quot; Madiha says soothingly. </p>";
+
+                html += "<p> &quot; Well there you have it folks! &quot; Salma reenters. &quot; Looks like Cowleen has found her voice, and she is not happy! We tried to find the farmer but he did not respond. &quot; </p>";
+
+            } else if (personAdventure.slang === "Shut up Fatty") {
+
+                html += "<p> Well ya know it was really traumatic for me, one minute I'm chillin with my mates having some fresh grass and next thing ye know they're all gone! &quot; the cow starts in a thick british accent. &quot; And keep in mind I haven't said anythin before some random person comes up to me and starts yellin shut up fatty! Like... I haven't even spoken. I didn't know wut it meant at the time so I just repea'ed it. </p>";
+
+                html += "<p> &quot;After learning what it meant I was mortified! Was she telling me I had no right to speak cuz of my weight? I wasnt havin it so I decided to make Moozempic. You heard me right. &quot; the cow says, a hint of pride in her voice. </p>";
+
+                html += "<p> &quot; I've never felt more beautiful, I'm sellin millions! &quot; the cow exclaims, her confidence shining through. &quot; Anyways, got to go luv! I've got more people to make insecure. &quot;</p>";
+
+                html += "<p>&quot; Well there you have it! Moozempic, the new celebrity craze has been started by a cow! &quot; </p>";
+
+            }
+
+        }
+
+        if (personAdventure.slang !== "Bare") {
+            html += "<p>" + person + ", if you're watching this, was this what you wanted to achieve? </p>";
+
+            html += "<p> The call out hits you like a truck, you shut your phone off and sit silently, staring at the ground. &quot; Is this what I wanted? &quot; you ask, but it's out of your control now. All you have is the memory of the adventure. </p>";
+        } else {
+            html += "<p> After shutting your phone off you sit silently, staring at the ground. &quot; Is this what I wanted? &quot; you ask, but it's out of your control now. All you have is the memory of the adventure. </p>";
+        }
+
+        html += "<p> An adventure that changed everything. </p>";
+
+        html += "<p> Are you happy with how it turned out? </p>";
 
         return html;
     }
@@ -1252,6 +1424,15 @@ export default function PersonAdventurePage() {
                 {/* <h2 className={styles.chapterTitle}>Chapter 5: The Adventure Unfolds</h2> */}
                 <div className={styles.storyText}>
                     <div dangerouslySetInnerHTML={{ __html: pathResult(personAdventure as PersonAdventure) }} />
+                    {hasCamera && (
+                        <button
+                            type="button"
+                            className={styles.viewPhotosButton}
+                            onClick={() => openLightbox(0)}
+                        >
+                            View Photos
+                        </button>
+                    )}
                 </div>
             </div>
         </div>,
@@ -1298,7 +1479,7 @@ export default function PersonAdventurePage() {
         </div>] : []
         ),
 
-        // FARMER INTERACTION - Turn One
+        // SLANG
         <div key="page11" className={styles.journalPage}>
             <div className={styles.pageContent}>
                 {/* <h2 className={styles.chapterTitle}>Chapter 5: The Adventure Unfolds</h2> */}
@@ -1308,8 +1489,18 @@ export default function PersonAdventurePage() {
             </div>
         </div>,
 
-        // Summary
+        // AFTERMATH
         <div key="page12" className={styles.journalPage}>
+            <div className={styles.pageContent}>
+                {/* <h2 className={styles.chapterTitle}>Chapter 5: The Adventure Unfolds</h2> */}
+                <div className={styles.storyText}>
+                    <div dangerouslySetInnerHTML={{ __html: afterMath(personAdventure as PersonAdventure) }} />
+                </div>
+            </div>
+        </div>,
+
+        // Summary
+        <div key="page13" className={styles.journalPage}>
             <div className={styles.pageContent}>
                 <h2 className={styles.chapterTitle}>Adventure Summary</h2>
                 <div className={styles.summaryContent}>
@@ -1354,6 +1545,7 @@ export default function PersonAdventurePage() {
                         <p>&quot;{personAdventure.slang}&quot;</p>
                     </div>
                 </div>
+                <p>Thank you so much {person} for playing! I hope you enjoyed it.</p>
             </div>
         </div>
     ];
@@ -1405,6 +1597,17 @@ export default function PersonAdventurePage() {
                     </div>
                 </div>
             </div>
+            {isLightboxOpen && (
+                <div className={styles.lightboxOverlay} onClick={closeLightbox} role="dialog" aria-modal="true">
+                    <button type="button" className={`${styles.lightboxButton} ${styles.lightboxPrev}`} onClick={(e) => { e.stopPropagation(); prevLightbox(); }} aria-label="Previous image">‹</button>
+                    <div className={styles.lightboxImageWrapper} onClick={(e) => e.stopPropagation()}>
+                        <img src={journalImagePaths[lightboxIndex]} alt={`Journal photo ${lightboxIndex + 1}`} className={styles.lightboxImage} />
+                        <div className={styles.lightboxCounter}>{lightboxIndex + 1} / {journalImagePaths.length}</div>
+                    </div>
+                    <button type="button" className={`${styles.lightboxButton} ${styles.lightboxNext}`} onClick={(e) => { e.stopPropagation(); nextLightbox(); }} aria-label="Next image">›</button>
+                    <button type="button" className={`${styles.lightboxButton} ${styles.lightboxClose}`} onClick={(e) => { e.stopPropagation(); closeLightbox(); }} aria-label="Close">×</button>
+                </div>
+            )}
         </div>
     );
 }

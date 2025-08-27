@@ -282,9 +282,6 @@ export default function AwardsPage() {
     const audioPrimedRef = useRef(false);
 
     const scrollToWinners = () => {
-        // Play cheer sound immediately when button is clicked
-        playCheerSound();
-        
     // Mark body as fullscreen awards mode so navbar can hide on mobile
     setBodyAwardsFullscreen(true);
     setIsFullScreen(true);
@@ -292,7 +289,10 @@ export default function AwardsPage() {
         setAnimatingWinner(-1); // Start with all hidden
         
         // Faster staggered winner animations
-        setTimeout(() => setAnimatingWinner(2), 400);  // Third place
+        setTimeout(() => {
+            setAnimatingWinner(2);  // Third place
+            playCheerSound();
+        }, 400);
         setTimeout(() => setAnimatingWinner(1), 700); // Second place  
         setTimeout(() => {
             setAnimatingWinner(0); // First place
@@ -389,10 +389,6 @@ export default function AwardsPage() {
             a.playbackRate = Math.random() * 0.2 + 0.9;
             a.currentTime = 0;
             a.play().catch(() => {});
-            setTimeout(() => {
-                a.pause();
-                a.currentTime = 0;
-            }, 2000);
         } catch (error) {
             console.log("Audio file not supported or found", error);
         }

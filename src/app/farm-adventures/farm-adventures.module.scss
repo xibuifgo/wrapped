@@ -361,3 +361,6 @@
 }
 .miniDot { width: 8px; height: 8px; border-radius: 50%; background: rgba(0,0,0,0.2); border: none; }
 .miniDot.active { background: #2d6a4f; }
+
+/* Raise nav arrows slightly for the Slang section so they don't overlap text */
+.slang .miniNavBtn { top: 40%; }
