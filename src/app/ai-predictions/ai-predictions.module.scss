@@ -51,6 +51,8 @@
   padding: 1rem;
   border-bottom: 1px solid #f0f0f0;
   transition: all 0.3s ease;
+  will-change: transform, background, box-shadow;
+  transform: translateZ(0);
   
   &:hover {
     background: #f8f9fa;
@@ -68,6 +70,20 @@
       background: linear-gradient(90deg, #fff3d3 0%, #f8f9fa 100%);
     }
   }
+}
+.leaderboard a {
+  display: block;
+}
+
+/* Pulse/highlight when a player's score updates */
+.bump .leaderboardRow {
+  animation: bumpPulse 700ms ease;
+}
+
+@keyframes bumpPulse {
+  0% { box-shadow: 0 0 0 rgba(118, 75, 162, 0); background: #ffffff; }
+  30% { box-shadow: 0 8px 24px rgba(118, 75, 162, 0.25); background: #f7f3ff; }
+  100% { box-shadow: 0 0 0 rgba(118, 75, 162, 0); background: #ffffff; }
 }
 
 .rankColumn, .nameColumn, .scoreColumn {
@@ -94,12 +110,20 @@
 .score {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #27ae60;
-  background: #e8f5e8;
   padding: 0.5rem 1rem;
   border-radius: 20px;
   min-width: 60px;
   text-align: center;
+}
+
+.positiveScore {
+  background: #e8f5e8;
+  color: #27ae60;
+}
+
+.negativeScore {
+    background: #fdecea;
+    color: #a81d1d;
 }
 
 .footer {
@@ -111,6 +135,25 @@
     margin: 0;
     font-size: 1.1rem;
   }
+}
+
+.btn {
+    width: 40vw;
+    height: 50px;
+    padding: 10px;
+    display: block;
+    margin: auto;
+    margin-bottom: 20px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+
+    &:hover {
+        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    }
 }
 
 // Mobile responsive

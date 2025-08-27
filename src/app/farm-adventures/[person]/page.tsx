@@ -68,6 +68,16 @@ export default function PersonAdventurePage() {
     };
     const prevLightbox = () => setLightboxIndex((i) => (i - 1 + journalImagePaths.length) % journalImagePaths.length);
     const nextLightbox = () => setLightboxIndex((i) => (i + 1) % journalImagePaths.length);
+
+    // Prevent orphaned quotes by gluing them to adjacent words with a word-joiner
+    const glueQuotes = (html: string): string => {
+        if (!html) return html;
+        return html
+            // Add WORD JOINER (U+2060 = &#8288;) after opening quotes if next is non-space
+            .replace(/&quot;(?=\S)/g, "&quot;&#8288;")
+            // Add WORD JOINER before closing quotes if previous is non-space
+            .replace(/(\S)&quot;/g, "$1&#8288;&quot;");
+    };
     
     // Check if the person exists in the adventures data
     const personAdventure: PersonAdventure | undefined = 
@@ -361,7 +371,7 @@ export default function PersonAdventurePage() {
         if (!path) return "<p>You didn't choose a valid path</p>";
 
         if (path === "Cabin") {
-            let html = "<p>You approach the mysterious cabin. The wooden structure creaks in the mountain wind, and you can see a faint light flickering through the windows.</p>";
+            let html = "<p>You approach the mysterious cabin. The wooden structure creaks in the mountain wind, and you can see the sunlight illuminate the inside.</p>";
 
             if (personAdventure.items.includes("Lock picking kit")) {
                 html += "<p>You notice the door is locked, but fortunately you brought your lock picking kit! After a few tense minutes of work, you hear the satisfying click of the lock opening.</p>";
@@ -650,7 +660,7 @@ export default function PersonAdventurePage() {
 
                 html += "<p> The farmer hesitantly picks a card from the invisible deck. He pretends to pensively look at the card and memorize it. You take it back and perform some impressive invisible riffle shuffles and deck cuts. The farmer watches and smiles, as his eyes show increasing concern for your mental wellbeing. </p>";
 
-                html += "<p> You pretend to pull out a card and start cheering as if you got the card correct. The farmer is starting too look scared. &quot;Who is this freak he thinks to himself&quot;. You see a frown creep up on his face. </p>";
+                html += "<p> You pretend to pull out a card and start cheering as if you got the card correct. The farmer is starting too look scared. &quot;Who is this freak&quot; he thinks to himself. You see a frown creep up on his face. </p>";
             }
         } else if (action === "Investing Advice" ) {
             if (change > 5) {
@@ -1024,7 +1034,7 @@ export default function PersonAdventurePage() {
 
         let word = personAdventure.slang;
 
-        if (personAdventure.guess === 88 ) {
+        if (personAdventure.guess === 88 && !inventory.includes("Uno")) {
             word = word.split('').reverse().join('');
         } else if (personAdventure.guess === 45) {
             word = "Rindfleisch essen";
@@ -1068,7 +1078,7 @@ export default function PersonAdventurePage() {
             html += "<p> With renewed excitement you shout again. &quot;" + word + "!&quot; </p>";
         }
 
-        if ( personAdventure.guess === 88 ) {
+        if ( personAdventure.guess === 88 && !inventory.includes("Uno")) {
 
             if (bender === "Waterbender" ) {
                 html += "<p> &quot;Wait a minute&quot;, you think. &quot;This isn't right. Why can't I say...&quot; </p>";
@@ -1112,9 +1122,11 @@ export default function PersonAdventurePage() {
 
         const extra_text = personAdventure.guess === 36 ? "and a bunch of Minecraft cows no less" : "";
 
+        const lang = personAdventure.guess === 45 ? "german" : "english";
+
         html += "<p> You wait for a response but none comes. You try again. &quot;" + word + "!&quot; you shout louder this time. </p>";
 
-        html += "<p> The cows continue to stare at you blankly. You start to feel a bit silly shouting at a bunch of cows." + extra_text + " &quot;Can these cows not speak english?&quot; you think. You walk away defeated. </p>";
+        html += "<p> The cows continue to stare at you blankly. You start to feel a bit silly shouting at a bunch of cows." + extra_text + " &quot;Can these cows not speak " + lang + "?&quot; you think. You walk away defeated. </p>";
 
         html += "<p> &quot;" + word + "!&quot;</p>";
 
@@ -1147,21 +1159,43 @@ export default function PersonAdventurePage() {
 
         const ref = personAdventure.guess === 97 ? "cow is" : "cows are";
 
-        let html = "<p> A few months pass. The events of that day are starting to fade. You're sitting in your room watching " + content + " when suddenly you hear a familiar voice. </p>";
+        let html = "<p> A few months pass. The events of that day are starting to fade. You're sitting in your room watching " + content + " to procrastinate studying when suddenly you hear a familiar voice. </p>";
 
         html += "<p> &quot;Breaking News!&quot; " + fam_voice + " says. &quot;The rumors have just been confirmed to be true. The cows " + num_extra + " can indeed speak English" + lang_extra + "! Now I know it wasn&apos;t just me who thought " + person +" was crazy when she came back from the mountain, don't tell her I told you, but it's true. Now even though that sounds like great news, you will not believe what the " + ref + " up to now. Make sure to follow to be the first to find out! &quot; </p>";
 
         if (personAdventure.guess !== 97){
+
             html += "<p> &quot; UGH I HATE IT WHEN THEY DO THAT &quot; you shout. The adrenaline is getting to you now. What is going on with the cows? They're supposed to be isolated in poll peak, how have they reached " + fam_voice + " and her team so quickly?&quot; </p>";
 
             html += "<p> You find another video on her account and click on it. <p>";
 
-            if (personAdventure.guess === 36) {
+            if (personAdventure.slang === "Having beef") {
 
-                html += "<p>  </p>";
+                if (personAdventure.guess === 36) {
+
+                    html += "<p> &quot; The hit game Minecraft has now become a reality. &quot;" + fam_voice + " says. &quot; The farmer's cows have turned into blocks! According to the farmer, this is the work of the trolls, but who knows if he's telling the truth? &quot; </p>";
+
+                    html += "<p> &quot; Back to the cows &quot;  " + fam_voice + " says. &quot; It turns out they produce Minecraft meat when killed! Don't worry no cows were slaughtered, one was just incredibly old. Now here's a short clip of the cows speaking! &quot;  </p>";
+
+                    html += "<p> &quot; Ye we look quite funny dont't we? Can you imagine our shock when all of a sudden we become cuboids? And to add more confusion a random person came and started shouting " + personAdventure.slang + " at us! We searched up what that meant and realized you lot can't even eat our beef so, I guess we're safe. Side note, pictures are five quid! &quot; a cow says. </p>"
+
+                } else {
+
+                    html += "<p> &quot;The cows found out what beef is, and they are NOT happy. &quot;" + fam_voice + " says.  &quot; And now a representative of the cows has offered to come speak. &quot; </p>";
+
+                    html += "<p> &quot; I just wanted to come on 'ere and encourage everyone to be a vegan.&quot; the cow says in a thick british accent. &quot;There's no way you lot are casually just eating us? When I first heard that abhorrent statement I had no clue what I was sayin! Just to learn a bit more English and realize what it meant. Oh! The horror! You want beef so bad? I'll give you beef! &quot; </p>";
+
+                    html += "<p> Next thing you know the cow is starting to get violent and swinging her hoofs. You stare at your screen in shock. What have you done? Next thing you know Madiha tackles the cow to the ground. </p>"
+
+                    html += "<p> &quot; Remember what we talked about Cowleen, take a deep breath, it&apos;s going to be okay. &quot; Madiha says soothingly. </p>";
+
+                    html += "<p> &quot; Well there you have it folks! &quot; Salma reenters. &quot; Looks like Cowleen has found her voice, and she is not happy! We tried to find the farmer but he did not respond. &quot; </p>";
+
+                }
 
             }
 
+            // German
             if (personAdventure.guess === 45) {
                 html += "<p> &quot; We can see now that the cows are migrating to Germany! &quot; Salma says. &quot; Let&apos;s hope they don&apos;t get turned into Stroganoff! &quot; Salma jokes </p>";
 
@@ -1171,22 +1205,32 @@ export default function PersonAdventurePage() {
 
                 html += "<p> You bury your head in your hands, &quot; I just killed those cows &quot; you whisper, defeated. </p>";
 
-                html += "&quot; And now, here is the farmer! &apos; Salma says, as the video cuts to the same farmer standing in his farm";
+                html += "<p> &quot; And now, here is the farmer! &apos; Salma says, as the video cuts to the same farmer standing in his farm </p>";
 
-                html += "&quot; Honestly I&apos;m quite relieved&quot; he says. &quot; They can go do whatever they want in Germany I&apos;m FREE! &quot; </p>";
+                html += "<p> &quot; Honestly I&apos;m quite relieved&quot; he says. &quot; They can go do whatever they want in Germany I&apos;m FREE! &quot; </p>";
 
-                html += "&quot; Well there you have it folks! A happy ending for the farmer! Make sure to follow me for more content like this! </p>";
+                html += "<p> &quot; Well there you have it folks! A happy ending for the farmer! Make sure to follow me for more content like this! </p>";
+
             } else if (personAdventure.slang === "Shut up Fatty") {
 
                 html += "<p> &quot; Moozempic. The new craze among humans and cows alike. And the first trend to be made by cows! &quot; </p>";
 
                 html += "<p> &quot; We managed to talk to the lead developer Cowlie Jenner. &quot; </p>";
 
-                html += "<p> &quot; Well it started really simply. As you know, there was a mad person screaming Shut up Fatty! at us. Through extensive research we found out what it meant and were horrified at it's implications. Was she telling us we weren't worth listening to because of our weight? Upon further research we found this was common among humans and decided to change that. So that's why we made moozempic, so the fattys can finally be heard! &quot; </p>";
+                html += "<p> &quot; Well it started really simply. We were all just minding our business when a mad person came to us screaming Shut up Fatty!. Through extensive research we found out what it meant and were horrified at it's implications. Was she telling us we weren't worth listening to because of our weight? Upon further research we found this was common among humans and decided to change that. So that's why we made moozempic, so the fattys can finally be heard! &quot; </p>";
 
-                html += "<p> &quot; And now, here is the farmer! &apos; Salma says, as the video cuts to the same farmer standing in his farm";
+                if (!inventory.includes("Plushie")) {
+                    html += "<p> &quot; And now, here is the farmer! &apos; Salma says, as the video cuts to the same farmer standing in his farm";
 
-                html += "&quot; Honestly I&apos;m quite relieved&quot; he says. &quot; They can go do whatever they want as long as it's not animal farm! &quot; he gives a soft relieved chuckle. </p>";
+                    html += "&quot; Honestly I&apos;m quite relieved&quot; he says. &quot; They can go do whatever they want as long as it's not animal farm! &quot; he gives a soft relieved chuckle. </p>";
+
+                } else {
+                    
+                    html += "<p> &quot; Our team tried reaching out to the farmer but unfortunately he was found dead in his childhood home. The autopsy suggests he had a severe bacterial infection from one of his childhood plushies. May he rest in peace. &quot; </p>"
+
+                    html += "<p> &quot Did... did I accidentally kill the farmer? &quot you think. The world starts spinning as you feel yourself get lightheaded. &quot; No this can't be, I didn't purposefully kill him, he chose to kiss the plushie! &quot; You feel yourself about to throw up, but just as your about to do it" + fam_voice + "'s voice comes back. "
+
+                }
 
                 html += "<p> &quot; Well there you have it! We might not be advancing as a society but at least even the cows learned how to profit on our insecurities! &quot; </p>"
 
@@ -1209,7 +1253,7 @@ export default function PersonAdventurePage() {
 
             html += "<p> &quot; So turns out there was only one cow on the farm, and her first word was" + personAdventure.slang + "! Since the poor girl does not have any cow counterparts she was taken into an animal shelter and assimilated with the humans over there. We have a short video of her speaking thanks to the staff of that shelter! &quot;" + fam_voice + " says</p>";
 
-            html += "The next thing you know, you&apos;re staring at a cow standing on it&apos;s two hind legs and wearing a blond wig."
+            html += "<p> The next thing you know, you&apos;re staring at a cow standing on it&apos;s two hind legs and wearing a blond wig. </p>"
 
             if (personAdventure.slang === "Sicko") {
                 html += "<p> &quot; Well ya know it was really traumatic for me, one minute I'm chillin with my mates having some fresh grass and next thing ye know they're all gone! &quot; the cow starts in a thick british accent. &quot; And before I could wrap my head around it some SICKO comes up to me and starts screaming the word sicko! I was scared for me life so I just repea'ed it! Anyways, after searching wut that word meant, I've decided to become a vet, so I guess I should thank 'er. If you're watching this thanks luv! &quot; </p>";
@@ -1240,7 +1284,7 @@ export default function PersonAdventurePage() {
         }
 
         if (personAdventure.slang !== "Bare") {
-            html += "<p>" + person + ", if you're watching this, was this what you wanted to achieve? </p>";
+            html += "<p> &quot; Oh and one more thing. " + person + ", if you're watching this, was this what you wanted to achieve? &quot;</p>";
 
             html += "<p> The call out hits you like a truck, you shut your phone off and sit silently, staring at the ground. &quot; Is this what I wanted? &quot; you ask, but it's out of your control now. All you have is the memory of the adventure. </p>";
         } else {
@@ -1274,7 +1318,7 @@ export default function PersonAdventurePage() {
                     </p>
                     
                     <p>
-                        But as an English language enthusiast you decide to set off with £20 in your backpack because you feel like you have a crucial message to deliver.
+                        But as {person === "Madiha" ? "THE" : "an"} English language enthusiast you decide to set off with £20 in your backpack because you feel like you have a crucial message to deliver.
                     </p>
                 </div>
             </div>
@@ -1423,7 +1467,7 @@ export default function PersonAdventurePage() {
             <div className={styles.pageContent}>
                 {/* <h2 className={styles.chapterTitle}>Chapter 5: The Adventure Unfolds</h2> */}
                 <div className={styles.storyText}>
-                    <div dangerouslySetInnerHTML={{ __html: pathResult(personAdventure as PersonAdventure) }} />
+                    <div dangerouslySetInnerHTML={{ __html: glueQuotes(pathResult(personAdventure as PersonAdventure)) }} />
                     {hasCamera && (
                         <button
                             type="button"
@@ -1442,7 +1486,7 @@ export default function PersonAdventurePage() {
             <div className={styles.pageContent}>
                 {/* <h2 className={styles.chapterTitle}>Chapter 5: The Adventure Unfolds</h2> */}
                 <div className={styles.storyText}>
-                    <div dangerouslySetInnerHTML={{ __html: trollDialogue(personAdventure as PersonAdventure) }} />
+                    <div dangerouslySetInnerHTML={{ __html: glueQuotes(trollDialogue(personAdventure as PersonAdventure)) }} />
                 </div>
             </div>
         </div>,
@@ -1452,7 +1496,7 @@ export default function PersonAdventurePage() {
             <div className={styles.pageContent}>
                 {/* <h2 className={styles.chapterTitle}>Chapter 5: The Adventure Unfolds</h2> */}
                 <div className={styles.storyText}>
-                    <div dangerouslySetInnerHTML={{ __html: turnOne(personAdventure as PersonAdventure, change) }} />
+                    <div dangerouslySetInnerHTML={{ __html: glueQuotes(turnOne(personAdventure as PersonAdventure, change)) }} />
                 </div>
             </div>
         </div>,
@@ -1462,7 +1506,7 @@ export default function PersonAdventurePage() {
             <div className={styles.pageContent}>
                 {/* <h2 className={styles.chapterTitle}>Chapter 5: The Adventure Unfolds</h2> */}
                 <div className={styles.storyText}>
-                    <div dangerouslySetInnerHTML={{ __html: turnTwo(personAdventure as PersonAdventure, change) }} />
+                    <div dangerouslySetInnerHTML={{ __html: glueQuotes(turnTwo(personAdventure as PersonAdventure, change)) }} />
                 </div>
             </div>
         </div>] : []
@@ -1473,7 +1517,7 @@ export default function PersonAdventurePage() {
             <div className={styles.pageContent}>
                 {/* <h2 className={styles.chapterTitle}>Chapter 5: The Adventure Unfolds</h2> */}
                 <div className={styles.storyText}>
-                    <div dangerouslySetInnerHTML={{ __html: turnThree(personAdventure as PersonAdventure, change) }} />
+                    <div dangerouslySetInnerHTML={{ __html: glueQuotes(turnThree(personAdventure as PersonAdventure, change)) }} />
                 </div>
             </div>
         </div>] : []
@@ -1484,7 +1528,7 @@ export default function PersonAdventurePage() {
             <div className={styles.pageContent}>
                 {/* <h2 className={styles.chapterTitle}>Chapter 5: The Adventure Unfolds</h2> */}
                 <div className={styles.storyText}>
-                    <div dangerouslySetInnerHTML={{ __html: slang(personAdventure as PersonAdventure) }} />
+                    <div dangerouslySetInnerHTML={{ __html: glueQuotes(slang(personAdventure as PersonAdventure)) }} />
                 </div>
             </div>
         </div>,
@@ -1494,7 +1538,7 @@ export default function PersonAdventurePage() {
             <div className={styles.pageContent}>
                 {/* <h2 className={styles.chapterTitle}>Chapter 5: The Adventure Unfolds</h2> */}
                 <div className={styles.storyText}>
-                    <div dangerouslySetInnerHTML={{ __html: afterMath(personAdventure as PersonAdventure) }} />
+                    <div dangerouslySetInnerHTML={{ __html: glueQuotes(afterMath(personAdventure as PersonAdventure)) }} />
                 </div>
             </div>
         </div>,

@@ -157,6 +157,10 @@
         color: #3a3a3a;
         font-size: 1.1rem;
         line-height: 1.9;
+    /* Reduce awkward line breaks around punctuation/quotes */
+    hanging-punctuation: first allow-end;
+    text-wrap: pretty;
+    overflow-wrap: anywhere;
         
         &:first-of-type {
             text-indent: 0;
