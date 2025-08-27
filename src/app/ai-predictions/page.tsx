@@ -70,18 +70,18 @@ export default function AIPage() {
         prevPositionsRef.current = curPositions;
     }, [leaderboard, lastUpdated]);
 
-    useEffect(() => {
-        // Optional: auto-increment a random person every second on the client
-        const interval = setInterval(() => {
-            setLeaderboard(prev => {
-                const person = polls.people[Math.floor(Math.random() * polls.people.length)];
-                setLastUpdated(person);
-                const next = prev.map(p => p.name === person ? { ...p, score: p.score + 1 } : p);
-                return orderLeaderboard(next);
-            });
-        }, 1000);
-        return () => clearInterval(interval);
-    }, [polls.people]);
+    // useEffect(() => {
+    //     // Optional: auto-increment a random person every second on the client
+    //     const interval = setInterval(() => {
+    //         setLeaderboard(prev => {
+    //             const person = polls.people[Math.floor(Math.random() * polls.people.length)];
+    //             setLastUpdated(person);
+    //             const next = prev.map(p => p.name === person ? { ...p, score: p.score + 1 } : p);
+    //             return orderLeaderboard(next);
+    //         });
+    //     }, 1000);
+    //     return () => clearInterval(interval);
+    // }, [polls.people]);
 
     const handlePoint = () => {
         setLeaderboard(prev => {
