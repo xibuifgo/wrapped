@@ -26,10 +26,39 @@ export default function AIPage() {
         )
     );
     const [lastUpdated, setLastUpdated] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     // Map of name -> element for FLIP animations
     const rowRefs = useRef<Record<string, HTMLDivElement | null>>({});
     const prevPositionsRef = useRef<Record<string, number> | null>(null);
+
+    // Load voting data and update leaderboard
+    useEffect(() => {
+        const loadVotingData = async () => {
+            try {
+                // Import the voting functions dynamically to avoid import issues
+                const { getAllVotes } = await import("../../../lib/voting");
+                const votes = await getAllVotes();
+                
+                // Calculate scores: upvotes - downvotes
+                const updatedLeaderboard = orderLeaderboard(
+                    allPeople.map((person) => {
+                        const personVotes = votes[person] || { upvotes: 0, downvotes: 0 };
+                        const score = personVotes.upvotes - personVotes.downvotes;
+                        return { name: person, score, rank: 0 };
+                    })
+                );
+                
+                setLeaderboard(updatedLeaderboard);
+                setIsLoading(false);
+            } catch (error) {
+                console.error('Error loading voting data:', error);
+                setIsLoading(false);
+            }
+        };
+
+        loadVotingData();
+    }, [allPeople]);
 
     // FLIP list animation when order changes
     useLayoutEffect(() => {
@@ -83,14 +112,14 @@ export default function AIPage() {
     //     return () => clearInterval(interval);
     // }, [polls.people]);
 
-    const handlePoint = () => {
-        setLeaderboard(prev => {
-            const person = polls.people[Math.floor(Math.random() * polls.people.length)];
-            setLastUpdated(person);
-            const next = prev.map(p => p.name === person ? { ...p, score: p.score + 1 } : p);
-            return orderLeaderboard(next);
-        });
-    };
+    // const handlePoint = () => {
+    //     setLeaderboard(prev => {
+    //         const person = polls.people[Math.floor(Math.random() * polls.people.length)];
+    //         setLastUpdated(person);
+    //         const next = prev.map(p => p.name === person ? { ...p, score: p.score + 1 } : p);
+    //         return orderLeaderboard(next);
+    //     });
+    // };
 
     return (
         <div className={styles.container}>
@@ -100,13 +129,15 @@ export default function AIPage() {
             </div>
             
             <div className={styles.leaderboard}>
-                <div className={styles.leaderboardHeader}>
-                    <span className={styles.rankColumn}>Rank</span>
-                    <span className={styles.nameColumn}>Name</span>
-                    <span className={styles.scoreColumn}>Score</span>
-                </div>
-                
-                {leaderboard.map((player, index) => (
+                {isLoading ? null : (
+                    <>
+                        <div className={styles.leaderboardHeader}>
+                            <span className={styles.rankColumn}>Rank</span>
+                            <span className={styles.nameColumn}>Name</span>
+                            <span className={styles.scoreColumn}>Score</span>
+                        </div>
+                        
+                        {leaderboard.map((player, index) => (
                     <a
                         key={player.name + "-link"}
                         href={`/ai-predictions/${player.name}`}
@@ -139,9 +170,9 @@ export default function AIPage() {
                         </div>
                     </a>
                 ))}
+                    </>
+                )}
             </div>
-
-            <button className={styles.btn} onClick={handlePoint}>Give point</button>
             
             <div className={styles.footer}>
                 <p>Scores will be updated as soon as you upvote / downvote someone&apos;s prediction.</p>
