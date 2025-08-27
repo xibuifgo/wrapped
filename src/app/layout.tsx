@@ -25,6 +25,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preload" href="/cheer.mp3" as="audio" />
+        <link rel="preload" href="/boo.mp3" as="audio" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           <Navbar />

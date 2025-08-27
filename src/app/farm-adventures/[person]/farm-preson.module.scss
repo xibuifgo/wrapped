@@ -157,6 +157,10 @@
         color: #3a3a3a;
         font-size: 1.1rem;
         line-height: 1.9;
+    /* Reduce awkward line breaks around punctuation/quotes */
+    hanging-punctuation: first allow-end;
+    text-wrap: pretty;
+    overflow-wrap: anywhere;
         
         &:first-of-type {
             text-indent: 0;
@@ -1063,5 +1067,108 @@
     
     .receiptTotal {
         font-size: 14px;
+    }
+}
+
+/* Simple gallery grid */
+/* View Photos button on page 6 */
+.viewPhotosButton {
+    display: block;
+    /* Center horizontally with spacing above */
+    margin: 16px auto 0;
+    padding: 10px 16px;
+    background: linear-gradient(135deg, #8b4513, #a0522d);
+    color: #fff;
+    border: 2px solid #654321;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+    &:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(0,0,0,0.22); background: linear-gradient(135deg, #a0522d, #8b4513); }
+}
+
+/* Lightbox styles */
+.lightboxOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.lightboxImageWrapper {
+    position: relative;
+    max-width: 90vw;
+    max-height: 85vh;
+}
+
+.lightboxImage {
+    max-width: 100%;
+    max-height: 85vh;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+
+.lightboxCounter {
+    position: absolute;
+    bottom: 8px;
+    right: 12px;
+    color: white;
+    background: rgba(0,0,0,0.5);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.lightboxButton {
+    position: absolute;
+    color: white;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    cursor: pointer;
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+    /* Glassy, translucent circular background */
+    background: rgba(0,0,0,0.35);
+    border: 1px solid rgba(255,255,255,0.25);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.45);
+    isolation: isolate; /* keep ::before halo behind content without escaping */
+    /* Subtle halo */
+    &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        pointer-events: none;
+        background: radial-gradient(circle, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.10) 45%, rgba(255,255,255,0.04) 70%, rgba(255,255,255,0) 100%);
+        z-index: -1;
+    }
+    &:hover { background: rgba(0,0,0,0.45); box-shadow: 0 6px 18px rgba(0,0,0,0.55); }
+}
+
+.lightboxPrev { left: 20px; top: 50%; transform: translateY(-50%); }
+.lightboxNext { right: 20px; top: 50%; transform: translateY(-50%); }
+.lightboxClose { top: 20px; right: 20px; font-size: 30px; width: 40px; height: 40px; }
+
+@media (max-width: 600px) {
+    .lightboxButton {
+        width: 48px;
+        height: 48px;
+        font-size: 30px;
+        &::before { width: 120px; height: 120px; }
     }
 }

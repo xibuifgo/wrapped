@@ -1,0 +1,366 @@
+/* Container and title */
+.container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1.5rem;
+	padding: 2rem 1rem 4rem;
+}
+
+.title {
+	font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+	margin: 0;
+}
+
+/* Wooden sign */
+.sign {
+	position: relative;
+	width: min(100%, 980px);
+	padding: 2.2rem 1.8rem;
+	border-radius: 14px;
+	/* Base wood color + subtle vignette */
+	background:
+		radial-gradient(140% 90% at 50% 0%, rgba(255, 245, 225, 0.06), transparent 60%),
+		linear-gradient(180deg, #8b5a2b 0%, #74451a 46%, #5a3612 100%);
+	box-shadow:
+		inset 0 1px 0 rgba(255, 255, 255, 0.15),
+		inset 0 -10px 14px rgba(0, 0, 0, 0.35),
+		0 14px 30px rgba(0, 0, 0, 0.35);
+	border: 2px solid #3b2916;
+	transform: rotate(-0.25deg);
+}
+
+/* Subtle wood grain texture */
+.sign::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	/* Planks + fine grain */
+	background:
+		/* Vertical plank seams every ~140px with 2px seam */
+		repeating-linear-gradient(
+			90deg,
+			rgba(0, 0, 0, 0.22) 0px,
+			rgba(0, 0, 0, 0.22) 2px,
+			transparent 2px,
+			transparent 140px
+		),
+		/* Cross grain highlights */
+		repeating-linear-gradient(
+			12deg,
+			rgba(255, 255, 255, 0.06) 0px,
+			rgba(255, 255, 255, 0.06) 1px,
+			transparent 1px,
+			transparent 7px
+		),
+		/* Cross grain shadows */
+		repeating-linear-gradient(
+			-10deg,
+			rgba(0, 0, 0, 0.08) 0px,
+			rgba(0, 0, 0, 0.08) 1px,
+			transparent 1px,
+			transparent 9px
+		);
+	opacity: 0.75;
+	pointer-events: none;
+	mix-blend-mode: multiply;
+}
+
+/* Knots, nails and vignette */
+.sign::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	background:
+		/* Knots */
+		radial-gradient(60px 40px at 22% 30%, rgba(41, 25, 10, 0.35) 0%, rgba(41, 25, 10, 0.18) 45%, transparent 62%),
+		radial-gradient(50px 32px at 72% 65%, rgba(41, 25, 10, 0.30) 0%, rgba(41, 25, 10, 0.16) 48%, transparent 66%),
+		/* Nails in four corners */
+		radial-gradient(14px 14px at 18px 18px, rgba(255,255,255,0.35), rgba(180,180,180,0.15) 35%, rgba(0,0,0,0.55) 60%, transparent 62%),
+		radial-gradient(14px 14px at calc(100% - 18px) 18px, rgba(255,255,255,0.35), rgba(180,180,180,0.15) 35%, rgba(0,0,0,0.55) 60%, transparent 62%),
+		radial-gradient(14px 14px at 18px calc(100% - 18px), rgba(255,255,255,0.35), rgba(180,180,180,0.15) 35%, rgba(0,0,0,0.55) 60%, transparent 62%),
+		radial-gradient(14px 14px at calc(100% - 18px) calc(100% - 18px), rgba(255,255,255,0.35), rgba(180,180,180,0.15) 35%, rgba(0,0,0,0.55) 60%, transparent 62%),
+		/* Bottom vignette */
+		radial-gradient(160% 90% at 50% 120%, rgba(0, 0, 0, 0.32), transparent 60%);
+	opacity: 0.9;
+	pointer-events: none;
+	mix-blend-mode: multiply;
+}
+
+.signInner {
+	position: relative;
+	z-index: 1;
+}
+
+/* Carved text effect */
+.carvedText {
+	/* Deeper engraved look */
+	color: white;
+	font-weight: 800;
+	letter-spacing: 0.35px;
+	line-height: 1.4;
+	font-size: clamp(1rem, 1.6vw, 1.25rem);
+	margin: 0;
+	text-transform: none;
+	text-shadow:
+		/* inner groove shadow (bottom-right) */
+		1px 1px 0 rgba(0, 0, 0, 0.48),
+		/* top-left highlight along the cut */
+		-1px -1px 0 rgba(255, 240, 210, 0.18),
+		/* soft depth */
+		0 2px 2px rgba(0, 0, 0, 0.38),
+		/* slight ridge highlight */
+		0 -2px 2px rgba(255, 240, 210, 0.06);
+	filter: contrast(1.05) saturate(0.95);
+}
+
+/* Optional: slight wobble-on-load for charm */
+@keyframes signEnter {
+	0% { transform: translateY(-8px) rotate(-2deg); opacity: 0; }
+	60% { transform: translateY(2px) rotate(0.5deg); opacity: 1; }
+	100% { transform: translateY(0) rotate(-0.2deg); }
+}
+
+.sign {
+	animation: signEnter 700ms ease-out both;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+	.sign {
+		padding: 1.5rem 1rem;
+		border-radius: 10px;
+	}
+	.carvedText {
+		letter-spacing: 0.2px;
+	}
+}
+
+/* ============ Farm Themed Slider ============ */
+.slider {
+	position: relative;
+	width: min(100%, 980px);
+	margin-top: 1rem;
+	border-radius: 16px;
+	overflow: hidden;
+	box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+
+	/* Sky to grass backdrop */
+	background:
+		linear-gradient(180deg, #87CEEB 0%, #bfe7fb 45%, #9bd18b 46%, #68b35f 100%);
+}
+
+.track {
+	display: flex;
+	transition: transform 400ms ease;
+	will-change: transform;
+	backface-visibility: hidden;
+	transform: translateZ(0);
+}
+
+.slide {
+	/* Ensure each slide takes exactly the viewport width */
+	flex: 0 0 100%;
+	min-width: 100%;
+	box-sizing: border-box;
+	padding: 20px;
+}
+
+.card {
+	background: rgba(255,255,255,0.9);
+	border-radius: 14px;
+	border: 1px solid rgba(0,0,0,0.07);
+	overflow: hidden;
+	display: grid;
+	grid-template-rows: auto 1fr auto;
+}
+
+.cardHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 14px 16px;
+	background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+	border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.group {
+	font-weight: 800;
+}
+
+.badge {
+	padding: 6px 10px;
+	border-radius: 999px;
+	font-size: 12px;
+	font-weight: 700;
+}
+.correct {
+	background: #e6f7ea;
+	color: #137a2a;
+	border: 1px solid #b8e6c2;
+}
+.wrong {
+	background: #fff2f2;
+	color: #a81d1d;
+	border: 1px solid #f3c0c0;
+}
+
+.cardBody {
+	display: grid;
+	grid-template-columns: 1fr 1.2fr;
+	gap: 16px;
+	padding: 16px;
+	overflow: hidden;
+}
+
+.media {
+	background: #e6efe9;
+	border-radius: 10px;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.media img { width: 100%; height: 200px; object-fit: cover; display: block; }
+.placeholder { width: 100%; height: 200px; background: repeating-linear-gradient(45deg, #cddbd1 0, #cddbd1 8px, #b7c8be 8px, #b7c8be 16px); }
+
+.content { display: flex; flex-direction: column; gap: 8px; }
+.option { font-size: 1.25rem; margin: 0; }
+.desc { margin: 0; color: #333; overflow-wrap: anywhere; word-break: break-word; }
+/* removed trollIcon and optionRow */
+
+.cardFooter { padding: 10px 16px; border-top: 1px solid rgba(0,0,0,0.06); }
+.progress { font-weight: 700; color: #2d6a4f; }
+
+.navBtn {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 2;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	border: 1px solid rgba(0,0,0,0.2);
+	background: rgba(255,255,255,0.95);
+	display: grid;
+	place-items: center;
+	font-size: 22px;
+	font-weight: 800;
+	cursor: pointer;
+	box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+	will-change: transform, opacity;
+	backface-visibility: hidden;
+	transform: translateZ(0);
+}
+.navBtn.left { left: 10px; }
+.navBtn.right { right: 10px; }
+
+.dots {
+	position: absolute;
+	left: 50%;
+	bottom: 10px;
+	transform: translateX(-50%);
+	display: flex;
+	gap: 6px;
+	z-index: 2;
+}
+.dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: rgba(0,0,0,0.2);
+	border: none;
+}
+.dot.active { background: #2d6a4f; }
+
+/* Responsive */
+@media (max-width: 700px) {
+	.cardBody { grid-template-columns: 1fr; }
+	.media img, .placeholder { height: 160px; }
+	/* Faster, smoother slide transitions on mobile */
+	.track, .miniTrack { transition: transform 280ms ease-out; }
+	/* Lighter shadows to reduce paint cost */
+	.section, .slider { box-shadow: 0 8px 22px rgba(0,0,0,0.16); }
+	.navBtn, .miniNavBtn { box-shadow: 0 4px 10px rgba(0,0,0,0.12); }
+}
+.sections {
+	display: flex;
+	flex-direction: column;
+	gap: 28px;
+	width: min(100%, 980px);
+}
+
+.section {
+	position: relative;
+	background: linear-gradient(180deg, #87CEEB 0%, #bfe7fb 45%, #9bd18b 46%, #68b35f 100%);
+	border-radius: 16px;
+	box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+	overflow: hidden;
+}
+
+.sectionTitle {
+	margin: 0;
+	padding: 14px 16px;
+	font-size: 1.25rem;
+	font-weight: 900;
+	color: #1b4332;
+	background: rgba(255,255,255,0.85);
+	border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.miniSlider { position: relative; overflow: hidden; touch-action: pan-y; }
+.miniTrack {
+	display: flex;
+	transition: transform 400ms ease;
+	will-change: transform;
+	backface-visibility: hidden;
+	transform: translateZ(0);
+}
+.miniSlide {
+	/* Prevent offscreen text from bleeding into view */
+	flex: 0 0 100%;
+	min-width: 100%;
+	box-sizing: border-box;
+	padding: 16px;
+	overflow: hidden;
+}
+
+.miniNavBtn {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 2;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	border: 1px solid rgba(0,0,0,0.2);
+	background: rgba(255,255,255,0.95);
+	display: grid;
+	place-items: center;
+	font-size: 20px;
+	font-weight: 800;
+	cursor: pointer;
+	box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+	will-change: transform, opacity;
+	backface-visibility: hidden;
+	transform: translateZ(0);
+}
+.miniNavBtn.left { left: 10px; }
+.miniNavBtn.right { right: 10px; }
+
+.miniDots {
+	position: absolute;
+	left: 50%;
+	bottom: 10px;
+	transform: translateX(-50%);
+	display: flex;
+	gap: 6px;
+	z-index: 2;
+}
+.miniDot { width: 8px; height: 8px; border-radius: 50%; background: rgba(0,0,0,0.2); border: none; }
+.miniDot.active { background: #2d6a4f; }
+
+/* Raise nav arrows slightly for the Slang section so they don't overlap text */
+.slang .miniNavBtn { top: 40%; }

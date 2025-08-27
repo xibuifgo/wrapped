@@ -277,11 +277,11 @@ export default function AwardsPage() {
     const [tomatoes, setTomatoes] = useState<Array<{id: number, side: 'left' | 'right'}>>([]);
     const [splats, setSplats] = useState<Array<{id: number, x: number, y: number}>>([]);
     const [isBeingPelted, setIsBeingPelted] = useState(false);
+    const cheerRef = useRef<HTMLAudioElement | null>(null);
+    const booRef = useRef<HTMLAudioElement | null>(null);
+    const audioPrimedRef = useRef(false);
 
     const scrollToWinners = () => {
-        // Play cheer sound immediately when button is clicked
-        playCheerSound();
-        
     // Mark body as fullscreen awards mode so navbar can hide on mobile
     setBodyAwardsFullscreen(true);
     setIsFullScreen(true);
@@ -289,7 +289,10 @@ export default function AwardsPage() {
         setAnimatingWinner(-1); // Start with all hidden
         
         // Faster staggered winner animations
-        setTimeout(() => setAnimatingWinner(2), 400);  // Third place
+        setTimeout(() => {
+            setAnimatingWinner(2);  // Third place
+            playCheerSound();
+        }, 400);
         setTimeout(() => setAnimatingWinner(1), 700); // Second place  
         setTimeout(() => {
             setAnimatingWinner(0); // First place
@@ -340,20 +343,52 @@ export default function AwardsPage() {
         }
     }, []);
 
+    // Clear slide animation classes after they finish to avoid lingering states
+    useEffect(() => {
+        if (!slideDirection) return;
+        const id = setTimeout(() => setSlideDirection(''), 350);
+        return () => clearTimeout(id);
+    }, [slideDirection]);
+
+    // Init audio once
+    useEffect(() => {
+        cheerRef.current = new Audio('/cheer.mp3');
+        booRef.current = new Audio('/boo.mp3');
+        const unlock = () => {
+            if (audioPrimedRef.current) return;
+            audioPrimedRef.current = true;
+            // iOS requires a user interaction to start audio context
+            cheerRef.current?.play().then(() => {
+                if (cheerRef.current) {
+                    cheerRef.current.pause();
+                    cheerRef.current.currentTime = 0;
+                }
+            }).catch(() => {});
+            booRef.current?.play().then(() => {
+                if (booRef.current) {
+                    booRef.current.pause();
+                    booRef.current.currentTime = 0;
+                }
+            }).catch(() => {});
+            window.removeEventListener('touchstart', unlock);
+            window.removeEventListener('click', unlock);
+        };
+        window.addEventListener('touchstart', unlock, { passive: true });
+        window.addEventListener('click', unlock);
+        return () => {
+            window.removeEventListener('touchstart', unlock);
+            window.removeEventListener('click', unlock);
+        };
+    }, []);
+
     const playCheerSound = () => {
         try {
-            const cheer_sounds = new Audio('/cheer.mp3');
-
-            cheer_sounds.volume = Math.random() * 0.3 + 0.2;
-            cheer_sounds.playbackRate = Math.random() * 0.2 + 0.9;
-            cheer_sounds.play().catch(() => {});
-            
-            // Stop the sound after 2 seconds to keep it short
-            setTimeout(() => {
-                cheer_sounds.pause();
-                cheer_sounds.currentTime = 0;
-            }, 7000);
-
+            const a = cheerRef.current;
+            if (!a) return;
+            a.volume = Math.random() * 0.3 + 0.2;
+            a.playbackRate = Math.random() * 0.2 + 0.9;
+            a.currentTime = 0;
+            a.play().catch(() => {});
         } catch (error) {
             console.log("Audio file not supported or found", error);
         }
@@ -439,13 +474,12 @@ export default function AwardsPage() {
 
     const playBooSound = () => {
         try {
-            const boo_sounds = new Audio('/boo.mp3');
-
-            setTimeout(() => {
-                boo_sounds.volume = Math.random() * 0.3 + 0.2; // Random volume between 0.2 and 0.5
-                boo_sounds.playbackRate = Math.random() * 0.2 + 0.9; // Random playback rate between 0.9 and 1.1
-                boo_sounds.play().catch(() => {});
-            }, 10);
+            const a = booRef.current;
+            if (!a) return;
+            a.volume = Math.random() * 0.3 + 0.2;
+            a.playbackRate = Math.random() * 0.2 + 0.9;
+            a.currentTime = 0;
+            a.play().catch(() => {});
         } catch (error) {
             console.log('Audio not supported or file not found:', error);
         }
@@ -453,7 +487,7 @@ export default function AwardsPage() {
 
     // Check if current award should trigger tomato throwing
     const shouldThrowTomatoes = () => {
-        return currentAwardIndex === 7 || currentAwardIndex === 8; // 8th and 9th awards (0-indexed)
+        return currentAwardIndex === 7 || currentAwardIndex === 8 || currentAwardIndex === 9; // 8th and 9th awards (0-indexed)
     };
 
     // Award data
@@ -563,6 +597,16 @@ export default function AwardsPage() {
             },
             extra: "EVERYONE TELL SAMIYA TO GO TO SLEEP"
         },
+        // Copilot 
+        {
+            title: "Most Pages Corrupted",
+            winners: {
+                first: "Copilot",
+                second: "",
+                third: ""
+            },
+            extra: "Copilot corrupted our code FIVE TIMES"
+        },
         // Go see overall winners
         {
             title: "Go see overall winners",
@@ -583,7 +627,7 @@ export default function AwardsPage() {
 
     // Trigger tomatoes on initial load if we're on 8th or 9th award
     useEffect(() => {
-        if (currentAwardIndex === 7 || currentAwardIndex === 8) {
+        if (currentAwardIndex === 7 || currentAwardIndex === 8 || currentAwardIndex === 9 ) {
             setTimeout(() => {
                 throwTomatoes();
             }, 1000); // Wait a second after component loads
@@ -598,7 +642,7 @@ export default function AwardsPage() {
             setSlideDirection('slide-in-right');
             
             // Check if we should throw tomatoes for this award
-            if (newIndex === 7 || newIndex === 8) { // 8th and 9th awards
+            if (newIndex === 7 || newIndex === 8 || newIndex === 9) { // 8th, 9th, and 10th awards
                 setTimeout(() => {
                     throwTomatoes();
                 }, 400); // Match the new animation timing
@@ -614,7 +658,7 @@ export default function AwardsPage() {
             setSlideDirection('slide-in-right');
             
             // Check if we should throw tomatoes for this award
-            if (newIndex === 7 || newIndex === 8) { // 8th and 9th awards
+            if (newIndex === 7 || newIndex === 8 || newIndex === 9) { // 8th, 9th, and 10th awards
                 setTimeout(() => {
                     throwTomatoes();
                 }, 400); // Match the new animation timing
@@ -629,9 +673,7 @@ export default function AwardsPage() {
                 <div className={styles["blur-overlay"]}></div>
             )}
             
-            <div className={styles["awards-header"]}>
-                <h1>Awards!</h1>
-            </div>
+            <div className={styles["awards-header"]}></div>
             <div className={`${styles["podium-container"]} ${isBeingPelted ? styles["being-pelted"] : ""}`} ref={podiumContainerRef}>
                 <h1 className={`${styles["awards-title"]} ${slideDirection ? styles[slideDirection] : ''}`}>{currentAward.title}</h1>
 
@@ -661,7 +703,7 @@ export default function AwardsPage() {
                     />
                 ))}
 
-                <div className={styles["podium-wrapper"]}>
+                <div className={styles["podium-wrapper"]} key={currentAwardIndex}>
                     {/* Navigation arrows */}
                     <button 
                         className={`${styles["nav-arrow"]} ${styles["nav-left"]}`}
@@ -716,7 +758,7 @@ export default function AwardsPage() {
                         <text x="109.5" y="50" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white">3</text>
                     </svg>
 
-                    <p>{currentAward.extra ? currentAward.extra : ''}</p>
+                    <p key={currentAwardIndex}>{currentAward.extra ?? ''}</p>
 
                     <div className={styles["progress-bar"]}>
                     {Array.from({length: awards.length}, (_, index) => (

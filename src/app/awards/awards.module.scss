@@ -3,40 +3,57 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0px 20px 40px 20px;
   position: relative; /* Enable absolute positioning for children */
 }
 
 .awards-header {
-    min-height: 25vh;
-    background-color: goldenrod;
-    min-width: 100vw;
-    margin-bottom: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+    background-image: url('/awards_header.svg');
+    width: 100%;
+    height: 500px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-bottom: 1px solid gray;
+    padding: 0px -20px;
+    margin-bottom: 20px
+}
 
-    h1 {
-        font-size: 72px;
-        margin: 0;
-        font-weight: 900;
-        color: white;
-        font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-        letter-spacing: -2px;
+@media screen and (min-width: 1024px){
+    .awards-header {
+        background-size: contain;
     }
 }
+
+@media screen and (max-width: 1000px) {
+    .awards-header {
+        height: 300px !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+
+    .awards-header {
+        height: 300px !important;
+        background-size: fill;
+        background-repeat: no-repeat;
+        flex-shrink: 0;
+    }
+}
+
 
 .podium-container {
   text-align: center;
   max-width: 800px;
-  width: 100%;
+  width: 90%;
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
   border-radius: 25px;
   padding: 40px 30px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 0 20px;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
 
   p {
     margin-top: 20px;
@@ -55,6 +72,8 @@
     margin-left: auto;
     margin-right: auto;
     font-style: italic;
+        overflow-wrap: anywhere;
+        word-break: break-word;
   }
 }
 
@@ -63,7 +82,10 @@
   margin-bottom: 50px;
   font-weight: 900;
   letter-spacing: -1px;
-  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    transition: transform 220ms ease, opacity 220ms ease;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    transform: translateZ(0);
 //   background: linear-gradient(135deg, #d97706, #f59e0b, #fbbf24);
 //   -webkit-background-clip: text;
 //   -webkit-text-fill-color: transparent;
@@ -75,15 +97,15 @@
 /* Apply slide animations to the title as well */
 .awards-title.slide-out-left {
   opacity: 0;
-  transform: translateX(-20px);
-  transition: all 0.3s ease;
+    transform: translateX(-16px);
+    transition: transform 200ms ease, opacity 200ms ease;
 }
 
 .awards-title.slide-in-right {
   opacity: 1;
   transform: translateX(0);
-  transition: all 0.3s ease;
-  animation: slideInFromRight 0.3s ease-out;
+    transition: transform 220ms ease, opacity 220ms ease;
+    animation: slideInFromRight 220ms ease-out;
 }
 
 .podium-wrapper {
@@ -174,20 +196,23 @@
   min-width: 70px;
   text-align: center;
   font-family: 'Poppins', 'Inter', system-ui, -apple-system, sans-serif;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    transform: translateZ(0);
 }
 
 /* Slide animation classes */
 .name-label.slide-out-left {
   opacity: 0;
-  transform: translateX(-20px);
-  transition: all 0.3s ease;
+    transform: translateX(-16px);
+    transition: transform 200ms ease, opacity 200ms ease;
 }
 
 .name-label.slide-in-right {
   opacity: 1;
   transform: translateX(0);
-  transition: all 0.3s ease;
-  animation: slideInFromRight 0.3s ease-out;
+    transition: transform 220ms ease, opacity 220ms ease;
+    animation: slideInFromRight 220ms ease-out;
 }
 
 /* Staggered animation delays for smoother flow */
@@ -227,11 +252,6 @@
 .name-label.down {
   transform: translateY(100%);
   opacity: 0;
-}
-
-.name-label:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(219, 39, 119, 0.3);
 }
 
 /* Different heights to match podium levels */
@@ -323,6 +343,16 @@
     font-size: 2.2rem;
     margin-bottom: 30px;
   }
+    .podium-container {
+        /* Drop expensive effects on mobile */
+        backdrop-filter: none;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+    .nav-arrow {
+        backdrop-filter: none;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
   
   .podium-names,
   .position-labels {
@@ -386,7 +416,7 @@
     border-radius: 20px;
     box-shadow: 0 8px 25px rgba(217, 119, 6, 0.3);
     max-width: 600px;
-    width: 100%;
+    width: 90%;
     text-align: center;
 
     h2 {
@@ -469,6 +499,7 @@
     text-align: center;
     position: relative;
     z-index: 1; /* Ensure it's below the blur overlay */
+    padding-bottom: 40px;
 }
 
 .award-meme {
@@ -833,8 +864,6 @@
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, #ff6b6b, #dc3545);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     z-index: 1001;
     pointer-events: none;
     opacity: 0;

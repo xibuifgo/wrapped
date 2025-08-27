@@ -589,7 +589,7 @@ export default function Home() {
     },
     // The Gatherers
     {
-      title: "👩🏽‍👩🏽‍👧🏽‍👧🏽 The Gatherers",
+      title: "🧑‍🧑‍🧒‍🧒 The Gatherers",
       content: (
         <div>
           <p className={styles.description}>These people got everyone on comm to vote on their polls:</p>

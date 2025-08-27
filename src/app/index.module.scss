@@ -363,6 +363,86 @@
     }
 }
 
+/* Additional keyframes for varied name reveals */
+@keyframes rollIn {
+    0% {
+        opacity: 0;
+        transform: translateX(-100px) rotate(-120deg);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0) rotate(0deg);
+    }
+}
+
+@keyframes typewriter {
+    0% {
+        opacity: 0;
+        width: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+        width: 100%;
+    }
+}
+
+@keyframes rubberBand {
+    0% {
+        opacity: 0;
+        transform: scale(1, 1);
+    }
+    30% {
+        opacity: 1;
+        transform: scale(1.25, 0.75);
+    }
+    40% {
+        transform: scale(0.75, 1.25);
+    }
+    50% {
+        transform: scale(1.15, 0.85);
+    }
+    65% {
+        transform: scale(0.95, 1.05);
+    }
+    75% {
+        transform: scale(1.05, 0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1, 1);
+    }
+}
+
+@keyframes wobble {
+    0% {
+        opacity: 0;
+        transform: translateX(0%) rotate(0deg);
+    }
+    15% {
+        opacity: 1;
+        transform: translateX(-25%) rotate(-5deg);
+    }
+    30% {
+        transform: translateX(20%) rotate(3deg);
+    }
+    45% {
+        transform: translateX(-15%) rotate(-3deg);
+    }
+    60% {
+        transform: translateX(10%) rotate(2deg);
+    }
+    75% {
+        transform: translateX(-5%) rotate(-1deg);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0%) rotate(0deg);
+    }
+}
+
 /* Animation classes for slide elements */
 .slideTitle {
     opacity: 0;
@@ -454,6 +534,13 @@
 }
 .slide2 .slideTitle { animation: flipIn var(--anim-title-dur) ease-out var(--anim-title-delay) forwards; }
 
+/* Bouncy reveal animation for the entire list container */
+.slide2 .slideContent ul {
+    opacity: 0;
+    transform: scale(0.3) translateY(50px);
+    animation: bounceIn 0.8s cubic-bezier(.68,-0.55,.265,1.55) var(--anim-list-delay) forwards;
+}
+
 /* Slide 3 - Most Active (special alternating animation but p comes first) */
 .slide3 {
     --anim-title-delay: 0.3s;
@@ -489,6 +576,13 @@
 .slide4 .slideTitle { animation: pulseIn var(--anim-title-dur) ease-out var(--anim-title-delay) forwards; }
 .slide4 .slideSubtitle { animation: fadeInUp 0.6s ease-out calc(var(--anim-title-delay) + 0.3s) forwards; }
 
+/* Zoom-in effect for the entire list container */
+.slide4 .slideContent ul {
+    opacity: 0;
+    transform: scale(0.5) rotate(-10deg);
+    animation: zoomIn 0.7s cubic-bezier(.68,-0.55,.265,1.55) var(--anim-list-delay) forwards;
+}
+
 /* Slide 5 - Rebel */
 .slide5 {
     --anim-title-delay: 0.3s;
@@ -522,6 +616,13 @@
 }
 .slide6 .slideTitle { animation: heartBeat 1s ease-out var(--anim-title-delay) forwards; }
 .slide6 .slideSubtitle { animation: fadeInUp 0.6s ease-out calc(var(--anim-title-delay) + 0.3s) forwards; }
+
+/* Heartbeat effect for the entire list container */
+.slide6 .slideContent ul {
+    opacity: 0;
+    transform: scale(0.8);
+    animation: heartBeat 1s ease-out var(--anim-list-delay) forwards;
+}
 
 /* Slide 7 - Poll Statistics */
 .slide7 {
@@ -564,19 +665,205 @@
 }
 .slide8 .slideTitle { animation: zoomIn var(--anim-title-dur) ease-out var(--anim-title-delay) forwards; }
 
+/* Flip effect for the entire list container */
+.slide8 .slideContent ul {
+    opacity: 0;
+    transform: rotateY(90deg) scale(0.8);
+    animation: flipIn 0.8s cubic-bezier(.68,-0.55,.265,1.55) var(--anim-list-delay) forwards;
+}
+
 /* Additional slides up to slide 16... */
 
-/* Slide 16 - Poll Statistics (the actual stats slide) */
-.slide16 {
+/* Slide 7 - Yummiest Poll */
+.slide7 .slideContent ul {
+    opacity: 0;
+    transform: scale(1.25, 0.75);
+    animation: rubberBand 0.8s ease-out var(--anim-list-delay) forwards;
+}
+
+/* Slide 9 - Most Controversial */
+.slide9 .slideContent ul {
+    opacity: 0;
+    transform: translateX(-100px) rotate(-120deg);
+    animation: rollIn 0.8s ease-out var(--anim-list-delay) forwards;
+}
+
+/* Slide 10 - Loves to Draw */
+.slide10 .slideContent ul {
+    opacity: 0;
+    transform: scale(0.3);
+    animation: elastic 1s ease-out var(--anim-list-delay) forwards;
+}
+
+/* Slide 11 - Funniest Poll */
+.slide11 .slideContent ul {
+    opacity: 0;
+    transform: translateY(-50px);
+    animation: slideInFromTop 0.7s ease-out var(--anim-list-delay) forwards;
+}
+
+/* Slide 12 - Hardest Poll */
+.slide12 .slideContent ul {
+    opacity: 0;
+    transform: rotate(-180deg) scale(0.5);
+    animation: rotateIn 0.8s ease-out var(--anim-list-delay) forwards;
+}
+
+/* Slide 13 - Most Innovative */
+.slide13 .slideContent ul {
+    opacity: 0;
+    transform: translateY(50px);
+    animation: slideInFromBottom 0.7s ease-out var(--anim-list-delay) forwards;
+}
+
+/* Slide 14 - CAT-astrophic */
+.slide14 .slideContent ul {
+    opacity: 0;
+    transform: translateX(0%) rotate(0deg);
+    animation: wobble 1s ease-out var(--anim-list-delay) forwards;
+}
+
+/* Slide 15 - Most Wholesome */
+.slide15 .slideContent ul {
+    opacity: 0;
+    transform: scale(0.8);
+    animation: pulseIn 0.8s ease-out var(--anim-list-delay) forwards;
+}
+
+/* Slide 19 - You Voted */
+.slide19 .slideContent ul {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.9);
+    animation: slideInFromTop 0.8s cubic-bezier(.68,-0.55,.265,1.55) var(--anim-list-delay) forwards;
+}
+
+/* Slide 20 - You Voted In */
+.slide20 .slideContent ul {
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+    animation: slideInFromBottom 0.8s cubic-bezier(.68,-0.55,.265,1.55) var(--anim-list-delay) forwards;
+}
+
+/* Slide 21 - Best Friend */
+.slide21 .slideContent ul {
+    opacity: 0;
+    transform: scale(0.3);
+    animation: heartBeat 1.2s ease-out var(--anim-list-delay) forwards;
+}
+
+/* Slide 22 - Arch Nemesis */
+.slide22 .slideContent ul {
+    opacity: 0;
+    transform: translateX(-100px) rotate(-15deg);
+    animation: rollIn 1s cubic-bezier(.68,-0.55,.265,1.55) var(--anim-list-delay) forwards;
+}
+
+/* Add varied animations for more slides */
+
+/* Slide 7 - Yummiest Poll */
+.slide7 .slideContent ul li {
+    opacity: 0;
+    transform: translateY(100px) scale(0.5);
+    animation: rubberBand 1s cubic-bezier(.68,-0.55,.265,1.55) calc(var(--anim-list-delay) + (var(--i, 0) * 0.1s)) forwards;
+}
+
+/* Slide 9 - Most Controversial */
+.slide9 .slideContent ul li {
+    opacity: 0;
+    transform: translateX(-100px) rotate(-120deg);
+    animation: rollIn 0.9s cubic-bezier(.68,-0.55,.265,1.55) calc(var(--anim-list-delay) + (var(--i, 0) * 0.25s)) forwards;
+}
+
+/* Slide 10 - Loves to Draw */
+.slide10 .slideContent ul li {
+    opacity: 0;
+    transform: translateX(0%) rotate(0deg);
+    animation: wobble 1.2s cubic-bezier(.68,-0.55,.265,1.55) calc(var(--anim-list-delay) + (var(--i, 0) * 0.2s)) forwards;
+}
+
+/* Slide 11 - Funniest Poll */
+.slide11 .slideContent ul li {
+    opacity: 0;
+    transform: translateY(-50px) rotateX(90deg);
+    animation: slideInFromTop 0.8s cubic-bezier(.68,-0.55,.265,1.55) calc(var(--anim-list-delay) + (var(--i, 0) * 0.15s)) forwards;
+}
+
+/* Slide 12 - Hardest Poll */
+.slide12 .slideContent ul li {
+    opacity: 0;
+    transform: scale(0.3) rotate(180deg);
+    animation: rotateIn 1s cubic-bezier(.68,-0.55,.265,1.55) calc(var(--anim-list-delay) + (var(--i, 0) * 0.3s)) forwards;
+}
+
+/* Slide 13 - Most Innovative */
+.slide13 .slideContent ul li {
+    opacity: 0;
+    transform: translateY(50px) rotateX(-90deg);
+    animation: slideInFromBottom 0.9s cubic-bezier(.68,-0.55,.265,1.55) calc(var(--anim-list-delay) + (var(--i, 0) * 0.2s)) forwards;
+}
+
+/* Slide 14 - CAT-astrophic */
+.slide14 .slideContent ul li {
+    opacity: 0;
+    transform: scale(1.5) rotate(-15deg);
+    animation: elastic 1.1s cubic-bezier(.68,-0.55,.265,1.55) calc(var(--anim-list-delay) + (var(--i, 0) * 0.25s)) forwards;
+}
+
+/* Slide 15 - Most Wholesome */
+.slide15 .slideContent ul li {
+    opacity: 0;
+    transform: scale(0.8);
+    animation: pulseIn 0.8s cubic-bezier(.68,-0.55,.265,1.55) calc(var(--anim-list-delay) + (var(--i, 0) * 0.2s)) forwards;
+}
+
+/* Slide 17 - The Gatherers */
+.slide17 .slideContent ul li {
+    opacity: 0;
+    transform: translateX(30px);
+    animation: slideInFromRight 0.7s cubic-bezier(.68,-0.55,.265,1.55) calc(var(--anim-list-delay) + (var(--i, 0) * 0.15s)) forwards;
+}
+.slide17 .slideContent ul li:nth-child(even) {
+    transform: translateX(-30px);
+    animation: slideInFromLeft 0.7s cubic-bezier(.68,-0.55,.265,1.55) calc(var(--anim-list-delay) + (var(--i, 0) * 0.15s)) forwards;
+}
+
+/* Slide 17 - Poll Statistics (the actual stats slide) */
+.slide17 {
     --anim-title-delay: 0.3s;
     --anim-para-delay: 1.1s;
     --anim-list-delay: calc(var(--anim-para-delay) + var(--anim-para-dur) + 0.9s);
 }
-.slide16 .slideTitle { animation: elastic var(--anim-title-dur) ease-out var(--anim-title-delay) forwards; }
+.slide17 .slideTitle { animation: elastic var(--anim-title-dur) ease-out var(--anim-title-delay) forwards; }
 
-/* Keep special stat items animation for slide 16 - override the general system */
-.slide16 .slideContent {
+/* Keep special stat items animation for slide 17 - override the general system */
+.slide17 .slideContent {
     opacity: 1 !important; /* Ensure stats container is visible */
+}
+
+/* Hide ALL statItem divs in slide17 initially */
+.slide17 .statItem {
+    opacity: 0;
+    transform: scale(0.3) translateY(30px);
+    animation-fill-mode: both;
+    will-change: opacity, transform;
+}
+
+/* Apply popIn animation to specific stat items */
+.slide17 .statItem.statItem1 { 
+    animation: popIn 0.8s cubic-bezier(.22,.9,.31,1) 1.4s forwards;
+}
+.slide17 .statItem.statItem2 { 
+    animation: popIn 0.8s cubic-bezier(.22,.9,.31,1) 1.8s forwards;
+}
+.slide17 .statItem.statItem3 { 
+    animation: popIn 0.8s cubic-bezier(.22,.9,.31,1) 2.2s forwards;
+}
+
+/* Make sure the text inside stat items is visible and doesn't animate separately */
+.slide17 .statItem p {
+    opacity: 1 !important;          /* ensure visible */
+    transform: none !important;     /* cancel paragraph translateY from general rules */
+    animation: none !important;     /* prevent separate paragraph animation */
 }
 /* popIn keyframe for a dramatic pop-in animation */
 @keyframes popIn {
@@ -594,31 +881,7 @@
   }
 }
 
-/* Hide ALL statItem divs in slide16 initially */
-.slide16 .statItem {
-    opacity: 0;
-    transform: scale(0.3) translateY(30px);
-    animation-fill-mode: both;
-    will-change: opacity, transform;
-}
-
-/* Apply popIn animation to specific stat items */
-.slide16 .statItem.statItem1 { 
-    animation: popIn 0.8s cubic-bezier(.22,.9,.31,1) 1.4s forwards;
-}
-.slide16 .statItem.statItem2 { 
-    animation: popIn 0.8s cubic-bezier(.22,.9,.31,1) 1.8s forwards;
-}
-.slide16 .statItem.statItem3 { 
-    animation: popIn 0.8s cubic-bezier(.22,.9,.31,1) 2.2s forwards;
-}
-
-/* Make sure the text inside stat items is visible and doesn't animate separately */
-.slide16 .statItem p {
-    opacity: 1 !important;          /* ensure visible */
-    transform: none !important;     /* cancel paragraph translateY from general rules */
-    animation: none !important;     /* prevent separate paragraph animation */
-}
+/* Legacy slide16 rules - can be removed or repurposed */
 
 /* Slide 9 - About you */
 .slide9 {
