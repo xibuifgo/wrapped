@@ -108,6 +108,46 @@ export async function addDownvote(person: string): Promise<void> {
   }
 }
 
+// Remove an upvote for a person
+export async function removeUpvote(person: string): Promise<void> {
+  try {
+    const voteDoc = doc(db, 'votes', person);
+    const voteSnapshot = await getDoc(voteDoc);
+    
+    if (voteSnapshot.exists()) {
+      const currentData = voteSnapshot.data() as VoteData;
+      if (currentData.upvotes > 0) {
+        await updateDoc(voteDoc, {
+          upvotes: increment(-1)
+        });
+      }
+    }
+  } catch (error) {
+    console.error('Error removing upvote:', error);
+    throw error;
+  }
+}
+
+// Remove a downvote for a person
+export async function removeDownvote(person: string): Promise<void> {
+  try {
+    const voteDoc = doc(db, 'votes', person);
+    const voteSnapshot = await getDoc(voteDoc);
+    
+    if (voteSnapshot.exists()) {
+      const currentData = voteSnapshot.data() as VoteData;
+      if (currentData.downvotes > 0) {
+        await updateDoc(voteDoc, {
+          downvotes: increment(-1)
+        });
+      }
+    }
+  } catch (error) {
+    console.error('Error removing downvote:', error);
+    throw error;
+  }
+}
+
 // Get all votes for all people
 export async function getAllVotes(): Promise<VoteCounts> {
   try {

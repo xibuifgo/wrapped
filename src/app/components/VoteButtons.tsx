@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react';
-import { getVotes, addUpvote, addDownvote, VoteData } from '../../../lib/voting';
+import { getVotes, addUpvote, addDownvote, removeUpvote, removeDownvote, VoteData } from '../../../lib/voting';
 import { personGradients } from '../../../lib/gradients';
 import styles from './VoteButtons.module.scss';
 
@@ -43,43 +43,55 @@ export default function VoteButtons({ person }: VoteButtonsProps) {
   const handleVote = async (voteType: 'up' | 'down') => {
     if (isLoading) return;
     
-    // If clicking the same button that's already voted, do nothing
-    if (userVote === voteType) {
-      return;
-    }
-    
     setIsLoading(true);
     try {
       if (voteType === 'up') {
-        await addUpvote(person);
-        // Update local state based on previous vote
-        if (userVote === 'down') {
-          // Switching from downvote to upvote
-          setVotes(prev => ({ 
-            upvotes: prev.upvotes + 1, 
-            downvotes: prev.downvotes - 1 
-          }));
-        } else {
-          // New upvote
-          setVotes(prev => ({ ...prev, upvotes: prev.upvotes + 1 }));
-        }
-        setUserVote('up');
-        localStorage.setItem(`vote_${person}`, 'up');
-      } else {
-        await addDownvote(person);
-        // Update local state based on previous vote
         if (userVote === 'up') {
-          // Switching from upvote to downvote
-          setVotes(prev => ({ 
-            upvotes: prev.upvotes - 1, 
-            downvotes: prev.downvotes + 1 
-          }));
+          // Remove upvote if already voted up
+          await removeUpvote(person);
+          setVotes(prev => ({ ...prev, upvotes: prev.upvotes - 1 }));
+          setUserVote(null);
+          localStorage.removeItem(`vote_${person}`);
         } else {
-          // New downvote
-          setVotes(prev => ({ ...prev, downvotes: prev.downvotes + 1 }));
+          // Add upvote (new or switching from downvote)
+          await addUpvote(person);
+          if (userVote === 'down') {
+            // Switching from downvote to upvote
+            setVotes(prev => ({ 
+              upvotes: prev.upvotes + 1, 
+              downvotes: prev.downvotes - 1 
+            }));
+          } else {
+            // New upvote
+            setVotes(prev => ({ ...prev, upvotes: prev.upvotes + 1 }));
+          }
+          setUserVote('up');
+          localStorage.setItem(`vote_${person}`, 'up');
         }
-        setUserVote('down');
-        localStorage.setItem(`vote_${person}`, 'down');
+      } else {
+        // voteType === 'down'
+        if (userVote === 'down') {
+          // Remove downvote if already voted down
+          await removeDownvote(person);
+          setVotes(prev => ({ ...prev, downvotes: prev.downvotes - 1 }));
+          setUserVote(null);
+          localStorage.removeItem(`vote_${person}`);
+        } else {
+          // Add downvote (new or switching from upvote)
+          await addDownvote(person);
+          if (userVote === 'up') {
+            // Switching from upvote to downvote
+            setVotes(prev => ({ 
+              upvotes: prev.upvotes - 1, 
+              downvotes: prev.downvotes + 1 
+            }));
+          } else {
+            // New downvote
+            setVotes(prev => ({ ...prev, downvotes: prev.downvotes + 1 }));
+          }
+          setUserVote('down');
+          localStorage.setItem(`vote_${person}`, 'down');
+        }
       }
     } catch (error) {
       console.error('Error voting:', error);
