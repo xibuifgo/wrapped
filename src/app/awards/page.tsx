@@ -354,22 +354,40 @@ export default function AwardsPage() {
     useEffect(() => {
         cheerRef.current = new Audio('/cheer.mp3');
         booRef.current = new Audio('/boo.mp3');
+        // Preload and keep muted until we actively play a sound effect
+        try {
+            if (cheerRef.current) {
+                cheerRef.current.preload = 'auto';
+                cheerRef.current.muted = true;
+            }
+            if (booRef.current) {
+                booRef.current.preload = 'auto';
+                booRef.current.muted = true;
+            }
+        } catch {}
         const unlock = () => {
             if (audioPrimedRef.current) return;
             audioPrimedRef.current = true;
             // iOS requires a user interaction to start audio context
-            cheerRef.current?.play().then(() => {
-                if (cheerRef.current) {
-                    cheerRef.current.pause();
-                    cheerRef.current.currentTime = 0;
-                }
-            }).catch(() => {});
-            booRef.current?.play().then(() => {
-                if (booRef.current) {
-                    booRef.current.pause();
-                    booRef.current.currentTime = 0;
-                }
-            }).catch(() => {});
+            // Prime both audio elements silently (muted) to avoid audible playback
+            const c = cheerRef.current;
+            const b = booRef.current;
+            if (c) {
+                c.muted = true;
+                c.play().then(() => {
+                    c.pause();
+                    c.currentTime = 0;
+                    c.muted = false; // ready for real playback later
+                }).catch(() => {});
+            }
+            if (b) {
+                b.muted = true;
+                b.play().then(() => {
+                    b.pause();
+                    b.currentTime = 0;
+                    b.muted = false; // ready for real playback later
+                }).catch(() => {});
+            }
             window.removeEventListener('touchstart', unlock);
             window.removeEventListener('click', unlock);
         };
@@ -385,6 +403,7 @@ export default function AwardsPage() {
         try {
             const a = cheerRef.current;
             if (!a) return;
+            a.muted = false;
             a.volume = Math.random() * 0.3 + 0.2;
             a.playbackRate = Math.random() * 0.2 + 0.9;
             a.currentTime = 0;
@@ -476,6 +495,7 @@ export default function AwardsPage() {
         try {
             const a = booRef.current;
             if (!a) return;
+            a.muted = false;
             a.volume = Math.random() * 0.3 + 0.2;
             a.playbackRate = Math.random() * 0.2 + 0.9;
             a.currentTime = 0;
@@ -625,9 +645,9 @@ export default function AwardsPage() {
 
     const currentAward = awards[currentAwardIndex];
 
-    // Trigger tomatoes on initial load if we're on 8th or 9th award
+    // Trigger tomatoes on initial load if we're on a boo category (only after interaction primes audio)
     useEffect(() => {
-        if (currentAwardIndex === 7 || currentAwardIndex === 8 || currentAwardIndex === 9 ) {
+        if (shouldThrowTomatoes() && audioPrimedRef.current) {
             setTimeout(() => {
                 throwTomatoes();
             }, 1000); // Wait a second after component loads
