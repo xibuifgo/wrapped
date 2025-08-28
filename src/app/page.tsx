@@ -114,6 +114,18 @@ function bestFriend(polls: PollsData, person: string): { [key: string]: number }
   const ppl = polls.people;
   const agree_count: { [key: string]: number } = {}
 
+  if (person.toLowerCase() === "muhaimin") {
+    return { "Zaynah": 100 };
+  } 
+
+  if (person.toLowerCase() === "zaynah") {
+    return { "Muhaimin": 100 };
+  }
+
+  if (person.toLowerCase() === "tabiya") {
+    return { "Your balloon dog": 100 };
+  }
+
   ppl.forEach(person => {
     agree_count[person] = 0;
   })
@@ -137,6 +149,18 @@ function bestFriend(polls: PollsData, person: string): { [key: string]: number }
 function archNemesis(polls: PollsData, person: string): { [key: string]: number } {
   const ppl = polls.people;
   const disagree_count: { [key: string]: number } = {};
+
+  if (person.toLowerCase() === "muhaimin") {
+    return { "Union": 1000 };
+  }
+
+  if (person.toLowerCase() === "zaynah") {
+    return { "Union": 1000 };
+  }
+
+  if (person.toLowerCase() === "tabiya") {
+    return { "Samiya": 3 };
+  }
 
   ppl.forEach(p => {
     disagree_count[p] = 0;
@@ -373,7 +397,9 @@ export default function Home() {
 
   // Random stuff
   const agreement = bestFriend(pollData as PollsData, userName);
-  const bff = Object.keys(agreement)[1]; // Cuz 0th person will always be yourself
+  // Pick the highest-ranked name that isn't the user; fallback to first key
+  const bff = Object.keys(agreement).find(n => n.toLowerCase() !== userName.toLowerCase()) || Object.keys(agreement)[0] || "";
+  const bffCount = bff ? (agreement[bff] ?? 0) : 0;
   const disagreement = archNemesis(pollData as PollsData, userName);
   const enemy = Object.keys(disagreement)[0];
 
@@ -666,7 +692,7 @@ export default function Home() {
           </ul>
         </div>
       ),
-      extra: `You two agreed ${agreement[bff]} times!`,
+  extra: `You two agreed ${bffCount} times!`,
       showProgressBar: true
     },
     // Arch Nemesis
