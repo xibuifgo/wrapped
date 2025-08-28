@@ -288,7 +288,7 @@ export default function FarmAdventuresPage() {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Farm Adventures</h1>
+      <div className={styles.header}></div>
       <div className={styles.sections}>
         {farmSolutions.map((g) => (
           <GroupSection key={g.title} group={g} />

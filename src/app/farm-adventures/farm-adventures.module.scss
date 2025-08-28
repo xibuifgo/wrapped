@@ -4,144 +4,36 @@
 	flex-direction: column;
 	align-items: center;
 	gap: 1.5rem;
-	padding: 2rem 1rem 4rem;
+	// padding: 2rem 1rem 4rem;
+}
+.header {
+    background-image: url('/farm_header.svg');
+    width: 100%;
+    height: 500px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-bottom: 1px solid gray;
+    padding: 0px -20px;
+    margin-bottom: 20px
 }
 
-.title {
-	font-size: clamp(1.5rem, 2.5vw, 2.25rem);
-	margin: 0;
+@media screen and (min-width: 1024px){
+    .header {
+        background-size: contain;
+    }
 }
 
-/* Wooden sign */
-.sign {
-	position: relative;
-	width: min(100%, 980px);
-	padding: 2.2rem 1.8rem;
-	border-radius: 14px;
-	/* Base wood color + subtle vignette */
-	background:
-		radial-gradient(140% 90% at 50% 0%, rgba(255, 245, 225, 0.06), transparent 60%),
-		linear-gradient(180deg, #8b5a2b 0%, #74451a 46%, #5a3612 100%);
-	box-shadow:
-		inset 0 1px 0 rgba(255, 255, 255, 0.15),
-		inset 0 -10px 14px rgba(0, 0, 0, 0.35),
-		0 14px 30px rgba(0, 0, 0, 0.35);
-	border: 2px solid #3b2916;
-	transform: rotate(-0.25deg);
-}
-
-/* Subtle wood grain texture */
-.sign::before {
-	content: '';
-	position: absolute;
-	inset: 0;
-	border-radius: inherit;
-	/* Planks + fine grain */
-	background:
-		/* Vertical plank seams every ~140px with 2px seam */
-		repeating-linear-gradient(
-			90deg,
-			rgba(0, 0, 0, 0.22) 0px,
-			rgba(0, 0, 0, 0.22) 2px,
-			transparent 2px,
-			transparent 140px
-		),
-		/* Cross grain highlights */
-		repeating-linear-gradient(
-			12deg,
-			rgba(255, 255, 255, 0.06) 0px,
-			rgba(255, 255, 255, 0.06) 1px,
-			transparent 1px,
-			transparent 7px
-		),
-		/* Cross grain shadows */
-		repeating-linear-gradient(
-			-10deg,
-			rgba(0, 0, 0, 0.08) 0px,
-			rgba(0, 0, 0, 0.08) 1px,
-			transparent 1px,
-			transparent 9px
-		);
-	opacity: 0.75;
-	pointer-events: none;
-	mix-blend-mode: multiply;
-}
-
-/* Knots, nails and vignette */
-.sign::after {
-	content: '';
-	position: absolute;
-	inset: 0;
-	border-radius: inherit;
-	background:
-		/* Knots */
-		radial-gradient(60px 40px at 22% 30%, rgba(41, 25, 10, 0.35) 0%, rgba(41, 25, 10, 0.18) 45%, transparent 62%),
-		radial-gradient(50px 32px at 72% 65%, rgba(41, 25, 10, 0.30) 0%, rgba(41, 25, 10, 0.16) 48%, transparent 66%),
-		/* Nails in four corners */
-		radial-gradient(14px 14px at 18px 18px, rgba(255,255,255,0.35), rgba(180,180,180,0.15) 35%, rgba(0,0,0,0.55) 60%, transparent 62%),
-		radial-gradient(14px 14px at calc(100% - 18px) 18px, rgba(255,255,255,0.35), rgba(180,180,180,0.15) 35%, rgba(0,0,0,0.55) 60%, transparent 62%),
-		radial-gradient(14px 14px at 18px calc(100% - 18px), rgba(255,255,255,0.35), rgba(180,180,180,0.15) 35%, rgba(0,0,0,0.55) 60%, transparent 62%),
-		radial-gradient(14px 14px at calc(100% - 18px) calc(100% - 18px), rgba(255,255,255,0.35), rgba(180,180,180,0.15) 35%, rgba(0,0,0,0.55) 60%, transparent 62%),
-		/* Bottom vignette */
-		radial-gradient(160% 90% at 50% 120%, rgba(0, 0, 0, 0.32), transparent 60%);
-	opacity: 0.9;
-	pointer-events: none;
-	mix-blend-mode: multiply;
-}
-
-.signInner {
-	position: relative;
-	z-index: 1;
-}
-
-/* Carved text effect */
-.carvedText {
-	/* Deeper engraved look */
-	color: white;
-	font-weight: 800;
-	letter-spacing: 0.35px;
-	line-height: 1.4;
-	font-size: clamp(1rem, 1.6vw, 1.25rem);
-	margin: 0;
-	text-transform: none;
-	text-shadow:
-		/* inner groove shadow (bottom-right) */
-		1px 1px 0 rgba(0, 0, 0, 0.48),
-		/* top-left highlight along the cut */
-		-1px -1px 0 rgba(255, 240, 210, 0.18),
-		/* soft depth */
-		0 2px 2px rgba(0, 0, 0, 0.38),
-		/* slight ridge highlight */
-		0 -2px 2px rgba(255, 240, 210, 0.06);
-	filter: contrast(1.05) saturate(0.95);
-}
-
-/* Optional: slight wobble-on-load for charm */
-@keyframes signEnter {
-	0% { transform: translateY(-8px) rotate(-2deg); opacity: 0; }
-	60% { transform: translateY(2px) rotate(0.5deg); opacity: 1; }
-	100% { transform: translateY(0) rotate(-0.2deg); }
-}
-
-.sign {
-	animation: signEnter 700ms ease-out both;
-}
-
-/* Responsive tweaks */
-@media (max-width: 600px) {
-	.sign {
-		padding: 1.5rem 1rem;
-		border-radius: 10px;
-	}
-	.carvedText {
-		letter-spacing: 0.2px;
-	}
+@media screen and (max-width: 1000px) {
+    .header {
+        height: 300px !important;
+    }
 }
 
 /* ============ Farm Themed Slider ============ */
 .slider {
 	position: relative;
-	width: min(100%, 980px);
+	width: min(80%, 980px);
 	margin-top: 1rem;
 	border-radius: 16px;
 	overflow: hidden;
@@ -290,6 +182,9 @@
 	flex-direction: column;
 	gap: 28px;
 	width: min(100%, 980px);
+	/* Add horizontal gutter so slides don't touch the screen edges */
+	padding: 0 16px;
+	box-sizing: border-box;
 }
 
 .section {
@@ -364,3 +259,8 @@
 
 /* Raise nav arrows slightly for the Slang section so they don't overlap text */
 .slang .miniNavBtn { top: 40%; }
+
+/* Slightly larger gutters on tablets/desktops */
+@media (min-width: 768px) {
+	.sections { padding: 0 24px; }
+}
