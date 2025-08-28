@@ -175,7 +175,7 @@ export default function AIPage() {
             </div>
             
             <div className={styles.footer}>
-                <p>Scores will be updated as soon as you upvote / downvote someone&apos;s prediction.</p>
+                <p>Scores will be updated as soon as you upvote / downvote someone&apos;s prediction!</p>
             </div>
         </div>
     )
