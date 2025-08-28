@@ -865,7 +865,10 @@ export default function Home() {
           placeholder="Enter your name" 
           className={styles["name-input"]} 
           id="name-input"
-          onChange={() => setNameNotFound(false)} // Clear error when user types
+          onChange={() => {
+            setNameNotFound(false); // Clear error when user types
+            setHonorarySis(false);  // Reset honorary flag on new input to avoid stale state
+          }}
         />
         <button
           onClick={() => {
@@ -873,23 +876,21 @@ export default function Home() {
             if (input && input.value.trim()) {
               const enteredName = input.value.trim();
               // Check if name exists in poll data (case-insensitive)
-              let nameExists = pollData.people.some(person => 
+              const existsInPeople = pollData.people.some(person => 
                 person.toLowerCase() === enteredName.toLowerCase()
               );
-              if (!nameExists) {
-                nameExists = pollData.honorary.some(person => 
-                  person.toLowerCase() === enteredName.toLowerCase()
-                );
-                if (nameExists) {
-                  setHonorarySis(true);
-                }
-              }
+              const existsInHonorary = !existsInPeople && pollData.honorary.some(person => 
+                person.toLowerCase() === enteredName.toLowerCase()
+              );
+              const nameExists = existsInPeople || existsInHonorary;
               
               if (nameExists) {
+                // Set honorary mode only for honorary names; ensure it's off for regular names
+                setHonorarySis(!!existsInHonorary);
                 // Find the correctly capitalized name from the data
-                const correctName = pollData.people.find(person => 
-                  person.toLowerCase() === enteredName.toLowerCase()
-                ) || capitalize(enteredName);
+                const correctName = existsInPeople
+                  ? (pollData.people.find(person => person.toLowerCase() === enteredName.toLowerCase()) as string)
+                  : capitalize(enteredName);
                 
                 setUserName(correctName);
                 setCurrentSlide(1);
@@ -898,6 +899,7 @@ export default function Home() {
                 setNameNotFound(true);
                 setUserName("");
                 setCurrentSlide(0);
+                setHonorarySis(false); // Make sure we don't show WE MISS YOU for unknown names
               }
             }
           }}
