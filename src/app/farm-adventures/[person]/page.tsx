@@ -902,7 +902,7 @@ export default function PersonAdventurePage() {
 
                     html += "<p> &quot;You like green?&quot; you write and turn the book.</p>";
 
-                    html += "<p> &quot;I love it, it reminds me of my childhood. My father was a farmer too you know!&quot; he wrote.</p>";
+                    html += "<p> &quot;I love it, it reminds me of my childhood. My father was a farmer too you know!&quot; he wrote in blue.</p>";
 
                     html += "<p> &quot;Is it cuz green is nature?&quot; </p>";
 
